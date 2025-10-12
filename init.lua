@@ -12,7 +12,7 @@ vim.keymap.set("n", "<space>x", ":.lua<CR>")
 vim.keymap.set("v", "<space>x", ":lua<CR>")
 
 vim.keymap.set("n", "<leader>of", ":Ex <CR>", { noremap = true })
-vim.keymap.set("n", "<leader>ff", ":Telescope find_files<CR>", {noremap = true })
+-- vim.keymap.set("n", "<leader>ff", ":Telescope find_files<CR>", {noremap = true })
 
 -- LSP format the buffer/file
 vim.keymap.set("n", "<C-Space>", function() vim.lsp.buf.format() end)
