@@ -45,8 +45,6 @@ return {
         },
       })
 
-      -- vim.keymap.set("n", "<space>f", function() vim.lsp.buf.format() end)
-
       -- The following function is for auto-format on save.
       -- vim.api.nvim_create_autocmd('LspAttach', {
       --   callback = function(args)
