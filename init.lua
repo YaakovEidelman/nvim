@@ -29,6 +29,8 @@ vim.keymap.set('n', '<M-k>', ':m .-2<CR>==', { noremap = true, silent = true })
 vim.keymap.set('v', '<M-j>', ":m '>+1<CR>gv=gv", { noremap = true, silent = true })
 vim.keymap.set('v', '<M-k>', ":m '<-2<CR>gv=gv", { noremap = true, silent = true })
 
+vim.keymap.set('v', '>', '>gv')
+vim.keymap.set('v', '<', '<gv')
 
 vim.keymap.set("n", "<leader>of", ":Ex <CR>", { noremap = true })
 -- vim.keymap.set("n", "<leader>ff", ":Telescope find_files<CR>", {noremap = true })
