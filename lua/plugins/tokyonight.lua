@@ -4,6 +4,6 @@ return {
     config = function() 
       vim.cmd.colorscheme "tokyonight" 
     end, 
-    enabled = false,
+    enabled = true,
   },
 }
