@@ -28,10 +28,29 @@ return {
         settings = {},
       })
 
-      local omnisharp_run = vim.fn.stdpath("data") .. "/mason/packages/omnisharp/OmniSharp"
-      vim.lsp.config("omnisharp", {
+      -- local omnisharp_run = vim.fn.stdpath("data") .. "/mason/packages/omnisharp/OmniSharp"
+      -- vim.lsp.config("omnisharp", {
+      --   capabilities = capabilities,
+      --   cmd = { omnisharp_run },
+      --   filetypes = {
+      --     "cs",
+      --     "csproj",
+      --     "sln",
+      --   },
+      --   settings = {},
+      -- })
+      --
+      vim.lsp.config("roslyn", {
         capabilities = capabilities,
-        cmd = { omnisharp_run },
+        cmd = {
+          "dotnet",
+          "/home/yaakov/.local/share/roslyn-lsp/content/LanguageServer/linux-x64/Microsoft.CodeAnalysis.LanguageServer.dll",
+          "--logLevel",
+          "Information",
+          "--extensionLogDirectory",
+          "/home/yaakov/Desktop",
+          "--stdio",
+        },
         filetypes = {
           "cs",
           "csproj",
@@ -42,7 +61,8 @@ return {
 
       vim.lsp.enable("ts_ls")
       vim.lsp.enable("pyright")
-      vim.lsp.enable("omnisharp")
+      vim.lsp.enable("roslyn")
+      -- vim.lsp.enable("omnisharp")
 
       -- Configure nvim-cmp with the nvim_lsp source
       local cmp = require("cmp")

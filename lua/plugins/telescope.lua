@@ -1,7 +1,7 @@
 return {
   {
     "nvim-telescope/telescope.nvim",
-    tag = "0.1.8",
+    branch = "0.1.x",
     dependencies = {
       "nvim-lua/plenary.nvim",
       {
@@ -10,7 +10,9 @@ return {
       },
     },
     config = function()
-      require("telescope").setup({
+      local Telescope = require("telescope")
+
+      Telescope.setup({
         pickers = {
           find_files = {
             theme = "ivy",
@@ -21,7 +23,7 @@ return {
         },
       })
 
-      require("telescope").load_extension("fzf")
+      Telescope.load_extension("fzf")
       require("plugins.telescope.multigrep").setup()
 
       -- vim.keymap.set("n", "<leader>fh", require("telescope.builtin").help_tags)
