@@ -13,11 +13,11 @@ return {
       local Telescope = require("telescope")
 
       Telescope.setup({
-        pickers = {
-          find_files = {
-            theme = "ivy",
-          },
-        },
+        -- pickers = {
+        --   find_files = {
+        --     theme = "ivy",
+        --   },
+        -- },
         extensions = {
           fzf = {},
         },

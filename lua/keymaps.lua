@@ -24,18 +24,20 @@ vim.keymap.set("n", "<leader>of", ":Ex <CR>", { noremap = true })
 
 -- Open file explorer at ~/.config/nvim
 vim.keymap.set("n", "<leader>con", function()
-	vim.cmd.edit(vim.fn.stdpath("config"))
+    vim.cmd.edit(vim.fn.stdpath("config"))
 end, { desc = "Edit Nvim config directory" })
 
 -- Open telescope fuzzy find
 vim.keymap.set("n", "<leader>ff", ":Telescope find_files<CR>", { noremap = true })
+vim.keymap.set("n", "<leader>fb", ":Telescope buffers<cr>", { noremap = true })
+vim.keymap.set("n", "<leader>fh", ":Telescope help_tags<cr>", { noremap = true })
 
 -- LSP format the buffer/file
 vim.keymap.set("n", "<M-F>", function()
-	vim.lsp.buf.format()
+    vim.lsp.buf.format()
 end)
 
 -- Open new tab to newtr (file explorer)
 vim.keymap.set("n", "<leader>tn", function()
-	vim.cmd("tabnew | Explore")
+    vim.cmd("tabnew | Explore")
 end)
