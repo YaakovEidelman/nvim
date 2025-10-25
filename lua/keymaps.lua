@@ -41,3 +41,5 @@ end)
 vim.keymap.set("n", "<leader>tn", function()
     vim.cmd("tabnew | Explore")
 end)
+
+vim.keymap.set("i", "<C-bs>", "<C-w>", { desc = "Delete previous word", noremap = true })
