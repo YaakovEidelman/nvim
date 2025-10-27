@@ -22,6 +22,21 @@ return {
 				},
 			}
 
+			dap.adapters.coreclr = {
+				type = "executable",
+				command = "netcoredbg",
+				args = { "--interpreter=vscode" },
+			}
+
+			dap.configurations.cs = {
+				{
+					type = "coreclr",
+					name = "Launch c# debbugger",
+					request = "launch",
+					program = "/home/yaakov/repos/dotnet_test/bin/Debug/net10.0/dotnet_test.dll",
+				},
+			}
+
 			vim.api.nvim_set_hl(0, "DapBreakpointColor", { fg = "#FF0000" }) -- , bg = "#3C1010"
 			vim.api.nvim_set_hl(0, "DapStoppedLine", { bg = "#4A4A00" })
 
