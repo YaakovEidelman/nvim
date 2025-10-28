@@ -5,7 +5,7 @@ return {
 			local dap = require("dap")
 			dap.adapters.debugpy = {
 				type = "executable",
-				command = "/home/yaakov/repos/python/bin/python",
+				command = "/home/yaakov/virtual-envs/main-venv/bin/python",
 				args = { "-m", "debugpy.adapter" },
 				cwd = "/home/yaakov/repos/python/",
 			}
@@ -17,10 +17,12 @@ return {
 					name = "Launch file",
 					program = "${file}",
 					pythonPath = function()
-						return "/home/yaakov/repos/python/bin/python"
+						return "/home/yaakov/virtual-envs/main-venv/bin/python"
 					end,
 				},
 			}
+
+			-- require("dap.ext.vscode").load_launchjs(nil, { python = { "python" } })
 
 			dap.adapters.coreclr = {
 				type = "executable",
