@@ -49,3 +49,5 @@ vim.keymap.set("n", "<leader>tn", function()
 end)
 
 vim.keymap.set("i", "<C-bs>", "<C-w>", { desc = "Delete previous word", noremap = true })
+
+vim.keymap.set('t', '<C-e>', [[<C-\><C-n>]], { noremap = true, silent = true })

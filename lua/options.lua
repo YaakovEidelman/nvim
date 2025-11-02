@@ -6,3 +6,4 @@ vim.opt.smarttab = true
 vim.opt.clipboard = "unnamedplus"
 vim.opt.number = true
 vim.opt.wrap = false
+vim.opt.scrolloff = 20
