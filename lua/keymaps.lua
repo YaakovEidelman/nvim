@@ -51,3 +51,12 @@ end)
 vim.keymap.set("i", "<C-bs>", "<C-w>", { desc = "Delete previous word", noremap = true })
 
 vim.keymap.set('t', '<C-e>', [[<C-\><C-n>]], { noremap = true, silent = true })
+vim.keymap.set('n', 'gd', function ()
+  vim.lsp.buf.definition()
+end)
+
+-- vim.keymap.set('n', 'gd', function ()
+--   require('telescope.builtin').lsp_definitions({
+--
+--   }) 
+-- end)

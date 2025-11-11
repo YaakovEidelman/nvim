@@ -1,8 +1,42 @@
 return {
+    {
+      'stevearc/overseer.nvim',
+      config = function ()
+        require("overseer").setup({
+          log_level = "TRACE",
+        })
+      end,
+    },
 	{
 		"mfussenegger/nvim-dap",
 		config = function()
 			local dap = require("dap")
+            local vscode = require("dap.ext.vscode")
+
+            local function load_vscode_config()
+              vscode.load_launchjs()
+            end
+
+            load_vscode_config()
+
+            vim.api.nvim_create_autocmd("DirChanged", {
+              callback = load_vscode_config,
+            })
+
+            vim.api.nvim_create_autocmd("BufEnter", {
+                callback = function()
+                    local current_dir = vim.fn.getcwd()
+                    local buffer_dir = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":p:h")
+
+                    if current_dir ~= buffer_dir then
+                        -- Optional: change the actual Neovim working directory
+                        vim.api.nvim_set_current_dir(buffer_dir)
+
+                        load_vscode_config()
+                    end
+                end,
+            })
+
 			dap.adapters.debugpy = {
 				type = "executable",
 				command = "/home/yaakov/virtual-envs/main-venv/bin/python",
@@ -10,33 +44,10 @@ return {
 				cwd = "/home/yaakov/repos/python/",
 			}
 
-			dap.configurations.python = {
-				{
-					type = "debugpy",
-					request = "launch",
-					name = "Launch file",
-					program = "${file}",
-					pythonPath = function()
-						return "/home/yaakov/virtual-envs/main-venv/bin/python"
-					end,
-				},
-			}
-
-			-- require("dap.ext.vscode").load_launchjs(nil, { python = { "python" } })
-
 			dap.adapters.coreclr = {
 				type = "executable",
 				command = "netcoredbg",
 				args = { "--interpreter=vscode" },
-			}
-
-			dap.configurations.cs = {
-				{
-					type = "coreclr",
-					name = "Launch c# debbugger",
-					request = "launch",
-					program = "/home/yaakov/repos/dotnet_test/bin/Debug/net10.0/dotnet_test.dll",
-				},
 			}
 
 			vim.api.nvim_set_hl(0, "DapBreakpointColor", { fg = "#FF0000" }) -- , bg = "#3C1010"

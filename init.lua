@@ -9,4 +9,4 @@ require("autocmd")
 -- vim.api.nvim_set_hl(0, "NormalNC", {bg = "none"})
 -- vim.api.nvim_set_hl(0, "EndOfbuffer", {bg = "none"})
 
-vim.cmd.colorscheme("default")
+-- vim.cmd.colorscheme("default")
