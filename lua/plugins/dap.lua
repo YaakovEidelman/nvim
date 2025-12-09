@@ -19,23 +19,24 @@ return {
 
             load_vscode_config()
 
-            vim.api.nvim_create_autocmd("DirChanged", {
-              callback = load_vscode_config,
-            })
-
-            vim.api.nvim_create_autocmd("BufEnter", {
-                callback = function()
-                    local current_dir = vim.fn.getcwd()
-                    local buffer_dir = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":p:h")
-
-                    if current_dir ~= buffer_dir then
-                        -- Optional: change the actual Neovim working directory
-                        vim.api.nvim_set_current_dir(buffer_dir)
-
-                        load_vscode_config()
-                    end
-                end,
-            })
+            -- This is for auto changing buffer when switching folders. needs fixing
+            -- vim.api.nvim_create_autocmd("DirChanged", {
+            --   callback = load_vscode_config,
+            -- })
+            --
+            -- vim.api.nvim_create_autocmd("BufEnter", {
+            --     callback = function()
+            --         local current_dir = vim.fn.getcwd()
+            --         local buffer_dir = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":p:h")
+            --
+            --         if current_dir ~= buffer_dir then
+            --             -- Optional: change the actual Neovim working directory
+            --             vim.api.nvim_set_current_dir(buffer_dir)
+            --
+            --             load_vscode_config()
+            --         end
+            --     end,
+            -- })
 
 			dap.adapters.debugpy = {
 				type = "executable",
