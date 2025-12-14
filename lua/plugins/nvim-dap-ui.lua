@@ -12,10 +12,10 @@ return {
 				dapui.open()
 			end
 			dap.listeners.before.event_terminated["dapui_config"] = function()
-				dapui.close()
+				-- dapui.close()
 			end
 			dap.listeners.before.event_exited["dapui_config"] = function()
-				dapui.close()
+				-- dapui.close()
 			end
 			-- Your UI keymaps from the original config
 			vim.keymap.set("n", "<leader>dui", dapui.toggle, { desc = "DAP UI: Toggle" })

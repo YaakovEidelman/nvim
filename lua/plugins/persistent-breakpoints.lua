@@ -1,22 +1,28 @@
 return {
-	{
-		"Weissle/persistent-breakpoints.nvim",
-		dependencies = "mfussenegger/nvim-dap",
-		config = function()
-            require('persistent-breakpoints').setup{
+    {
+        "Weissle/persistent-breakpoints.nvim",
+        dependencies = "mfussenegger/nvim-dap",
+        config = function()
+            require('dap')
+            local pb = require('persistent-breakpoints')
+            local pbapi = require('persistent-breakpoints.api')
+            pb.setup {
                 save_dir = vim.fn.stdpath('data') .. '/nvim_checkpoints',
-                -- when to load the breakpoints? "BufReadPost" is recommanded.
-                load_breakpoints_event = nil,
-                -- record the performance of different function. run :lua require('persistent-breakpoints.api').print_perf_data() to see the result.
+                load_breakpoints_event = "BufReadPost",
                 perf_record = false,
-                -- perform callback when loading a persisted breakpoint
-                --- @param opts DAPBreakpointOptions options used to create the breakpoint ({condition, logMessage, hitCondition})
-                --- @param buf_id integer the buffer the breakpoint was set on
-                --- @param line integer the line the breakpoint was set on
                 on_load_breakpoint = nil,
-                -- set this to true if the breakpoints are not loaded when you are using a session-like plugin.
-                always_reload = true,
-              }
-		end,
-	},
+                auto_load = true,
+                auto_save = true,
+            }
+
+            vim.keymap.set("n", "<leader>bp", function()
+                pbapi.toggle_breakpoint()
+            end)
+            -- vim.keymap.set("n", "<YourKey2>",
+            --     "<cmd>lua require('persistent-breakpoints.api').set_conditional_breakpoint()<cr>", opts)
+            -- vim.keymap.set("n", "<YourKey3>",
+            --     "<cmd>lua require('persistent-breakpoints.api').clear_all_breakpoints()<cr>", opts)
+            -- vim.keymap.set("n", "<YourKey4>", "<cmd>lua require('persistent-breakpoints.api').set_log_point()<cr>", opts)
+        end,
+    },
 }

@@ -9,5 +9,5 @@ vim.opt.wrap = false
 vim.opt.scrolloff = 10
 vim.opt.termguicolors = true
 
-vim.g["test#strategy"] = "neovim"
+-- vim.g["test#strategy"] = "neovim"
 
