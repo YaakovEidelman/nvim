@@ -19,11 +19,47 @@ return {
                 cwd = "/home/yaakov/repos/python/",
             }
 
+            -- dap.adapters.coreclr = {
+            --     type = "executable",
+            --     command = "netcoredbg",
+            --     args = { "--interpreter=vscode" },
+            -- }
             dap.adapters.coreclr = {
                 type = "executable",
-                command = "netcoredbg",
+                command = vim.fn.stdpath("data") .. "/mason/packages/netcoredbg/netcoredbg",
                 args = { "--interpreter=vscode" },
             }
+            dap.adapters.netcoredbg = {
+                type = "executable",
+                command = vim.fn.stdpath("data") .. "/mason/packages/netcoredbg/netcoredbg",
+                args = { "--interpreter=vscode" },
+            }
+            -- dap.adapters.coreclr = {
+            --     type = "executable",
+            --     command = "/home/yaakov/.local/share/nvim/dap/vsdbg/vsdbg",
+            --     args = { "--interpreter=vscode"},
+            -- }
+
+            local dotnet = require("config.nvim-dap-dotnet")
+            dap.configurations.cs = {
+                {
+                    type = "coreclr",
+                    name = "launch - netcoredbg",
+                    request = "launch",
+                    program = function()
+                        return dotnet.build_dll_path()
+                    end,
+                }
+            }
+
+            vim.keymap.set("n", "<leader>da", function()
+                require('dap').run({
+                    type = "coreclr",
+                    request = "attach",
+                    name = "Attach debugger",
+                    processId = require("dap.utils").pick_process
+                })
+            end)
 
             vim.api.nvim_set_hl(0, "DapBreakpointColor", { fg = "#FF0000" }) -- , bg = "#3C1010"
             vim.api.nvim_set_hl(0, "DapStoppedLine", { bg = "#4A4A00" })
