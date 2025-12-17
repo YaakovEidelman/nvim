@@ -3,7 +3,7 @@ return {
         "tpope/vim-dadbod",
         lazy = true,
         config = function()
-            vim.keymap.set("v", "<leader>eq", "<cmd>DB<CR>")
+            vim.keymap.set("v", "<leader>eq", "<cmd>'<, '>DB<CR>")
         end
     },
     {
