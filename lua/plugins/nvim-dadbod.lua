@@ -3,7 +3,7 @@ return {
         "tpope/vim-dadbod",
         lazy = true,
         config = function()
-            vim.keymap.set("n", "<leader>eq", "<cmd>DB<CR>", { desc = "Toggle DBUI" })
+            vim.keymap.set("v", "<leader>eq", "<cmd>DB<CR>")
         end
     },
     {
