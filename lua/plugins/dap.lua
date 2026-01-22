@@ -111,18 +111,47 @@ return {
                 })
             end)
 
-            vim.api.nvim_set_hl(0, "DapBreakpointColor", { fg = "#FF0000" }) -- , bg = "#3C1010"
-            vim.api.nvim_set_hl(0, "DapStoppedLine", { bg = "#4A4A00" })
+            -- VS Code Light theme debug colors
+            vim.api.nvim_set_hl(0, "DapBreakpoint", { fg = "#E51400" })  -- Red breakpoint
+            vim.api.nvim_set_hl(0, "DapBreakpointCondition", { fg = "#F48771" })  -- Orange for conditional
+            vim.api.nvim_set_hl(0, "DapBreakpointRejected", { fg = "#848484" })  -- Gray for rejected
+            vim.api.nvim_set_hl(0, "DapLogPoint", { fg = "#F2AB46" })  -- Yellow for logpoint
+            vim.api.nvim_set_hl(0, "DapStopped", { fg = "#007ACC" })  -- Blue arrow
+            vim.api.nvim_set_hl(0, "DapStoppedLine", { bg = "#ffe100" })  -- Light yellow background (VS Code style)
 
             vim.fn.sign_define("DapBreakpoint", {
-                text = "🛑", -- ●
-                texthl = "DapBreakpointColor",
+                text = "🛑", -- ●               
+                texthl = "DapBreakpoint",
+                linehl = "",
+                numhl = "",
+            })
+
+            vim.fn.sign_define("DapBreakpointCondition", {
+                text = "◐",
+                texthl = "DapBreakpointCondition",
+                linehl = "",
+                numhl = "",
+            })
+
+            vim.fn.sign_define("DapBreakpointRejected", {
+                text = "○",
+                texthl = "DapBreakpointRejected",
+                linehl = "",
+                numhl = "",
+            })
+
+            vim.fn.sign_define("DapLogPoint", {
+                text = "◆",
+                texthl = "DapLogPoint",
+                linehl = "",
+                numhl = "",
             })
 
             vim.fn.sign_define("DapStopped", {
                 text = "▶",
                 texthl = "DapStopped",
                 linehl = "DapStoppedLine",
+                numhl = "DapStopped",
             })
 
             vim.keymap.set("n", "<F5>", function()
