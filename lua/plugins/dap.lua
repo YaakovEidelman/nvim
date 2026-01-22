@@ -14,7 +14,8 @@ return {
             local function get_netcoredbg_path()
                 local mason_path = vim.fn.stdpath("data") .. "/mason/packages/netcoredbg/"
                 if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
-                    return mason_path .. "netcoredbg.exe"
+                    -- On Windows, Mason installs in a subdirectory: netcoredbg/netcoredbg/netcoredbg.exe
+                    return mason_path .. "netcoredbg/netcoredbg.exe"
                 else
                     return mason_path .. "netcoredbg"
                 end
