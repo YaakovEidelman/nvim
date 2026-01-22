@@ -8,6 +8,11 @@ return {
 			--   lsp_fallback = true,
 			-- },
 			format_on_save = false,
+			formatters = {
+				prettier = {
+					prepend_args = { "--tab-width", "2" },
+				},
+			},
 			formatters_by_ft = {
 				lua = { "stylua" },
 				python = { "black", "ruff" },
