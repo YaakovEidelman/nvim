@@ -11,11 +11,11 @@ return {
             "mfussenegger/nvim-dap",
         },
         opts = function()
-            local is_windows = vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1
+            local platform = require("utils.platform")
             local mason_path = vim.fn.stdpath("data") .. "/mason/packages/netcoredbg/"
             local netcoredbg_path
 
-            if is_windows then
+            if platform.is_windows then
                 netcoredbg_path = mason_path .. "netcoredbg\\netcoredbg.exe"
             else
                 netcoredbg_path = mason_path .. "netcoredbg"
@@ -32,17 +32,17 @@ return {
         "mfussenegger/nvim-dap",
         config = function()
             local dap = require("dap")
-            local is_windows = vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1
+            local platform = require("utils.platform")
 
             -- WINDOWS FIX: Convert forward slashes to backslashes for netcoredbg
-            if is_windows then
+            if platform.is_windows then
                 -- Normalize buffer names to use backslashes when C# files are opened
                 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
                     pattern = { "*.cs", "*.csproj", "*.sln" },
                     callback = function(args)
                         local bufname = vim.api.nvim_buf_get_name(args.buf)
                         if bufname and bufname:find("/") then
-                            local win_path = bufname:gsub("/", "\\")
+                            local win_path = platform.normalize_path(bufname)
                             vim.api.nvim_buf_set_name(args.buf, win_path)
                         end
                     end,
@@ -53,7 +53,7 @@ return {
                     local orig_request = session.request
                     session.request = function(self, command, args, callback)
                         if command == "setBreakpoints" and args and args.source and args.source.path then
-                            args.source.path = args.source.path:gsub("/", "\\")
+                            args.source.path = platform.normalize_path(args.source.path)
                         end
                         return orig_request(self, command, args, callback)
                     end

@@ -10,7 +10,7 @@ vim.opt.scrolloff = 10
 vim.opt.termguicolors = true
 
 -- Windows: Use backslashes for paths (required for netcoredbg breakpoints)
-if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
+if require("utils.platform").is_windows then
     vim.opt.shellslash = false
 end
 

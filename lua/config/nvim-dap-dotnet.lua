@@ -3,15 +3,8 @@
 
 local M = {}
 
-local is_windows = vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1
-
--- Normalize path - use backslashes on Windows for netcoredbg compatibility
-local function normalize_path(path)
-    if is_windows then
-        return path:gsub("/", "\\")
-    end
-    return path
-end
+local platform = require("utils.platform")
+local normalize_path = platform.normalize_path
 
 -- Find the root directory of a .NET project by searching for .csproj files
 function M.find_project_root_by_csproj(start_path)
