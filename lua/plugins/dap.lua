@@ -6,121 +6,80 @@ return {
         end,
     },
     {
+        "NicholasMata/nvim-dap-cs",
+        dependencies = {
+            "mfussenegger/nvim-dap",
+        },
+        opts = function()
+            local is_windows = vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1
+            local mason_path = vim.fn.stdpath("data") .. "/mason/packages/netcoredbg/"
+            local netcoredbg_path
+
+            if is_windows then
+                netcoredbg_path = mason_path .. "netcoredbg\\netcoredbg.exe"
+            else
+                netcoredbg_path = mason_path .. "netcoredbg"
+            end
+
+            return {
+                netcoredbg = {
+                    path = netcoredbg_path,
+                },
+            }
+        end,
+    },
+    {
         "mfussenegger/nvim-dap",
         config = function()
             local dap = require("dap")
+            local is_windows = vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1
 
-            -- Helper function to get the correct netcoredbg path (cross-platform)
-            local function get_netcoredbg_path()
-                local mason_path = vim.fn.stdpath("data") .. "/mason/packages/netcoredbg/"
-                if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
-                    -- On Windows, Mason installs in a subdirectory: netcoredbg/netcoredbg/netcoredbg.exe
-                    return mason_path .. "netcoredbg/netcoredbg.exe"
-                else
-                    return mason_path .. "netcoredbg"
+            -- WINDOWS FIX: Convert forward slashes to backslashes for netcoredbg
+            if is_windows then
+                -- Normalize buffer names to use backslashes when C# files are opened
+                vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+                    pattern = { "*.cs", "*.csproj", "*.sln" },
+                    callback = function(args)
+                        local bufname = vim.api.nvim_buf_get_name(args.buf)
+                        if bufname and bufname:find("/") then
+                            local win_path = bufname:gsub("/", "\\")
+                            vim.api.nvim_buf_set_name(args.buf, win_path)
+                        end
+                    end,
+                })
+
+                -- Also fix paths when session sends requests (belt and suspenders)
+                dap.listeners.before["event_initialized"]["windows_path_fix"] = function(session)
+                    local orig_request = session.request
+                    session.request = function(self, command, args, callback)
+                        if command == "setBreakpoints" and args and args.source and args.source.path then
+                            args.source.path = args.source.path:gsub("/", "\\")
+                        end
+                        return orig_request(self, command, args, callback)
+                    end
                 end
             end
 
-            -- .NET / C# debugger configuration
-            dap.adapters.coreclr = {
-                type = "executable",
-                command = get_netcoredbg_path(),
-                args = { "--interpreter=vscode" },
-            }
-            dap.adapters.netcoredbg = dap.adapters.coreclr
-
-            local dotnet = require("config.nvim-dap-dotnet")
-
-            -- Function to build in Debug configuration and then get the DLL path
-            local function build_and_get_dll()
-                local project_root = dotnet.find_project_root_by_csproj(vim.fn.expand("%:p:h"))
-                if not project_root then
-                    vim.notify("Could not find .csproj file", vim.log.levels.ERROR)
-                    return nil
-                end
-
-                -- Build the project in Debug configuration explicitly
-                vim.notify("Building project (Debug)...", vim.log.levels.INFO)
-                local build_cmd = "dotnet build --configuration Debug " .. vim.fn.shellescape(project_root)
-                local result = vim.fn.system(build_cmd)
-                local exit_code = vim.v.shell_error
-
-                if exit_code ~= 0 then
-                    vim.notify("Build failed:\n" .. result, vim.log.levels.ERROR)
-                    return nil
-                end
-
-                vim.notify("Build succeeded!", vim.log.levels.INFO)
-                return dotnet.build_dll_path()
-            end
-
-            dap.configurations.cs = {
-                {
-                    type = "coreclr",
-                    name = "Launch (build first)",
-                    request = "launch",
-                    program = build_and_get_dll,
-                    cwd = function()
-                        return dotnet.find_project_root_by_csproj(vim.fn.expand("%:p:h")) or vim.fn.getcwd()
-                    end,
-                    stopAtEntry = false,
-                    justMyCode = false,
-                    enableStepFiltering = false,
-                    -- Required for breakpoints to work
-                    env = {
-                        DOTNET_CLI_UI_LANGUAGE = "en",
-                    },
-                },
-                {
-                    type = "coreclr",
-                    name = "Launch (no build)",
-                    request = "launch",
-                    program = function()
-                        return dotnet.build_dll_path()
-                    end,
-                    cwd = function()
-                        return dotnet.find_project_root_by_csproj(vim.fn.expand("%:p:h")) or vim.fn.getcwd()
-                    end,
-                    stopAtEntry = false,
-                    justMyCode = false,
-                    enableStepFiltering = false,
-                    env = {
-                        DOTNET_CLI_UI_LANGUAGE = "en",
-                    },
-                },
-                {
-                    type = "coreclr",
-                    name = "Launch (stop at entry)",
-                    request = "launch",
-                    program = build_and_get_dll,
-                    cwd = function()
-                        return dotnet.find_project_root_by_csproj(vim.fn.expand("%:p:h")) or vim.fn.getcwd()
-                    end,
-                    stopAtEntry = true,  -- Stop at Main() entry point
-                    justMyCode = false,
-                    enableStepFiltering = false,
-                },
-            }
-
+            -- Attach debugger keymap
             vim.keymap.set("n", "<leader>da", function()
-                require('dap').run({
+                require("dap").run({
                     type = "coreclr",
                     request = "attach",
                     name = "Attach debugger",
-                    processId = require("dap.utils").pick_process
+                    processId = require("dap.utils").pick_process,
                 })
             end)
 
             -- VS Code Light theme debug colors
-            vim.api.nvim_set_hl(0, "DapBreakpoint", { fg = "#E51400" })  -- Red breakpoint
-            vim.api.nvim_set_hl(0, "DapBreakpointCondition", { fg = "#F48771" })  -- Orange for conditional
-            vim.api.nvim_set_hl(0, "DapBreakpointRejected", { fg = "#848484" })  -- Gray for rejected
-            vim.api.nvim_set_hl(0, "DapLogPoint", { fg = "#F2AB46" })  -- Yellow for logpoint
-            vim.api.nvim_set_hl(0, "DapStopped", { fg = "#007ACC" })  -- Blue arrow
-            vim.api.nvim_set_hl(0, "DapStoppedLine", { bg = "#ffe100" })  -- Light yellow background (VS Code style)
+            vim.api.nvim_set_hl(0, "DapBreakpoint", { fg = "#E51400" })
+            vim.api.nvim_set_hl(0, "DapBreakpointCondition", { fg = "#F48771" })
+            vim.api.nvim_set_hl(0, "DapBreakpointRejected", { fg = "#848484" })
+            vim.api.nvim_set_hl(0, "DapLogPoint", { fg = "#F2AB46" })
+            vim.api.nvim_set_hl(0, "DapStopped", { fg = "#007ACC" })
+            vim.api.nvim_set_hl(0, "DapStoppedLine", { bg = "#ffe100" })
 
             vim.fn.sign_define("DapBreakpoint", {
-                text = "🛑", -- ●               
+                text = "⬤", -- 🛑 -- ●               
                 texthl = "DapBreakpoint",
                 linehl = "",
                 numhl = "",
@@ -174,10 +133,6 @@ return {
                 dap.step_out()
             end)
             vim.keymap.set("n", "<S-F5>", function() end)
-
-            -- vim.keymap.set("n", "<leader>bp", function()
-            --     dap.toggle_breakpoint()
-            -- end)
 
             vim.keymap.set("n", "<leader>dr", function()
                 dap.repl.toggle()

@@ -3,10 +3,14 @@
 
 local M = {}
 
--- Normalize path - netcoredbg prefers forward slashes even on Windows
+local is_windows = vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1
+
+-- Normalize path - use backslashes on Windows for netcoredbg compatibility
 local function normalize_path(path)
-    -- Always use forward slashes for netcoredbg compatibility
-    return path:gsub("\\", "/")
+    if is_windows then
+        return path:gsub("/", "\\")
+    end
+    return path
 end
 
 -- Find the root directory of a .NET project by searching for .csproj files
