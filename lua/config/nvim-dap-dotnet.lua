@@ -3,12 +3,10 @@
 
 local M = {}
 
--- Normalize path separators for the current OS
+-- Normalize path - netcoredbg prefers forward slashes even on Windows
 local function normalize_path(path)
-    if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
-        return path:gsub("/", "\\")
-    end
-    return path
+    -- Always use forward slashes for netcoredbg compatibility
+    return path:gsub("\\", "/")
 end
 
 -- Find the root directory of a .NET project by searching for .csproj files
@@ -65,19 +63,27 @@ function M.build_dll_path()
     end
 
     local project_name = vim.fn.fnamemodify(csproj_files[1], ":t:r")
-    local bin_debug_path = project_root .. "/bin/Debug"
+    local bin_debug_path = normalize_path(project_root .. "/bin/Debug")
 
     -- Check if bin/Debug exists
     if vim.fn.isdirectory(bin_debug_path) == 0 then
-        error("bin/Debug folder not found. Please build the project first with 'dotnet build'")
+        error("bin/Debug folder not found. Please build the project first with 'dotnet build --configuration Debug'")
     end
 
     local highest_net_folder = M.get_highest_net_folder(bin_debug_path)
     local dll_path = normalize_path(highest_net_folder .. "/" .. project_name .. ".dll")
+    local pdb_path = normalize_path(highest_net_folder .. "/" .. project_name .. ".pdb")
 
     -- Verify the DLL exists
     if vim.fn.filereadable(dll_path) == 0 then
         error("DLL not found: " .. dll_path .. ". Please build the project first.")
+    end
+
+    -- Check for PDB file (required for breakpoints)
+    if vim.fn.filereadable(pdb_path) == 0 then
+        vim.notify("WARNING: PDB file not found: " .. pdb_path .. "\nBreakpoints may not work!", vim.log.levels.WARN)
+    else
+        vim.notify("PDB found: " .. pdb_path, vim.log.levels.DEBUG)
     end
 
     vim.notify("Launching: " .. dll_path, vim.log.levels.INFO)

@@ -31,7 +31,7 @@ return {
 
             local dotnet = require("config.nvim-dap-dotnet")
 
-            -- Function to build and then get the DLL path
+            -- Function to build in Debug configuration and then get the DLL path
             local function build_and_get_dll()
                 local project_root = dotnet.find_project_root_by_csproj(vim.fn.expand("%:p:h"))
                 if not project_root then
@@ -39,9 +39,9 @@ return {
                     return nil
                 end
 
-                -- Build the project first
-                vim.notify("Building project...", vim.log.levels.INFO)
-                local build_cmd = "dotnet build " .. vim.fn.shellescape(project_root)
+                -- Build the project in Debug configuration explicitly
+                vim.notify("Building project (Debug)...", vim.log.levels.INFO)
+                local build_cmd = "dotnet build --configuration Debug " .. vim.fn.shellescape(project_root)
                 local result = vim.fn.system(build_cmd)
                 local exit_code = vim.v.shell_error
 
@@ -60,6 +60,16 @@ return {
                     name = "Launch (build first)",
                     request = "launch",
                     program = build_and_get_dll,
+                    cwd = function()
+                        return dotnet.find_project_root_by_csproj(vim.fn.expand("%:p:h")) or vim.fn.getcwd()
+                    end,
+                    stopAtEntry = false,
+                    justMyCode = false,
+                    enableStepFiltering = false,
+                    -- Required for breakpoints to work
+                    env = {
+                        DOTNET_CLI_UI_LANGUAGE = "en",
+                    },
                 },
                 {
                     type = "coreclr",
@@ -68,6 +78,27 @@ return {
                     program = function()
                         return dotnet.build_dll_path()
                     end,
+                    cwd = function()
+                        return dotnet.find_project_root_by_csproj(vim.fn.expand("%:p:h")) or vim.fn.getcwd()
+                    end,
+                    stopAtEntry = false,
+                    justMyCode = false,
+                    enableStepFiltering = false,
+                    env = {
+                        DOTNET_CLI_UI_LANGUAGE = "en",
+                    },
+                },
+                {
+                    type = "coreclr",
+                    name = "Launch (stop at entry)",
+                    request = "launch",
+                    program = build_and_get_dll,
+                    cwd = function()
+                        return dotnet.find_project_root_by_csproj(vim.fn.expand("%:p:h")) or vim.fn.getcwd()
+                    end,
+                    stopAtEntry = true,  -- Stop at Main() entry point
+                    justMyCode = false,
+                    enableStepFiltering = false,
                 },
             }
 
