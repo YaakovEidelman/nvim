@@ -1,7 +1,13 @@
 return {
     {
         "mason-org/mason.nvim",
-        opts = {},
+        opts = {
+            -- Add custom registry for Roslyn LSP
+            registries = {
+                "github:mason-org/mason-registry",
+                "github:Crashdummyy/mason-registry",  -- Contains roslyn
+            },
+        },
     },
     {
         "mason-org/mason-lspconfig.nvim",
@@ -22,7 +28,8 @@ return {
         },
         opts = {
             ensure_installed = {
-                -- C# / .NET debugging and formatting
+                -- C# / .NET LSP and tools
+                "roslyn",      -- Roslyn C# language server (from custom registry)
                 "netcoredbg",  -- .NET debugger (required for DAP)
                 "csharpier",   -- C# code formatter
 

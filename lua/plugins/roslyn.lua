@@ -3,10 +3,12 @@ return {
     ft = { "cs", "razor", "csproj", "sln" },
     dependencies = {
         "nvim-lua/plenary.nvim",
+        "mason-org/mason.nvim",
+        "WhoIsSethDaniel/mason-tool-installer.nvim",
     },
     opts = {
+        -- cmd is auto-configured when roslyn is installed via Mason
         filewatching = "roslyn",
-        -- Settings passed to the Roslyn language server
         settings = {
             ["csharp|inlay_hints"] = {
                 csharp_enable_inlay_hints_for_implicit_object_creation = true,
@@ -25,23 +27,4 @@ return {
             },
         },
     },
-    config = function(_, opts)
-        require("roslyn").setup(opts)
-        -- Display a message when Roslyn needs to be installed
-        vim.api.nvim_create_autocmd("FileType", {
-            pattern = { "cs", "razor" },
-            once = true,
-            callback = function()
-                vim.defer_fn(function()
-                    local roslyn_path = vim.fn.stdpath("data") .. "/roslyn"
-                    if vim.fn.isdirectory(roslyn_path) == 0 then
-                        vim.notify(
-                            "Roslyn LSP not installed. Run :Roslyn install to install it.",
-                            vim.log.levels.WARN
-                        )
-                    end
-                end, 1000)
-            end,
-        })
-    end,
 }
