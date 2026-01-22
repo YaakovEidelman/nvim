@@ -1,10 +1,8 @@
 return {
     {
-        'stevearc/overseer.nvim',
+        "stevearc/overseer.nvim",
         config = function()
-            require("overseer").setup({
-                -- log_level = "INFO",
-            })
+            require("overseer").setup({})
         end,
     },
     {
@@ -12,44 +10,64 @@ return {
         config = function()
             local dap = require("dap")
 
-            dap.adapters.debugpy = {
-                type = "executable",
-                command = "/home/yaakov/virtual-envs/main-venv/bin/python",
-                args = { "-m", "debugpy.adapter" },
-                cwd = "/home/yaakov/repos/python/",
-            }
+            -- Helper function to get the correct netcoredbg path (cross-platform)
+            local function get_netcoredbg_path()
+                local mason_path = vim.fn.stdpath("data") .. "/mason/packages/netcoredbg/"
+                if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
+                    return mason_path .. "netcoredbg.exe"
+                else
+                    return mason_path .. "netcoredbg"
+                end
+            end
 
-            -- dap.adapters.coreclr = {
-            --     type = "executable",
-            --     command = "netcoredbg",
-            --     args = { "--interpreter=vscode" },
-            -- }
+            -- .NET / C# debugger configuration
             dap.adapters.coreclr = {
                 type = "executable",
-                command = vim.fn.stdpath("data") .. "/mason/packages/netcoredbg/netcoredbg",
+                command = get_netcoredbg_path(),
                 args = { "--interpreter=vscode" },
             }
-            dap.adapters.netcoredbg = {
-                type = "executable",
-                command = vim.fn.stdpath("data") .. "/mason/packages/netcoredbg/netcoredbg",
-                args = { "--interpreter=vscode" },
-            }
-            -- dap.adapters.coreclr = {
-            --     type = "executable",
-            --     command = "/home/yaakov/.local/share/nvim/dap/vsdbg/vsdbg",
-            --     args = { "--interpreter=vscode"},
-            -- }
+            dap.adapters.netcoredbg = dap.adapters.coreclr
 
             local dotnet = require("config.nvim-dap-dotnet")
+
+            -- Function to build and then get the DLL path
+            local function build_and_get_dll()
+                local project_root = dotnet.find_project_root_by_csproj(vim.fn.expand("%:p:h"))
+                if not project_root then
+                    vim.notify("Could not find .csproj file", vim.log.levels.ERROR)
+                    return nil
+                end
+
+                -- Build the project first
+                vim.notify("Building project...", vim.log.levels.INFO)
+                local build_cmd = "dotnet build " .. vim.fn.shellescape(project_root)
+                local result = vim.fn.system(build_cmd)
+                local exit_code = vim.v.shell_error
+
+                if exit_code ~= 0 then
+                    vim.notify("Build failed:\n" .. result, vim.log.levels.ERROR)
+                    return nil
+                end
+
+                vim.notify("Build succeeded!", vim.log.levels.INFO)
+                return dotnet.build_dll_path()
+            end
+
             dap.configurations.cs = {
                 {
                     type = "coreclr",
-                    name = "launch - netcoredbg",
+                    name = "Launch (build first)",
+                    request = "launch",
+                    program = build_and_get_dll,
+                },
+                {
+                    type = "coreclr",
+                    name = "Launch (no build)",
                     request = "launch",
                     program = function()
                         return dotnet.build_dll_path()
                     end,
-                }
+                },
             }
 
             vim.keymap.set("n", "<leader>da", function()

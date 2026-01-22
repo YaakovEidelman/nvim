@@ -9,7 +9,7 @@ return {
 			require("nvim-treesitter").setup({
 				ensure_installed = {
 					"c",
-					"type",
+					"c_sharp",  -- C# syntax highlighting and parsing
 					"lua",
 					"vim",
 					"vimdoc",
@@ -18,6 +18,8 @@ return {
 					"typescript",
 					"javascript",
 					"tsx",
+					"json",
+					"xml",  -- Useful for .csproj files
 				},
 				auto_install = true,
 				highlight = {
