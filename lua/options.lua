@@ -8,6 +8,8 @@ vim.opt.number = true
 vim.opt.wrap = false
 vim.opt.scrolloff = 10
 vim.opt.termguicolors = true
+vim.opt.showtabline = 2
+vim.opt.winbar = "%=%m %f"
 
 -- vim.g["test#strategy"] = "neovim"
 
