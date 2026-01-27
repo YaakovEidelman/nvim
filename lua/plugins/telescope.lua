@@ -11,13 +11,22 @@ return {
 		},
 		config = function()
 			local Telescope = require("telescope")
+            local actions = require("telescope.actions")
 
 			Telescope.setup({
-				-- defaults = {
-				--   preview = {
-				--     treesitter = false,
-				--   },
-				-- },
+				defaults = {
+				  -- preview = {
+				  --   treesitter = false,
+				  -- },
+                  mappings = {
+						i = {
+							["<CR>"] = actions.select_tab,
+						},
+						n = {
+							["<CR>"] = actions.select_tab,
+						},
+					},
+				},
 				pickers = {
 					-- find_files = {
 					--   theme = "ivy",
