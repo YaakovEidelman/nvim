@@ -129,13 +129,6 @@ return {
         get_or_create_terminal(current_term):toggle()
       end
 
-      -- Close terminal (exit terminal mode and hide)
-      local function close_terminal()
-        if terminals[current_term] and terminals[current_term]:is_open() then
-          terminals[current_term]:close()
-        end
-      end
-
       -- Toggle specific terminal by number
       local function toggle_terminal_num(num)
         if terminals[current_term] and terminals[current_term]:is_open() then
@@ -150,11 +143,6 @@ return {
 
       -- Main toggle: <leader>ot
       vim.keymap.set("n", "<leader>ot", toggle_terminal, vim.tbl_extend("force", opts, { desc = "Open floating terminal" }))
-      vim.keymap.set("t", "<leader>ot", toggle_terminal, vim.tbl_extend("force", opts, { desc = "Toggle floating terminal" }))
-
-      -- Close terminal: <leader>et
-      vim.keymap.set("t", "<leader>et", close_terminal, vim.tbl_extend("force", opts, { desc = "Close terminal" }))
-      vim.keymap.set("n", "<leader>et", close_terminal, vim.tbl_extend("force", opts, { desc = "Close terminal" }))
 
       -- Quick access to specific terminals: <leader>o1 through <leader>o9
       for i = 1, 9 do
