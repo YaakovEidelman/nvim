@@ -50,6 +50,9 @@ end)
 
 vim.keymap.set("i", "<C-bs>", "<C-w>", { desc = "Delete previous word", noremap = true })
 
+-- Show full diagnostic message in a float
+vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show full diagnostic" })
+
 vim.keymap.set('t', '<C-e>', [[<C-\><C-n>]], { noremap = true, silent = true })
 vim.keymap.set('n', 'gd', function()
   -- Open definition in a new tab
@@ -57,3 +60,4 @@ vim.keymap.set('n', 'gd', function()
   vim.lsp.buf.definition()
 end)
 
+vim.keymap.set('n', '<leader>ctab', ":tabclose<cr>", { desc = "Close tab page"})

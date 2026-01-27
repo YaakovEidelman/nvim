@@ -7,12 +7,12 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
--- Add errors to quick fix list
+-- Add all diagnostics to quick fix list
 vim.api.nvim_create_autocmd("DiagnosticChanged", {
 	callback = function()
 		vim.diagnostic.setqflist({
-			severity = { min = vim.diagnostic.severity.WARN },
-			bufnr = vim.api.nvim_get_current_buf(),
+			-- severity = { min = vim.diagnostic.severity.WARN },
+			-- bufnr = vim.api.nvim_get_current_buf(),
 			open = false,
 		})
 	end,

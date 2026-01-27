@@ -40,9 +40,13 @@ vim.lsp.enable(enabled_servers)
 
 -- LSP to show error in code window
 vim.diagnostic.config({
-    virtual_lines = true,
+    virtual_lines = false,
     virtual_text = {
-
         prefix = "●",
+    },
+    float = {
+        border = "rounded",
+        max_width = 100,
+        source = true,
     },
 })
