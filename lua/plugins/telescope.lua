@@ -11,6 +11,7 @@ return {
 		},
 		config = function()
 			local Telescope = require("telescope")
+
             local actions = require("telescope.actions")
 
 			Telescope.setup({

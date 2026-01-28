@@ -1,15 +1,11 @@
+-- Roslyn (C#) is configured via roslyn.nvim plugin - no manual config needed here
 local enabled_servers = {
     "ts_ls",
     "pyright",
-    "roslyn",
     "lua_ls",
 }
--- local lsp_capabilities = require("blink.cmp").get_lsp_capabilities()
--- local capabilities = vim.lsp.protocol.make_client_capabilities()
--- capabilities = vim.tbl_deep_extend("force", capabilities, lsp_capabilities)
 
 vim.lsp.config("ts_ls", {
-    -- capabilities = capabilities,
     filetypes = {
         "javascript",
         "javascriptreact",
@@ -20,39 +16,11 @@ vim.lsp.config("ts_ls", {
 })
 
 vim.lsp.config("pyright", {
-    -- capabilities = capabilities,
     cmd = { "pyright-langserver", "--stdio" },
     filetypes = {
         "python",
     },
     settings = {},
-})
-
-vim.lsp.config("roslyn", {
-    -- capabilities = capabilities,
-    cmd = {
-        "dotnet",
-        "/home/yaakov/.local/share/roslyn-lsp/content/LanguageServer/linux-x64/Microsoft.CodeAnalysis.LanguageServer.dll",
-        "--logLevel",
-        "Information",
-        "--extensionLogDirectory",
-        "/home/yaakov/Desktop",
-        "--stdio",
-    },
-    filetypes = {
-        "cs",
-        "csproj",
-        "sln",
-    },
-    settings = {
-        ["csharp|inlay_hints"] = {
-            csharp_enable_inlay_hints_for_implicit_object_creation = true,
-            csharp_enable_inlay_hints_for_implicit_variable_types = true,
-        },
-        ["csharp|code_lens"] = {
-            dotnet_enable_references_code_lens = true,
-        },
-    },
 })
 
 vim.lsp.config("lua_ls", {

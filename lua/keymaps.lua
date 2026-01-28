@@ -54,6 +54,7 @@ vim.keymap.set("i", "<C-bs>", "<C-w>", { desc = "Delete previous word", noremap 
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show full diagnostic" })
 
 vim.keymap.set('t', '<C-e>', [[<C-\><C-n>]], { noremap = true, silent = true })
+
 vim.keymap.set('n', 'gd', function ()
   vim.cmd('tab split')
   vim.lsp.buf.definition()

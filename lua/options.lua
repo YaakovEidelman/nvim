@@ -11,5 +11,10 @@ vim.opt.termguicolors = true
 vim.opt.showtabline = 2
 vim.opt.winbar = "%=%m %f"
 
+-- Windows: Use backslashes for paths (required for netcoredbg breakpoints)
+if require("utils.platform").is_windows then
+    vim.opt.shellslash = false
+end
+
 -- vim.g["test#strategy"] = "neovim"
 
