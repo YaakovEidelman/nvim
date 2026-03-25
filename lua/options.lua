@@ -5,9 +5,10 @@ vim.opt.softtabstop = 4
 vim.opt.smarttab = true
 vim.opt.clipboard = "unnamedplus"
 vim.opt.number = true
+vim.opt.relativenumber = true
 vim.opt.wrap = false
 vim.opt.scrolloff = 10
 vim.opt.termguicolors = true
 vim.opt.showtabline = 2
-vim.opt.winbar = "%=%m %f"
+vim.opt.winbar = "%{strftime('%b %d %Y %I:%M %p')}%=%F %m"
 
