@@ -1,6 +1,6 @@
 require("config.lazy")
-require("keymaps")
+require("highlights")
 require("options")
 require("lsp_config")
+require("keymaps")
 require("autocmd")
-

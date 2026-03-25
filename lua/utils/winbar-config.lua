@@ -1,28 +1,27 @@
 local M = {}
 
 M.winbarConfig = function()
-  local mode = vim.fn.mode()
-  local mode_hl = {
-    n = "MiniStatuslineModeNormal",
-    i = "MiniStatuslineModeInsert",
-    v = "MiniStatuslineModeVisual",
-    V = "MiniStatuslineModeVisual",
-    [""] = "MiniStatuslineModeVisual", -- Visual block
-    c = "MiniStatuslineModeCommand",
-    R = "MiniStatuslineModeReplace",
-    t = "MiniStatuslineModeTerminal",
-  }
+	local mode = vim.fn.mode()
+	local mode_hl = {
+		n = "StatuslineGreen",
+		i = "StatuslineBlue",
+		v = "StatuslinePurple",
+		V = "StatuslinePurple",
+		[""] = "StatuslinePurple", -- Visual block
+		c = "StatuslineRed",
+		R = "StatuslineDeepRed",
+		t = "StatuslineGreen",
+	}
+	local hl = mode_hl[mode] or "StatuslineGreen"
 
-  local hl = mode_hl[mode] or "MiniStatuslineModeNormal"
+	local time = "%#" .. hl .. "#%{strftime('%b %d %Y %I:%M %p')}"
+	local sep = "%=" -- right-align rest
+	local file = "%F" -- full file path
+	local modified = "%{&modified?'*':''}" -- modified flag
 
-  -- Build the winbar string
-  local winbar = string.format(
-    "%%#%s#%%{strftime('%%b %%d %%Y %%I:%%M %%p')} %%=%s%%{&modified?'*':''}",
-    hl,
-    "%F"
-  )
+	local winbar = table.concat({ time, sep, file, modified }, " ")
 
-  return winbar
+	return winbar
 end
 
 return M
