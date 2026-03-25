@@ -40,17 +40,17 @@ return {
             --     args = { "--interpreter=vscode"},
             -- }
 
-            local dotnet = require("config.nvim-dap-dotnet")
-            dap.configurations.cs = {
-                {
-                    type = "coreclr",
-                    name = "launch - netcoredbg",
-                    request = "launch",
-                    program = function()
-                        return dotnet.build_dll_path()
-                    end,
-                }
-            }
+            -- local dotnet = require("config.nvim-dap-dotnet")
+            -- dap.configurations.cs = {
+            --     {
+            --         type = "coreclr",
+            --         name = "launch - netcoredbg",
+            --         request = "launch",
+            --         program = function()
+            --             return dotnet.build_dll_path()
+            --         end,
+            --     }
+            -- }
 
             vim.keymap.set("n", "<leader>da", function()
                 require('dap').run({
@@ -65,7 +65,7 @@ return {
             vim.api.nvim_set_hl(0, "DapStoppedLine", { bg = "#4A4A00" })
 
             vim.fn.sign_define("DapBreakpoint", {
-                text = "🛑", -- ●
+                text = "●", -- ●🛑
                 texthl = "DapBreakpointColor",
             })
 
