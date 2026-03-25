@@ -17,3 +17,12 @@ vim.api.nvim_create_autocmd("DiagnosticChanged", {
 		})
 	end,
 })
+
+-- Change winbar on mode changed
+vim.api.nvim_create_autocmd({ "ModeChanged", "BufEnter" }, {
+	pattern = "*",
+	callback = function()
+		local wb = require("utils.winbar-config")
+		vim.opt.winbar = wb.winbarConfig()
+	end,
+})

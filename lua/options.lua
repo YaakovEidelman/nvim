@@ -10,5 +10,7 @@ vim.opt.wrap = false
 vim.opt.scrolloff = 10
 vim.opt.termguicolors = true
 vim.opt.showtabline = 2
-vim.opt.winbar = "%{strftime('%b %d %Y %I:%M %p')}%=%F %m"
+
+-- vim.opt.winbar is set using a custom function and an autocmd.
+-- vim.opt.statusbar = "%m"
 
