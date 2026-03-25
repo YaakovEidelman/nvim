@@ -13,7 +13,7 @@ local live_multigrep = function(opts)
 
   local finders = finders.new_async_job {
     command_generator = function(prompt)
-      if not prompt or prompt == "" then 
+      if not prompt or prompt == "" then
         return nil
       end
 
@@ -29,7 +29,7 @@ local live_multigrep = function(opts)
         table.insert(args, pieces[2])
       end
 
-      -- -- @diagnostic disable-next-line: deprecated
+      -- @diagnostic disable-next-line: deprecated
       return vim.tbl_flatten {
         args,
         { "--color=never", "--no-heading", "--with-filename", "--line-number", "--column", "--smart-case", },
@@ -43,7 +43,7 @@ local live_multigrep = function(opts)
   pickers.new(opts, {
     debounce = 100,
     prompt_title = "Multi Grep",
-    finder = finders, 
+    finder = finders,
     previewer = conf.grep_previewer(opts),
     sorter = require("telescope.sorters").empty(),
   }):find()

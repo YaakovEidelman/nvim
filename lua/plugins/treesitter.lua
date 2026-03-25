@@ -6,7 +6,8 @@ return {
 		branch = "master",
 		build = ":TSUpdate",
 		config = function()
-			require("nvim-treesitter").setup({
+            local ts = require("nvim-treesitter")
+			ts.setup({
 				ensure_installed = {
 					"c",
 					"type",
