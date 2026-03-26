@@ -12,45 +12,65 @@ return {
         config = function()
             local dap = require("dap")
 
-            dap.adapters.debugpy = {
+            local debugpy_python = vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python"
+            if vim.fn.has("win32") == 1 then
+                debugpy_python = vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/Scripts/python.exe"
+            end
+            dap.adapters.python = {
                 type = "executable",
-                command = "/home/yaakov/virtual-envs/main-venv/bin/python",
+                command = debugpy_python,
                 args = { "-m", "debugpy.adapter" },
-                cwd = "/home/yaakov/repos/python/",
+                enrich_config = function(config, on_config)
+                    if not config.pythonPath then
+                        local venv_python
+                        if vim.fn.has("win32") == 1 then
+                            venv_python = vim.fn.getcwd() .. "/.venv/Scripts/python.exe"
+                        else
+                            venv_python = vim.fn.getcwd() .. "/.venv/bin/python"
+                        end
+                        if vim.fn.executable(venv_python) == 1 then
+                            config = vim.tbl_extend("force", config, { pythonPath = venv_python })
+                        end
+                    end
+                    on_config(config)
+                end,
             }
+            dap.adapters.debugpy = dap.adapters.python
 
-            -- dap.adapters.coreclr = {
-            --     type = "executable",
-            --     command = "netcoredbg",
-            --     args = { "--interpreter=vscode" },
-            -- }
+            local netcoredbg_bin = vim.fn.stdpath("data") .. "/mason/packages/netcoredbg/netcoredbg/netcoredbg"
+            if vim.fn.has("win32") == 1 then
+                netcoredbg_bin = netcoredbg_bin .. ".exe"
+            end
             dap.adapters.coreclr = {
                 type = "executable",
-                command = vim.fn.stdpath("data") .. "/mason/packages/netcoredbg/netcoredbg",
+                command = netcoredbg_bin,
                 args = { "--interpreter=vscode" },
             }
             dap.adapters.netcoredbg = {
                 type = "executable",
-                command = vim.fn.stdpath("data") .. "/mason/packages/netcoredbg/netcoredbg",
+                command = netcoredbg_bin,
                 args = { "--interpreter=vscode" },
             }
-            -- dap.adapters.coreclr = {
-            --     type = "executable",
-            --     command = "/home/yaakov/.local/share/nvim/dap/vsdbg/vsdbg",
-            --     args = { "--interpreter=vscode"},
-            -- }
 
-            -- local dotnet = require("config.nvim-dap-dotnet")
-            -- dap.configurations.cs = {
-            --     {
-            --         type = "coreclr",
-            --         name = "launch - netcoredbg",
-            --         request = "launch",
-            --         program = function()
-            --             return dotnet.build_dll_path()
-            --         end,
-            --     }
-            -- }
+            -- Load .vscode/launch.json if present
+            local function load_vscode_launch()
+                local vscode = require("dap.ext.vscode")
+                local launch = vim.fn.getcwd() .. "/.vscode/launch.json"
+                if vim.fn.filereadable(launch) == 1 then
+                    dap.configurations.cs = {}
+                    dap.configurations.python = {}
+                    vscode.load_launchjs(launch, {
+                        coreclr    = { "cs" },
+                        netcoredbg = { "cs" },
+                        python     = { "python" },
+                        debugpy    = { "python" },
+                    })
+                end
+            end
+            load_vscode_launch()
+            vim.api.nvim_create_autocmd("DirChanged", {
+                callback = load_vscode_launch,
+            })
 
             vim.keymap.set("n", "<leader>da", function()
                 require('dap').run({
