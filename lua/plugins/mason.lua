@@ -1,18 +1,21 @@
 return {
 	{
 		"mason-org/mason.nvim",
-		opts = {},
+		opts = {
+            ensure_installed = {
+                "black",
+                "debugpy",
+                "prettier",
+            }
+        },
 	},
 	{
 		"mason-org/mason-lspconfig.nvim",
 		opts = {
 			ensure_installed = {
-                "black",
-				"debugpy",
 				"lua_ls",
-                "prettier",
                 "pyright",
-				"typescript-language-server",
+				"ts_ls",
 			},
 		},
 		dependencies = {
