@@ -3,6 +3,13 @@ return {
 	event = "BufWritePre",
 	config = function()
 		require("conform").setup({
+			formatters = {
+				csharpier = {
+					command = "csharpier",
+					args = { "format", "--write-stdout" },
+					stdin = true,
+				},
+			},
 			-- format_on_save = {
 			--   timeout_ms = 2000,
 			--   lsp_fallback = true,

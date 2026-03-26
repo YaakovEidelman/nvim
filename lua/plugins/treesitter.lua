@@ -24,6 +24,7 @@ return {
 					"rust",
 					"html",
 					"css",
+					"c_sharp",
 				},
 				auto_install = true,
 				highlight = {
