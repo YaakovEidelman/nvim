@@ -82,7 +82,7 @@ M.statuslineConfig = function()
 	local git = git_status()
 	local gitPart = git ~= "" and git or ""
 
-	local statusline = table.concat({ currentMode, defaultStatusLineHighlightColorSeperator, gitPart })
+	local statusline = table.concat({ currentMode, defaultStatusLineHighlightColorSeperator, " ", gitPart })
 	return statusline
 end
 
