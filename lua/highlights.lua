@@ -4,7 +4,6 @@ vim.api.nvim_set_hl(0, "StatuslineGreen", {
   bold = true,
 })
 
-
 vim.api.nvim_set_hl(0, "StatuslineBlue", {
   fg = "#ffffff",
   bg = "#0451a5",
