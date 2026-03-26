@@ -6,10 +6,9 @@ return {
 		branch = "master",
 		build = ":TSUpdate",
 		config = function()
-			require("nvim-treesitter").setup({
+			require("nvim-treesitter.configs").setup({
 				ensure_installed = {
 					"c",
-					"type",
 					"lua",
 					"vim",
 					"vimdoc",
@@ -18,6 +17,7 @@ return {
 					"typescript",
 					"javascript",
 					"tsx",
+                    "jsx",
 				},
 				auto_install = true,
 				highlight = {
@@ -29,14 +29,14 @@ return {
 					-- 		return true
 					-- 	end
 					-- end,
-					additional_vim_regex_highlighting = true,
+					additional_vim_regex_highlighting = false,
 				},
 			})
 
 			vim.api.nvim_create_autocmd("FileType", {
-				pattern = { "javascript", "typescript" },
+				pattern = { "javascript", "typescript", "tsx" },
 				callback = function()
-					vim.treesitter.start()
+					-- vim.treesitter.start()
 					vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 				end,
 			})
