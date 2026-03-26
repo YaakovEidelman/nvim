@@ -26,3 +26,18 @@ vim.api.nvim_create_autocmd({ "ModeChanged", "BufEnter" }, {
 		vim.opt.winbar = wb.winbarConfig()
 	end,
 })
+
+vim.api.nvim_create_autocmd({
+	"ModeChanged",
+	"BufEnter",
+	"BufWinEnter",
+	"VimEnter",
+	"DirChanged",
+	"User",
+}, {
+	pattern = "*",
+	callback = function()
+		local wb = require("utils.winbar-config")
+		vim.opt.statusline = wb.statuslineConfig()
+	end,
+})
