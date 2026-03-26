@@ -52,26 +52,6 @@ return {
                 args = { "--interpreter=vscode" },
             }
 
-            -- Load .vscode/launch.json if present
-            local function load_vscode_launch()
-                local vscode = require("dap.ext.vscode")
-                local launch = vim.fn.getcwd() .. "/.vscode/launch.json"
-                if vim.fn.filereadable(launch) == 1 then
-                    dap.configurations.cs = {}
-                    dap.configurations.python = {}
-                    vscode.load_launchjs(launch, {
-                        coreclr    = { "cs" },
-                        netcoredbg = { "cs" },
-                        python     = { "python" },
-                        debugpy    = { "python" },
-                    })
-                end
-            end
-            load_vscode_launch()
-            vim.api.nvim_create_autocmd("DirChanged", {
-                callback = load_vscode_launch,
-            })
-
             vim.keymap.set("n", "<leader>da", function()
                 require('dap').run({
                     type = "coreclr",
