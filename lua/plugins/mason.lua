@@ -6,6 +6,10 @@ return {
                 "black",
                 "debugpy",
                 "prettier",
+                "stylua",
+                "clang-format",
+                "shfmt",
+                "csharpier",
             }
         },
 	},
@@ -16,6 +20,10 @@ return {
 				"lua_ls",
                 "pyright",
 				"ts_ls",
+                "clangd",
+                "rust_analyzer",
+                "html",
+                "cssls",
 			},
 		},
 		dependencies = {

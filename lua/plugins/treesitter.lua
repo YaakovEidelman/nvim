@@ -10,6 +10,7 @@ return {
 			ts.setup({
 				ensure_installed = {
 					"c",
+					"cpp",
 					"lua",
 					"vim",
 					"vimdoc",
@@ -18,7 +19,11 @@ return {
 					"typescript",
 					"javascript",
 					"tsx",
-                    "jsx",
+					"jsx",
+					"python",
+					"rust",
+					"html",
+					"css",
 				},
 				auto_install = true,
 				highlight = {

@@ -3,6 +3,10 @@ local enabled_servers = {
     "pyright",
     "roslyn",
     "lua_ls",
+    "clangd",
+    "rust_analyzer",
+    "html",
+    "cssls",
 }
 vim.lsp.config('*', {
     capabilities = require('blink.cmp').get_lsp_capabilities()
@@ -63,6 +67,25 @@ vim.lsp.config("lua_ls", {
             }
         }
     },
+})
+
+vim.lsp.config("clangd", {
+    filetypes = { "c", "cpp" },
+})
+
+vim.lsp.config("rust_analyzer", {
+    filetypes = { "rust" },
+})
+
+vim.lsp.config("html", {
+    filetypes = { "html" },
+    init_options = {
+        provideFormatter = false, -- defer to prettier
+    },
+})
+
+vim.lsp.config("cssls", {
+    filetypes = { "css", "scss", "less" },
 })
 
 vim.lsp.enable(enabled_servers)
