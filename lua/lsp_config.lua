@@ -4,12 +4,11 @@ local enabled_servers = {
     "roslyn",
     "lua_ls",
 }
--- local lsp_capabilities = require("blink.cmp").get_lsp_capabilities()
--- local capabilities = vim.lsp.protocol.make_client_capabilities()
--- capabilities = vim.tbl_deep_extend("force", capabilities, lsp_capabilities)
+vim.lsp.config('*', {
+    capabilities = require('blink.cmp').get_lsp_capabilities()
+})
 
 vim.lsp.config("ts_ls", {
-    -- capabilities = capabilities,
     filetypes = {
         "javascript",
         "javascriptreact",
@@ -20,7 +19,6 @@ vim.lsp.config("ts_ls", {
 })
 
 vim.lsp.config("pyright", {
-    -- capabilities = capabilities,
     cmd = { "pyright-langserver", "--stdio" },
     filetypes = {
         "python",
@@ -29,7 +27,6 @@ vim.lsp.config("pyright", {
 })
 
 vim.lsp.config("roslyn", {
-    -- capabilities = capabilities,
     cmd = {
         "dotnet",
         "/home/yaakov/.local/share/roslyn-lsp/content/LanguageServer/linux-x64/Microsoft.CodeAnalysis.LanguageServer.dll",
