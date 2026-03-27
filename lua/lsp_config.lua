@@ -27,7 +27,16 @@ vim.lsp.config("pyright", {
     filetypes = {
         "python",
     },
-    settings = {},
+    settings = {
+        python = {
+            pythonPath = vim.fn.exepath("python3") ~= "" and vim.fn.exepath("python3") or vim.fn.exepath("python"),
+            analysis = {
+                autoImportCompletions = true,
+                autoSearchPaths = true,
+                useLibraryCodeForTypes = true,
+            },
+        },
+    },
 })
 
 -- vim.lsp.config("roslyn", {
