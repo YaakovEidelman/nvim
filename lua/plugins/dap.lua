@@ -53,6 +53,33 @@ return {
                 args = { "--interpreter=vscode" },
             }
 
+            local codelldb_bin = vim.fn.stdpath("data"):gsub("\\", "/") .. "/mason/packages/codelldb/extension/adapter/codelldb"
+            if vim.fn.has("win32") == 1 then
+                codelldb_bin = codelldb_bin .. ".exe"
+            end
+            dap.adapters.codelldb = {
+                type = "server",
+                port = "${port}",
+                executable = {
+                    command = codelldb_bin,
+                    args = { "--port", "${port}" },
+                },
+            }
+
+            dap.configurations.c = {
+                {
+                    name = "Launch",
+                    type = "codelldb",
+                    request = "launch",
+                    program = function()
+                        local path = vim.fn.input("Executable: ", vim.fn.getcwd() .. "/", "file")
+                        return path:gsub("\\", "/")
+                    end,
+                    cwd = vim.fn.getcwd,
+                    stopOnEntry = false,
+                },
+            }
+
             vim.keymap.set("n", "<leader>da", function()
                 dap.run({
                     type = "coreclr",

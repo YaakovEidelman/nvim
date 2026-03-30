@@ -15,6 +15,7 @@ return {
                 "shfmt",
                 "csharpier",
                 "roslyn",
+                "codelldb",
             }
         },
 	},
