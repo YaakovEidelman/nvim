@@ -29,7 +29,8 @@ vim.lsp.config("pyright", {
     },
     settings = {
         python = {
-            pythonPath = vim.fn.exepath("python3") ~= "" and vim.fn.exepath("python3") or vim.fn.exepath("python"),
+            venvPath = ".",
+            venv = ".venv",
             analysis = {
                 autoImportCompletions = true,
                 autoSearchPaths = true,
