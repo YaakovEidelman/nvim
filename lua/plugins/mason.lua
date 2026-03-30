@@ -14,7 +14,6 @@ return {
                 "clang-format",
                 "shfmt",
                 "csharpier",
-                "roslyn",
                 "codelldb",
             }
         },
