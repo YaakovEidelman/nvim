@@ -12,6 +12,7 @@ return {
 		config = function()
 			local Telescope = require("telescope")
 			local actions = require("telescope.actions")
+			local builtin = require("telescope.builtin")
 
 			Telescope.setup({
 				defaults = {
@@ -47,15 +48,28 @@ return {
 			Telescope.load_extension("fzf")
 			require("plugins.telescope.multigrep").setup()
 
-			-- vim.keymap.set("n", "<leader>fh", require("telescope.builtin").help_tags)
-			-- vim.keymap.set("n", "<leader>bi", ":Telescope builtin<cr>")
+			vim.keymap.set("n", "<leader>ff", function()
+				builtin.find_files({
+					hidden = true,
+				})
+			end, { noremap = true })
+			vim.keymap.set("n", "<leader>fb", function()
+				builtin.buffers()
+			end, { noremap = true })
+			vim.keymap.set("n", "<leader>fh", function()
+				builtin.help_tags()
+			end, { noremap = true })
+			vim.keymap.set("n", "<leader>bi", function()
+				builtin.builtin()
+			end, { noremap = true })
+
 			-- vim.keymap.set("n", "<leader>en", function()
-			--   require("telescope.builtin").find_files({
+			--   builtin.find_files({
 			--     cwd = vim.fn.stdpath("config"),
 			--   })
 			-- end)
 			-- vim.keymap.set("n", "<leader>ep", function()
-			--   require("telescope.builtin").find_files({
+			--   builtin.find_files({
 			--     cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy"),
 			--   })
 			-- end)

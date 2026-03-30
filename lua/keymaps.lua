@@ -28,16 +28,6 @@ vim.keymap.set("n", "<leader>con", function()
 	vim.cmd.edit(config_path)
 end, { desc = "Edit Nvim config directory" })
 
--- Open telescope fuzzy find
-vim.keymap.set("n", "<leader>ff", function()
-	local builtin = require("telescope.builtin")
-	builtin.find_files({
-		hidden = true,
-	})
-end, { noremap = true })
-vim.keymap.set("n", "<leader>fb", ":Telescope buffers<cr>", { noremap = true })
-vim.keymap.set("n", "<leader>fh", ":Telescope help_tags<cr>", { noremap = true })
-
 -- LSP format the buffer/file
 vim.keymap.set("n", "<M-F>", function()
 	vim.lsp.buf.format()
