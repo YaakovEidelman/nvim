@@ -54,7 +54,7 @@ return {
         close_on_exit = true,
         shell = vim.o.shell,
         float_opts = {
-          border = "none",
+          border = "single",
           width = function()
             return math.floor(vim.o.columns * 0.85)
           end,
