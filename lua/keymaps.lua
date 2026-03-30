@@ -1,7 +1,7 @@
 -- Quickly source (:so) a file or line
-vim.keymap.set("n", "<leader><leader>x", "<cmd>source %<CR>")
-vim.keymap.set("n", "<leader>x", ":.lua<CR>")
-vim.keymap.set("v", "<leader>x", ":lua<CR>")
+vim.keymap.set("n", "<leader><leader>x", "<cmd>source %<CR>", { noremap = true })
+vim.keymap.set("n", "<leader>x", ":.lua<CR>", { noremap = true })
+vim.keymap.set("v", "<leader>x", ":lua<CR>", { noremap = true })
 
 -- Change windows with only one ctrl click
 vim.keymap.set("n", "<C-h>", "<C-w>h", { noremap = true, silent = true })
@@ -30,7 +30,7 @@ end, { desc = "Edit Nvim config directory" })
 
 -- LSP format the buffer/file
 vim.keymap.set("n", "<M-F>", function()
-	vim.lsp.buf.format()
+	require("conform").format()
 end)
 
 -- Open new tab to newtr (file explorer)

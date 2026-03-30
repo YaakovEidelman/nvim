@@ -30,7 +30,7 @@ return {
         local tabline = build_tabline()
         for _, term in pairs(terminals) do
           if term:is_open() and term.window then
-            pcall(vim.api.nvim_win_set_option, term.window, "winbar", tabline)
+            pcall(vim.api.nvim_set_option_value, "winbar", tabline, { win = term.window })
           end
         end
       end
