@@ -1,7 +1,7 @@
 -- Quickly source (:so) a file or line
-vim.keymap.set("n", "<space><space>x", "<cmd>source %<CR>")
-vim.keymap.set("n", "<space>x", ":.lua<CR>")
-vim.keymap.set("v", "<space>x", ":lua<CR>")
+vim.keymap.set("n", "<leader><leader>x", "<cmd>source %<CR>")
+vim.keymap.set("n", "<leader>x", ":.lua<CR>")
+vim.keymap.set("v", "<leader>x", ":lua<CR>")
 
 -- Change windows with only one ctrl click
 vim.keymap.set("n", "<C-h>", "<C-w>h", { noremap = true, silent = true })

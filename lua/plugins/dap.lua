@@ -1,6 +1,6 @@
 return {
     {
-        'stevearc/overseer.nvim',
+        "stevearc/overseer.nvim",
         config = function()
             require("overseer").setup({
                 -- log_level = "INFO",
@@ -11,6 +11,7 @@ return {
         "mfussenegger/nvim-dap",
         config = function()
             local dap = require("dap")
+            local dap_ui_widgets = require("dap.ui.widgets")
 
             local debugpy_python = vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python"
             if vim.fn.has("win32") == 1 then
@@ -53,11 +54,11 @@ return {
             }
 
             vim.keymap.set("n", "<leader>da", function()
-                require('dap').run({
+                dap.run({
                     type = "coreclr",
                     request = "attach",
                     name = "Attach debugger",
-                    processId = require("dap.utils").pick_process
+                    processId = require("dap.utils").pick_process,
                 })
             end)
 
@@ -75,26 +76,24 @@ return {
                 linehl = "DapStoppedLine",
             })
 
-            vim.keymap.set("n", "<F5>", function()
+            vim.keymap.set("n", "<leader>dc", function()
                 dap.continue()
-            end)
-            vim.keymap.set("n", "<M-F5>", function()
+            end, { desc = "Debug: start/continue" })
+            vim.keymap.set("n", "<leader>dR", function()
                 dap.restart()
-            end)
-            vim.keymap.set("n", "<C-M-F5>", function()
+            end, { desc = "Debug: restart" })
+            vim.keymap.set("n", "<leader>dq", function()
                 dap.terminate()
-            end)
-
-            vim.keymap.set("n", "<F10>", function()
+            end, { desc = "Debug: stop" })
+            vim.keymap.set("n", "<leader>dn", function()
                 dap.step_over()
-            end)
-            vim.keymap.set("n", "<F11>", function()
+            end, { desc = "Debug: step over" })
+            vim.keymap.set("n", "<leader>di", function()
                 dap.step_into()
-            end)
-            vim.keymap.set("n", "<F12>", function()
+            end, { desc = "Debug: step into" })
+            vim.keymap.set("n", "<leader>do", function()
                 dap.step_out()
-            end)
-            vim.keymap.set("n", "<S-F5>", function() end)
+            end, { desc = "Debug: step out" })
 
             -- vim.keymap.set("n", "<leader>bp", function()
             --     dap.toggle_breakpoint()
@@ -104,18 +103,16 @@ return {
                 dap.repl.toggle()
             end)
             vim.keymap.set({ "n", "v" }, "<leader>dh", function()
-                require("dap.ui.widgets").hover()
+                dap_ui_widgets.hover()
             end)
             vim.keymap.set({ "n", "v" }, "<leader>dp", function()
-                require("dap.ui.widgets").preview()
+                dap_ui_widgets.preview()
             end)
             vim.keymap.set("n", "<leader>df", function()
-                local widgets = require("dap.ui.widgets")
-                widgets.centered_float(widgets.frames)
+                dap_ui_widgets.centered_float(dap_ui_widgets.frames)
             end)
             vim.keymap.set("n", "<leader>ds", function()
-                local widgets = require("dap.ui.widgets")
-                widgets.centered_float(widgets.scopes)
+                dap_ui_widgets().centered_float(dap_ui_widgets.scopes)
             end)
             vim.keymap.set("n", "<leader>dt", function()
                 local widgets = require("dapui")
