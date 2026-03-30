@@ -139,7 +139,7 @@ return {
                 dap_ui_widgets.centered_float(dap_ui_widgets.frames)
             end)
             vim.keymap.set("n", "<leader>ds", function()
-                dap_ui_widgets().centered_float(dap_ui_widgets.scopes)
+                dap_ui_widgets.centered_float(dap_ui_widgets.scopes)
             end)
             vim.keymap.set("n", "<leader>dt", function()
                 local widgets = require("dapui")
