@@ -39,14 +39,6 @@ return {
 					additional_vim_regex_highlighting = false,
 				},
 			})
-
-			vim.api.nvim_create_autocmd("FileType", {
-				pattern = { "javascript", "typescript", "tsx" },
-				callback = function()
-					-- vim.treesitter.start()
-					vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-				end,
-			})
 		end,
 	},
 }
