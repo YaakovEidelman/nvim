@@ -1,6 +1,7 @@
 return {
 	{
 		"Mofiqul/vscode.nvim",
+        enabled = false,
 		lazy = false,
 		priority = 1000,
 		config = function()

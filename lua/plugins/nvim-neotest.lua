@@ -19,7 +19,7 @@ return {
             })
         end,
     },
-    { 
+    {
         "Issafalcon/neotest-dotnet",
         dependencies = {
             "nvim-neotest/neotest",

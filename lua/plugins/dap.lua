@@ -66,7 +66,7 @@ return {
             vim.api.nvim_set_hl(0, "DapStoppedLine", { bg = "#4A4A00" })
 
             vim.fn.sign_define("DapBreakpoint", {
-                text = "●", -- ●🛑
+                text = "●",
                 texthl = "DapBreakpointColor",
             })
 
