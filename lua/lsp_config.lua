@@ -1,5 +1,5 @@
 local enabled_servers = {
-    "ts_ls",
+    "vtsls",
     "pyright",
     -- "roslyn",
     "lua_ls",
@@ -12,14 +12,22 @@ vim.lsp.config('*', {
     capabilities = require('blink.cmp').get_lsp_capabilities()
 })
 
-vim.lsp.config("ts_ls", {
+vim.lsp.config("vtsls", {
     filetypes = {
         "javascript",
         "javascriptreact",
         "typescript",
         "typescriptreact",
     },
-    settings = {},
+    settings = {
+        typescript = {
+            updateImportsOnFileMove = { enabled = "always" },
+            suggest = { completeFunctionCalls = true },
+        },
+        javascript = {
+            updateImportsOnFileMove = { enabled = "always" },
+        },
+    },
 })
 
 vim.lsp.config("pyright", {
