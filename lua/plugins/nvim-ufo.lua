@@ -1,4 +1,3 @@
--- lua/plugins/ufo.lua
 return {
   "kevinhwang91/nvim-ufo",
   dependencies = {
@@ -9,8 +8,6 @@ return {
   },
   opts = {
     provider_selector = function(bufnr, ft, filetype_options)
-      -- Prioritize LSP-based folds, falling back to Treesitter and then indentation.
-      -- return { "lsp", "treesitter", "indent" }
       return { "treesitter" }
     end,
   },
