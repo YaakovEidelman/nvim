@@ -51,3 +51,5 @@ end)
 
 vim.keymap.set("n", "<leader>ctab", ":tabclose<cr>", { desc = "Close tab page" })
 vim.keymap.set("n", "<M-.>", vim.lsp.buf.code_action, { desc = "Show code actions" })
+
+vim.keymap.set("n", "gl", vim.diagnostic.open_float, { desc = "Show diagnostic float" })
