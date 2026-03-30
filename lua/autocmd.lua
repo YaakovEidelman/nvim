@@ -18,37 +18,3 @@ vim.api.nvim_create_autocmd("DiagnosticChanged", {
 	end,
 })
 
--- local function is_dapui()
--- 	local ft = vim.bo.filetype
--- 	return ft:match("^dapui") or ft == "dap-repl"
--- end
---
--- -- Change winbar on mode changed
--- vim.api.nvim_create_autocmd({ "ModeChanged", "BufEnter" }, {
--- 	pattern = "*",
--- 	callback = function()
--- 		if is_dapui() then
--- 			return
--- 		end
--- 		local wb = require("utils.winbar-config")
--- 		vim.wo.winbar = wb.winbarConfig()
--- 	end,
--- })
-
--- vim.api.nvim_create_autocmd({
--- 	"ModeChanged",
--- 	"BufEnter",
--- 	"BufWinEnter",
--- 	"VimEnter",
--- 	"DirChanged",
--- 	"User",
--- }, {
--- 	pattern = "*",
--- 	callback = function()
--- 		if is_dapui() then
--- 			return
--- 		end
--- 		local wb = require("utils.winbar-config")
--- 		vim.wo.statusline = wb.statuslineConfig()
--- 	end,
--- })

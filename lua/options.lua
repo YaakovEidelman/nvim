@@ -18,3 +18,5 @@ vim.opt.foldlevelstart = 99
 vim.opt.foldenable = true
 vim.opt.foldcolumn = "1"
 vim.opt.foldtext = ""
+
+vim.opt.winbar = "%F%="
