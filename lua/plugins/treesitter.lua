@@ -6,8 +6,11 @@ return {
 		branch = "master",
 		build = ":TSUpdate",
 		config = function()
-            local ts = require("nvim-treesitter")
+			local ts = require("nvim-treesitter.configs")
 			ts.setup({
+				modules = {},
+				sync_install = false,
+				ignore_install = {},
 				ensure_installed = {
 					"c",
 					"cpp",
@@ -19,7 +22,6 @@ return {
 					"typescript",
 					"javascript",
 					"tsx",
-					"jsx",
 					"python",
 					"rust",
 					"html",
