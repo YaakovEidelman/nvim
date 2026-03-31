@@ -24,7 +24,8 @@ return {
 			ensure_installed = {
 				"lua_ls",
                 "pyright",
-				"vtsls",
+				-- "vtsls",
+				"ts_ls",
                 "clangd",
                 "rust_analyzer",
                 "html",
