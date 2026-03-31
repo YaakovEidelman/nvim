@@ -26,7 +26,7 @@ return {
 							end, clients)
 							return "󰰎 " .. table.concat(names, ", ")
 						end)()
-						local filename = vim.bo.buftype == "terminal" and "%t" or "%F%{&modified?'*':''}%r"
+						-- local filename = vim.bo.buftype == "terminal" and "%t" or "%F%{&modified?'*':''}%r"
 						local fileinfo = statusline.section_fileinfo({ trunc_width = 120 })
 						local location = statusline.is_truncated(75) and "Ln %l│Col %v" or "Ln %l|Col %v"
 
@@ -35,7 +35,7 @@ return {
 							{ hl = "MiniStatuslineDevinfo", strings = { git, diagnostics } },
 							{ hl = "MiniStatuslineFileinfo", strings = { lsp } },
 							"%<", -- Mark general truncate point
-							{ hl = "MiniStatuslineFilename", strings = { filename } },
+							-- { hl = "MiniStatuslineFilename", strings = { filename } },
 							"%=", -- End left alignment
 							{ hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
 							{ hl = mode_hl, strings = { location } },
