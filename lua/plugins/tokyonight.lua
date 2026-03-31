@@ -13,6 +13,7 @@ return {
           floats = "transparent",
         },
         on_highlights = function(hl, c)
+          hl.Normal = { fg = "#e8eaf6", bg = "none", bold = true }
           hl.LineNr = { fg = c.blue5 }
           hl.LineNrAbove = { fg = c.blue5 }
           hl.LineNrBelow = { fg = c.blue5 }
