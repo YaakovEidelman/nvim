@@ -3,7 +3,8 @@ return {
 		"echasnovski/mini.nvim",
 		config = function()
 			local statusline = require("mini.statusline")
-            local pairs = require("mini.pairs")
+			local pairs = require("mini.pairs")
+			local tabline = require("mini.tabline")
 
 			statusline.setup({
 				use_icons = true,
@@ -43,7 +44,8 @@ return {
 				},
 			})
 
-            pairs.setup({})
+			pairs.setup({})
+			tabline.setup({})
 		end,
 	},
 }

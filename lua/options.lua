@@ -20,3 +20,4 @@ vim.opt.foldcolumn = "1"
 vim.opt.foldtext = ""
 
 vim.opt.winbar = "%F%="
+
