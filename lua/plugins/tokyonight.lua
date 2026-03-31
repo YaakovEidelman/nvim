@@ -1,9 +1,28 @@
 return {
-  -- {
-  --   "folke/tokyonight.nvim",
-  --   enabled = true,
-  --   config = function()
-  --     vim.cmd.colorscheme "tokyonight"
-  --   end,
-  -- },
+  {
+    "folke/tokyonight.nvim",
+    enabled = true,
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("tokyonight").setup({
+        style = "night",
+        transparent = true,
+        styles = {
+          sidebars = "transparent",
+          floats = "transparent",
+        },
+        on_highlights = function(hl, c)
+          hl.LineNr = { fg = c.blue5 }
+          hl.LineNrAbove = { fg = c.blue5 }
+          hl.LineNrBelow = { fg = c.blue5 }
+          hl.CursorLineNr = { fg = c.orange, bold = true }
+          hl.FoldColumn = { fg = c.dark5, bg = "none" }
+          hl.Comment = { fg = c.teal, italic = true }
+          hl["@comment"] = { fg = c.teal, italic = true }
+        end,
+      })
+      vim.cmd.colorscheme("tokyonight")
+    end,
+  },
 }
