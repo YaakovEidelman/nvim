@@ -90,7 +90,7 @@ return {
             end)
 
             vim.api.nvim_set_hl(0, "DapBreakpointColor", { fg = "#FF0000" }) -- , bg = "#3C1010"
-            vim.api.nvim_set_hl(0, "DapStoppedLine", { bg = "#4A4A00" })
+            vim.api.nvim_set_hl(0, "DapStoppedLine", { bg = "#ffe032", blend = 60 })
 
             vim.fn.sign_define("DapBreakpoint", {
                 text = "●",
