@@ -21,8 +21,9 @@ vim.opt.foldtext = ""
 
 vim.opt.winbar = "%F%="
 
-
 vim.cmd.colorscheme("lunaperche")
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
 
+vim.opt.tabline = "%!v:lua.require'utils.tabline'.run()"
+-- vim.o.tabline = "%!v:lua.require'utils.tabline'.run()"
