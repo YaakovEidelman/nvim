@@ -39,6 +39,7 @@ vim.keymap.set("n", "<leader>tn", function()
 end)
 
 vim.keymap.set("i", "<C-bs>", "<C-w>", { desc = "Delete previous word", noremap = true })
+vim.keymap.set("i", "<C-H>", "<C-w>", { desc = "Delete previous word (Windows/WSL)", noremap = true })
 
 -- Show full diagnostic message in a float
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show full diagnostic" })
