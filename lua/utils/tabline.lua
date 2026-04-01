@@ -1,20 +1,3 @@
--- local M = {}
---
--- function M.run()
--- 	local s = ""
--- 	for i = 1, vim.fn.tabpagenr("$") do
--- 		local bufnr = vim.fn.tabpagebuflist(i)[vim.fn.tabpagewinnr(i)]
--- 		local name = vim.fn.fnamemodify(vim.fn.bufname(bufnr), ":t")
--- 		if name == "" then
--- 			name = "[No Name]"
--- 		end
--- 		s = s .. "%" .. i .. "T " .. name .. " "
--- 	end
--- 	return s
--- end
---
--- return M
-
 local M = {}
 
 function M.run()
