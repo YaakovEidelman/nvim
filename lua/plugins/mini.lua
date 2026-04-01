@@ -4,7 +4,6 @@ return {
 		config = function()
 			local statusline = require("mini.statusline")
 			local pairs = require("mini.pairs")
-			-- local tabline = require("mini.tabline")
 
 			statusline.setup({
 				use_icons = true,
@@ -45,7 +44,6 @@ return {
 			})
 
 			pairs.setup({})
-			-- tabline.setup({})
 		end,
 	},
 }

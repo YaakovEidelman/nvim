@@ -14,11 +14,9 @@ return {
 			--   timeout_ms = 2000,
 			--   lsp_fallback = true,
 			-- },
-			-- format_on_save = {
-			--              timeout_ms = 250,
-			--              lsp_fallback = true,
-			--          },
-			format_on_save = false,
+			format_on_save = function()
+				return nil
+			end,
 			formatters_by_ft = {
 				lua = { "stylua" },
 				python = { "black", "ruff" },
