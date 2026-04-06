@@ -20,6 +20,10 @@ function M.run()
 
 		-- Tab click target + label
 		s = s .. "%" .. i .. "T " .. name .. " "
+        local modified = vim.bo[bufnr].modified
+        if modified then
+            s = s .. "[+]"
+        end
 
 		-- Separator (not after last tab)
 		if i < vim.fn.tabpagenr("$") then
