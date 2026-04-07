@@ -4,18 +4,12 @@ return {
 		version = "*",
 		config = function()
 			require("toggleterm").setup({
-				direction = "float",
+				direction = "horizontal",
 				start_in_insert = true,
 				close_on_exit = true,
-				float_opts = {
-					border = "single",
-					width = function()
-						return math.floor(vim.o.columns * 0.85)
-					end,
-					height = function()
-						return math.floor(vim.o.lines * 0.8)
-					end,
-				},
+				size = function()
+					return math.floor(vim.o.lines * 0.25)
+				end,
 				winbar = { enabled = false },
 			})
 
