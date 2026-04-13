@@ -16,9 +16,9 @@ return {
 
 			Telescope.setup({
 				defaults = {
-					-- preview = {
-					--   treesitter = false,
-					-- },
+					preview = {
+						treesitter = false,
+					},
 					mappings = {
 						i = {
 							["<CR>"] = actions.select_tab,

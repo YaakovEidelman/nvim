@@ -18,6 +18,8 @@ vim.opt.foldenable = true
 vim.opt.foldcolumn = "1"
 vim.opt.foldtext = ""
 
+vim.opt.swapfile = false
+
 vim.opt.showtabline = 2
 vim.opt.tabline = "%!v:lua.require'utils.tabline'.run()"
 vim.opt.winbar = "%F%="
