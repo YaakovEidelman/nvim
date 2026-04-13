@@ -4,6 +4,8 @@ return {
 		config = function()
 			require("overseer").setup({
 				-- log_level = "INFO",
+				dap = false, -- registered manually after dap loads to avoid load-order issues
+				templates = { "builtin", "vscode_tasks" },
 			})
 		end,
 	},
@@ -143,7 +145,7 @@ return {
 				vim.keymap.set(m.mode, m.lhs, m.rhs, { desc = m.desc })
 			end
 
-			require("utils.vscode_tasks").patch_dap(dap)
+			require("overseer").enable_dap()
 
 			-- vim.keymap.set("n", "<leader>dc", function()
 			--     dap.continue()
