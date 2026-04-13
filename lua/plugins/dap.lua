@@ -66,19 +66,19 @@ return {
 				},
 			}
 
-			dap.configurations.c = {
-				{
-					name = "Launch",
-					type = "codelldb",
-					request = "launch",
-					program = function()
-						local path = vim.fn.input("Executable: ", vim.fn.getcwd() .. "/", "file")
-						return path:gsub("\\", "/")
-					end,
-					cwd = vim.fn.getcwd,
-					stopOnEntry = false,
-				},
-			}
+			-- dap.configurations.c = {
+			-- 	{
+			-- 		name = "Launch",
+			-- 		type = "codelldb",
+			-- 		request = "launch",
+			-- 		program = function()
+			-- 			local path = vim.fn.input("Executable: ", vim.fn.getcwd() .. "/", "file")
+			-- 			return path:gsub("\\", "/")
+			-- 		end,
+			-- 		cwd = vim.fn.getcwd,
+			-- 		stopOnEntry = false,
+			-- 	},
+			-- }
 
 			vim.keymap.set("n", "<leader>da", function()
 				dap.run({
@@ -142,6 +142,8 @@ return {
 			for _, m in ipairs(keymaps) do
 				vim.keymap.set(m.mode, m.lhs, m.rhs, { desc = m.desc })
 			end
+
+			require("utils.vscode_tasks").patch_dap(dap)
 
 			-- vim.keymap.set("n", "<leader>dc", function()
 			--     dap.continue()
