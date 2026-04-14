@@ -39,6 +39,7 @@ return {
 					lsp_references = { theme = "ivy" },
 					lsp_workspace_symbols = { theme = "ivy" },
 					symbols = { theme = "ivy" },
+                    builtin = { theme = "ivy" },
 				},
 				extensions = {
 					fzf = {},
@@ -61,6 +62,9 @@ return {
 			end, { noremap = true })
 			vim.keymap.set("n", "<leader>bi", function()
 				builtin.builtin()
+			end, { noremap = true })
+			vim.keymap.set("n", "gr", function()
+				builtin.lsp_references()
 			end, { noremap = true })
 
 			-- vim.keymap.set("n", "<leader>en", function()
