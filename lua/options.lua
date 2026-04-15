@@ -29,3 +29,7 @@ vim.cmd.colorscheme("lunaperche")
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
 
+vim.g.netrw_winsize = 20
+vim.g.netrw_liststyle = 3
+vim.g.netrw_banner = 0
+vim.keymap.set('n', '<leader>e', ':Lexplore!<cr>', { nowait = true })

@@ -66,7 +66,9 @@ return {
 			vim.keymap.set("n", "gr", function()
 				builtin.lsp_references()
 			end, { noremap = true })
-
+			vim.keymap.set("n", "<leader>fd", function()
+				builtin.diagnostics()
+			end, { noremap = true })
 			-- vim.keymap.set("n", "<leader>en", function()
 			--   builtin.find_files({
 			--     cwd = vim.fn.stdpath("config"),

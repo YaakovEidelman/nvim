@@ -91,8 +91,16 @@ return {
 				})
 			end)
 
-			vim.api.nvim_set_hl(0, "DapBreakpointColor", { fg = "#FF0000" }) -- , bg = "#3C1010"
-			vim.api.nvim_set_hl(0, "DapStoppedLine", { bg = "#ffe032", blend = 60 })
+			local function set_dap_highlights()
+				vim.api.nvim_set_hl(0, "DapBreakpointColor", { fg = "#FF0000" })
+				vim.api.nvim_set_hl(0, "DapStopped", { fg = "#ffe032" })
+				vim.api.nvim_set_hl(0, "DapStoppedLine", { bg = "#3c3800" })
+			end
+			set_dap_highlights()
+			vim.api.nvim_create_autocmd("ColorScheme", {
+				pattern = "*",
+				callback = set_dap_highlights,
+			})
 
 			vim.fn.sign_define("DapBreakpoint", {
 				text = "●",
