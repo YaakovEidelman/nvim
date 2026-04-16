@@ -54,6 +54,13 @@ return {
 					hidden = true,
 				})
 			end, { noremap = true })
+			vim.keymap.set("n", "<leader>fF", function()
+				local root = vim.fn.has("win32") == 1 and "C:\\" or "/"
+				builtin.find_files({
+					cwd = root,
+					hidden = true,
+				})
+			end, { noremap = true, desc = "Find files from root (global)" })
 			vim.keymap.set("n", "<leader>fb", function()
 				builtin.buffers()
 			end, { noremap = true })
