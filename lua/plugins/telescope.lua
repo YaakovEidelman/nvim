@@ -19,17 +19,17 @@ return {
 					preview = {
 						treesitter = false,
 					},
-					mappings = {
-						i = {
-							["<CR>"] = actions.select_tab,
-						},
-						n = {
-							["<CR>"] = actions.select_tab,
-						},
-					},
+					-- mappings = {
+					-- 	i = {
+					-- 		["<CR>"] = actions.select_tab,
+					-- 	},
+					-- 	n = {
+					-- 		["<CR>"] = actions.select_tab,
+					-- 	},
+					-- },
 				},
 				pickers = {
-					buffers = { theme = "ivy" },
+					buffers = { theme = "ivy", previewer = false },
 					diagnostics = { theme = "ivy" },
 					find_files = { theme = "ivy" },
 					git_files = { theme = "ivy" },
@@ -39,7 +39,7 @@ return {
 					lsp_references = { theme = "ivy" },
 					lsp_workspace_symbols = { theme = "ivy" },
 					symbols = { theme = "ivy" },
-                    builtin = { theme = "ivy" },
+					builtin = { theme = "ivy" },
 				},
 				extensions = {
 					fzf = {},
