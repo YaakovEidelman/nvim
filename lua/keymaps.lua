@@ -34,9 +34,7 @@ vim.keymap.set("n", "<M-F>", function()
 end)
 
 -- Open new tab to newtr (file explorer)
-vim.keymap.set("n", "<leader>tn", function()
-	vim.cmd("tabnew | Explore")
-end)
+vim.keymap.set("n", "<leader>tn", ":tabnew<cr>")
 
 vim.keymap.set("i", "<C-bs>", "<C-w>", { desc = "Delete previous word", noremap = true })
 vim.keymap.set("i", "<C-H>", "<C-w>", { desc = "Delete previous word (Windows/WSL)", noremap = true })
