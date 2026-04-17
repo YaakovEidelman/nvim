@@ -8,7 +8,7 @@ function M.run()
 		local bufnr = vim.fn.tabpagebuflist(i)[vim.fn.tabpagewinnr(i)]
 		local name = vim.fn.fnamemodify(vim.fn.bufname(bufnr), ":t")
 		if name == "" then
-			name = "[No Name]"
+			name = "No Name"
 		end
 
 		-- Highlight active vs inactive tab
@@ -20,10 +20,6 @@ function M.run()
 
 		-- Tab click target + label
 		s = s .. "%" .. i .. "T " .. name .. " "
-        local modified = vim.bo[bufnr].modified
-        if modified then
-            s = s .. "[+]"
-        end
 
 		-- Separator (not after last tab)
 		if i < vim.fn.tabpagenr("$") then
