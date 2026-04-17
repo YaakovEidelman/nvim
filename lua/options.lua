@@ -22,7 +22,7 @@ vim.opt.swapfile = false
 
 vim.opt.showtabline = 2
 vim.opt.tabline = "%!v:lua.require'utils.tabline'.run()"
-vim.opt.winbar = "%F%="
+vim.opt.winbar = "%F %{&modified ? '[+]' : ''}"
 vim.opt.showmode = false
 
 vim.cmd.colorscheme("lunaperche")
