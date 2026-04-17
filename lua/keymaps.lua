@@ -33,7 +33,6 @@ vim.keymap.set("n", "<M-F>", function()
 	require("conform").format()
 end)
 
--- Open new tab to newtr (file explorer)
 vim.keymap.set("n", "<leader>tn", ":tabnew<cr>")
 
 vim.keymap.set("i", "<C-bs>", "<C-w>", { desc = "Delete previous word", noremap = true })
@@ -41,16 +40,10 @@ vim.keymap.set("i", "<C-H>", "<C-w>", { desc = "Delete previous word (Windows/WS
 
 
 vim.keymap.set("t", "<C-e>", [[<C-\><C-n>]], { noremap = true, silent = true })
+
 vim.keymap.set("n", "gd", vim.lsp.buf.definition)
-
--- Old config, still deciding if I want to remove it
--- vim.keymap.set("n", "gd", function()
--- 	vim.cmd("tab split")
--- 	vim.lsp.buf.definition()
--- end)
-
-vim.keymap.set("n", "<leader>ctab", ":tabclose<cr>", { desc = "Close tab page" })
 vim.keymap.set("n", "<M-.>", vim.lsp.buf.code_action, { desc = "Show code actions" })
+
 
 vim.keymap.set("n", "gl", vim.diagnostic.open_float, { desc = "Show diagnostic float" })
 
