@@ -38,14 +38,13 @@ vim.keymap.set("n", "<leader>tn", ":tabnew<cr>")
 vim.keymap.set("i", "<C-bs>", "<C-w>", { desc = "Delete previous word", noremap = true })
 vim.keymap.set("i", "<C-H>", "<C-w>", { desc = "Delete previous word (Windows/WSL)", noremap = true })
 
-
 vim.keymap.set("t", "<C-e>", [[<C-\><C-n>]], { noremap = true, silent = true })
 
 vim.keymap.set("n", "gd", vim.lsp.buf.definition)
-vim.keymap.set("n", "<M-.>", vim.lsp.buf.code_action, { desc = "Show code actions" })
-
+-- This is already set with gra
+-- vim.keymap.set("n", "<M-.>", vim.lsp.buf.code_action, { desc = "Show code actions" })
 
 vim.keymap.set("n", "gl", vim.diagnostic.open_float, { desc = "Show diagnostic float" })
 
 vim.keymap.set("n", "<leader>m", "'", { desc = "Go to mark", noremap = false })
-vim.keymap.set("n", "<leader>w", ":w<cr>", { desc = "Save"})
+vim.keymap.set("n", "<leader>w", ":w<cr>", { desc = "Save" })
