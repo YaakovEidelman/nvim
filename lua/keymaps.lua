@@ -48,3 +48,4 @@ vim.keymap.set("n", "<M-.>", vim.lsp.buf.code_action, { desc = "Show code action
 vim.keymap.set("n", "gl", vim.diagnostic.open_float, { desc = "Show diagnostic float" })
 
 vim.keymap.set("n", "<leader>m", "'", { desc = "Go to mark", noremap = false })
+vim.keymap.set("n", "<leader>w", ":w<cr>", { desc = "Save"})
