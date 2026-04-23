@@ -154,50 +154,6 @@ return {
 			end
 
 			require("overseer").enable_dap()
-
-			-- vim.keymap.set("n", "<leader>dc", function()
-			--     dap.continue()
-			-- end, { desc = "Debug: start/continue" })
-			-- vim.keymap.set("n", "<leader>dR", function()
-			--     dap.restart()
-			-- end, { desc = "Debug: restart" })
-			-- vim.keymap.set("n", "<leader>dq", function()
-			--     dap.terminate()
-			-- end, { desc = "Debug: stop" })
-			-- vim.keymap.set("n", "<leader>dn", function()
-			--     dap.step_over()
-			-- end, { desc = "Debug: step over" })
-			-- vim.keymap.set("n", "<leader>di", function()
-			--     dap.step_into()
-			-- end, { desc = "Debug: step into" })
-			-- vim.keymap.set("n", "<leader>do", function()
-			--     dap.step_out()
-			-- end, { desc = "Debug: step out" })
-
-			-- <leader>bp is set in persisten breakpoints plugin
-			-- vim.keymap.set("n", "<leader>bp", function()
-			--     dap.toggle_breakpoint()
-			-- end)
-
-			-- vim.keymap.set("n", "<leader>dr", function()
-			--     dap.repl.toggle()
-			-- end)
-			-- vim.keymap.set({ "n", "v" }, "<leader>dh", function()
-			--     dap_ui_widgets.hover()
-			-- end)
-			-- vim.keymap.set({ "n", "v" }, "<leader>dp", function()
-			--     dap_ui_widgets.preview()
-			-- end)
-			-- vim.keymap.set("n", "<leader>df", function()
-			--     dap_ui_widgets.centered_float(dap_ui_widgets.frames)
-			-- end)
-			-- vim.keymap.set("n", "<leader>ds", function()
-			--     dap_ui_widgets.centered_float(dap_ui_widgets.scopes)
-			-- end)
-			-- vim.keymap.set("n", "<leader>dt", function()
-			--     local widgets = require("dapui")
-			--     widgets.toggle()
-			-- end)
 		end,
 	},
 }
