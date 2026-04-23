@@ -9,8 +9,9 @@ local enabled_servers = {
     "html",
     "cssls",
 }
+local ok, blink = pcall(require, 'blink.cmp')
 vim.lsp.config('*', {
-    capabilities = require('blink.cmp').get_lsp_capabilities(),
+    capabilities = ok and blink.get_lsp_capabilities() or vim.lsp.protocol.make_client_capabilities(),
     on_attach = function(client, bufnr)
         if client.supports_method('textDocument/inlayHint') then
             vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })

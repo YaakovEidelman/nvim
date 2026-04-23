@@ -22,6 +22,8 @@ vim.opt.foldtext = ""
 
 vim.opt.swapfile = false
 
+vim.opt.autocomplete = true
+
 vim.opt.showtabline = 2
 vim.opt.tabline = "%!v:lua.require'utils.tabline'.run()"
 vim.opt.winbar = "%F %{&modified ? '[+]' : ''}"
