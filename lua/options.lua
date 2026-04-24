@@ -16,13 +16,13 @@ vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 vim.opt.foldenable = true
-vim.opt.foldcolumn = "1"
+vim.opt.foldcolumn = "auto"
 vim.opt.foldtext = ""
 
 
 vim.opt.swapfile = false
 
-vim.opt.autocomplete = true
+-- vim.opt.autocomplete = true
 
 vim.opt.showtabline = 2
 vim.opt.tabline = "%!v:lua.require'utils.tabline'.run()"
