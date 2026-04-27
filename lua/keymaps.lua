@@ -41,8 +41,12 @@ vim.keymap.set("i", "<C-H>", "<C-w>", { desc = "Delete previous word (Windows/WS
 vim.keymap.set("t", "<C-e>", [[<C-\><C-n>]], { noremap = true, silent = true })
 
 vim.keymap.set("n", "gd", vim.lsp.buf.definition)
-
 vim.keymap.set("n", "gl", vim.diagnostic.open_float, { desc = "Show diagnostic float" })
 
 vim.keymap.set("n", "<leader>m", "'", { desc = "Go to mark", noremap = false })
 vim.keymap.set("n", "<leader>w", ":w<cr>", { desc = "Save" })
+vim.keymap.set("n", "<leader>wq", ":wq<cr>", { desc = "Save and quit" })
+vim.keymap.set("n", "<leader>q", ":q<cr>", { desc = "Quit" })
+vim.keymap.set("n", "<leader>bb", ":bp<cr>", { desc = "Go to previous buffer" })
+vim.keymap.set("n", "<leader>bn", ":bn<cr>", { desc = "Go to next buffer" })
+vim.keymap.set("n", "<leader>ya", ":%y<cr>", { desc = "Copy full page" })
