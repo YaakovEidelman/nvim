@@ -29,9 +29,14 @@ vim.opt.tabline = "%!v:lua.require'utils.tabline'.run()"
 vim.opt.winbar = "%F %{&modified ? '[+]' : ''}"
 vim.opt.showmode = false
 
+vim.opt.updatetime = 300
+
 vim.cmd.colorscheme("lunaperche")
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+vim.api.nvim_set_hl(0, "LspReferenceText",  { bg = "#2d5986" })
+vim.api.nvim_set_hl(0, "LspReferenceRead",  { bg = "#2d5986" })
+vim.api.nvim_set_hl(0, "LspReferenceWrite", { bg = "#2d5986", underline = true })
 
 vim.g.netrw_winsize = 20
 vim.g.netrw_liststyle = 3
