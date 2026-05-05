@@ -48,7 +48,7 @@ return {
 			})
 
 			Telescope.load_extension("fzf")
-			require("plugins.telescope.multigrep").setup()
+			require("utils.multigrep").setup()
 
 			vim.keymap.set("n", "<leader>ff", function()
 				builtin.find_files({
