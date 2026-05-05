@@ -21,6 +21,7 @@ vim.keymap.set("v", "<", "<gv")
 
 -- Go to file explorer
 vim.keymap.set("n", "<leader>of", ":Ex <CR>", { noremap = true })
+vim.keymap.set("n", "<leader>e", ":Lexplore!<cr>", { nowait = true })
 
 -- Open file explorer at ~/.config/nvim
 vim.keymap.set("n", "<leader>con", function()
@@ -50,3 +51,5 @@ vim.keymap.set("n", "<leader>q", ":q<cr>", { desc = "Quit" })
 vim.keymap.set("n", "<leader>bb", ":bp<cr>", { desc = "Go to previous buffer" })
 vim.keymap.set("n", "<leader>bn", ":bn<cr>", { desc = "Go to next buffer" })
 vim.keymap.set("n", "<leader>ya", ":%y<cr>", { desc = "Copy full page" })
+
+vim.keymap.set("n", "<leader>gd", ":!code .<cr>", { desc = "Open folder in vscode"})

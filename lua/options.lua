@@ -41,4 +41,3 @@ vim.api.nvim_set_hl(0, "LspReferenceWrite", { bg = "#2d5986", underline = true }
 vim.g.netrw_winsize = 20
 vim.g.netrw_liststyle = 3
 vim.g.netrw_banner = 0
-vim.keymap.set('n', '<leader>e', ':Lexplore!<cr>', { nowait = true })
