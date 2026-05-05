@@ -9,7 +9,7 @@ return {
 			dapui.setup()
 			local dap = require("dap")
 			dap.listeners.after.event_initialized["dapui_config"] = function()
-				dapui.open()
+				-- dapui.open()
 			end
 			dap.listeners.before.event_terminated["dapui_config"] = function()
 				-- dapui.close()
