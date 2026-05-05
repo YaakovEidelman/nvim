@@ -19,11 +19,11 @@ return {
 			local vim_data_path = vim.fn.stdpath("data")
 
 			local debugpy_python = vim_data_path .. "/mason/packages/debugpy/venv/bin/python"
-			local netcoredbg_bin = vim_data_path .. "/mason/packages/netcoredbg/netcoredbg/netcoredbg"
+			local netcoredbg_bin = vim_data_path .. "/mason/packages/netcoredbg/netcoredbg"
 			local codelldb_bin = vim_data_path:gsub("\\", "/") .. "/mason/packages/codelldb/extension/adapter/codelldb"
 			if is_windows then
 				debugpy_python = vim_data_path .. "/mason/packages/debugpy/venv/Scripts/python.exe"
-				netcoredbg_bin = netcoredbg_bin .. ".exe"
+				netcoredbg_bin = netcoredbg_bin .. "/netcoredbg.exe"
 				codelldb_bin = codelldb_bin .. ".exe"
 			end
 
@@ -48,16 +48,16 @@ return {
 			}
 			dap.adapters.debugpy = dap.adapters.python
 
-			dap.adapters.coreclr = {
+            local csharp_common = {
 				type = "executable",
 				command = netcoredbg_bin,
 				args = { "--interpreter=vscode" },
+				options = {
+					detached = false,
+				},
 			}
-			dap.adapters.netcoredbg = {
-				type = "executable",
-				command = netcoredbg_bin,
-				args = { "--interpreter=vscode" },
-			}
+			dap.adapters.coreclr = csharp_common
+            dap.adapters.netcoredbg = csharp_common
 
 			dap.adapters.codelldb = {
 				type = "server",
@@ -68,6 +68,7 @@ return {
 				},
 			}
 
+            -- This is just for reference when creating launch.json files
 			-- dap.configurations.c = {
 			-- 	{
 			-- 		name = "Launch",
