@@ -52,4 +52,10 @@ vim.keymap.set("n", "<leader>bb", ":bp<cr>", { desc = "Go to previous buffer" })
 vim.keymap.set("n", "<leader>bn", ":bn<cr>", { desc = "Go to next buffer" })
 vim.keymap.set("n", "<leader>ya", ":%y<cr>", { desc = "Copy full page" })
 
-vim.keymap.set("n", "<leader>gd", ":!code .<cr>", { desc = "Open folder in vscode"})
+vim.keymap.set("n", "<leader>gd", function()
+	if vim.fn.executable("code") == 0 then
+		vim.notify("VSCode not found — install it at https://code.visualstudio.com/download", vim.log.levels.WARN)
+		return
+	end
+	vim.fn.jobstart({ "code", "." })
+end, { desc = "Open folder in vscode" })
