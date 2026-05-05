@@ -3,36 +3,10 @@
 -- overseer's native DAP integration can resolve preLaunchTask references.
 
 local constants = require("overseer.constants")
+local vscode_utils = require("utils.vscode_tasks")
 local TAG = constants.TAG
 
 local SUPPORTED_TYPES = { "shell", "process", "cppbuild" }
-
-local function expand(s)
-	if type(s) ~= "string" then
-		return s
-	end
-	local cwd = vim.fn.getcwd()
-	s = s:gsub("${workspaceFolder}", cwd)
-	s = s:gsub("${file}", vim.fn.expand("%:p"))
-	s = s:gsub("${fileBasename}", vim.fn.expand("%:t"))
-	s = s:gsub("${fileBasenameNoExtension}", vim.fn.expand("%:t:r"))
-	s = s:gsub("${fileDirname}", vim.fn.expand("%:p:h"))
-	s = s:gsub("${relativeFile}", vim.fn.expand("%:."))
-	return s
-end
-
-local function load_tasks()
-	local path = vim.fn.getcwd() .. "/.vscode/tasks.json"
-	local f = io.open(path, "r")
-	if not f then
-		return nil
-	end
-	local content = f:read("*a")
-	f:close()
-	content = content:gsub("/%*(.-)%*/", ""):gsub("//[^\n]*", "")
-	local ok, data = pcall(vim.json.decode, content)
-	return ok and (data.tasks or {}) or nil
-end
 
 local function is_default_build(group)
 	if type(group) == "table" then
@@ -49,7 +23,7 @@ return {
 		end,
 	},
 	generator = function(_, cb)
-		local raw = load_tasks()
+		local raw = vscode_utils.load_tasks()
 		if not raw then
 			return cb({})
 		end
@@ -66,15 +40,15 @@ return {
 					name = task.label,
 					tags = tags,
 					builder = function()
-						local cmd = { expand(task.command) }
+						local cmd = { vscode_utils.expand_vscode_vars(task.command) }
 						for _, arg in ipairs(task.args or {}) do
-							table.insert(cmd, expand(arg))
+							table.insert(cmd, vscode_utils.expand_vscode_vars(arg))
 						end
 						return {
 							name = task.label,
 							cmd = cmd,
 							cwd = (task.options and task.options.cwd)
-								and expand(task.options.cwd)
+								and vscode_utils.expand_vscode_vars(task.options.cwd)
 								or vim.fn.getcwd(),
 						}
 					end,

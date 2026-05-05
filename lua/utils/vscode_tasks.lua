@@ -13,6 +13,7 @@ local function expand_vscode_vars(s)
 	s = s:gsub("${relativeFile}", vim.fn.expand("%:."))
 	return s
 end
+M.expand_vscode_vars = expand_vscode_vars
 
 local function load_tasks()
 	local tasks_path = vim.fn.getcwd() .. "/.vscode/tasks.json"
@@ -32,6 +33,7 @@ local function load_tasks()
 	end
 	return data.tasks or {}, nil
 end
+M.load_tasks = load_tasks
 
 -- Run a .vscode/tasks.json task by label via overseer.
 -- Calls on_success() when the task exits successfully.
