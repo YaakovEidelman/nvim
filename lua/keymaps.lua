@@ -19,9 +19,8 @@ vim.keymap.set("v", "<M-k>", ":m '<-2<CR>gv=gv", { noremap = true, silent = true
 vim.keymap.set("v", ">", ">gv")
 vim.keymap.set("v", "<", "<gv")
 
--- File explorer
-vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeFindFileToggle<cr>", { desc = "Toggle file explorer (current file)" })
-vim.keymap.set("n", "<leader>of", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle file explorer (cwd)" })
+-- File explorer (netrw)
+vim.keymap.set("n", "<leader>e", "<cmd>Lexplore! %:p:h<cr>", { desc = "Toggle file explorer (current file)" })
 
 -- Open file explorer at ~/.config/nvim
 vim.keymap.set("n", "<leader>con", function()

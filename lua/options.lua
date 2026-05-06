@@ -1,7 +1,3 @@
--- required by nvim-tree
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-
 vim.opt.expandtab = true
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
@@ -45,3 +41,6 @@ vim.api.nvim_set_hl(0, "LspReferenceWrite", { bg = "#2d5986", underline = true }
 vim.g.netrw_winsize = 20
 vim.g.netrw_liststyle = 3
 vim.g.netrw_banner = 0
+vim.g.netrw_altv = 1
+
+vim.opt.diffopt:append("vertical")
