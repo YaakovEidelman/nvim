@@ -47,7 +47,11 @@ return {
 
 			pairs.setup({})
 			minigit.setup()
-			minidiff.setup()
+			minidiff.setup({
+				view = {
+					signs = { add = "▎", change = "▎", delete = "▎" },
+				},
+			})
 		end,
 	},
 }
