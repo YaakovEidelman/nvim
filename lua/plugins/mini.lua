@@ -5,6 +5,7 @@ return {
 			local statusline = require("mini.statusline")
 			local pairs = require("mini.pairs")
 			local minigit = require("mini.git")
+            local minidiff = require("mini.diff")
 
 			statusline.setup({
 				use_icons = true,
@@ -46,6 +47,7 @@ return {
 
 			pairs.setup({})
 			minigit.setup()
+			minidiff.setup()
 		end,
 	},
 }
