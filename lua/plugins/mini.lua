@@ -4,6 +4,7 @@ return {
 		config = function()
 			local statusline = require("mini.statusline")
 			local pairs = require("mini.pairs")
+			local minigit = require("mini.git")
 
 			statusline.setup({
 				use_icons = true,
@@ -44,6 +45,7 @@ return {
 			})
 
 			pairs.setup({})
+			minigit.setup()
 		end,
 	},
 }

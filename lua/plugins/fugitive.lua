@@ -1,6 +1,7 @@
 return {
 	{
 		"tpope/vim-fugitive",
+		event = "VeryLazy",
 		keys = {
 			{ "<leader>gs", "<cmd>Git<cr>", desc = "Git status" },
 			{ "<leader>gb", "<cmd>Git blame<cr>", desc = "Git blame" },
