@@ -3,7 +3,7 @@ return {
         "tpope/vim-dadbod",
         lazy = true,
         config = function()
-            vim.keymap.set("v", "<leader>eq", "<cmd>'<, '>DB<CR>")
+            vim.keymap.set("v", "<leader>eq", ":DB<CR>", { silent = true, desc = "Execute Selection" })
         end
     },
     {
@@ -25,6 +25,7 @@ return {
         },
         init = function()
             vim.g.db_ui_use_nerd_fonts = 1
+            vim.g.db_ui_execute_on_save = 0
             vim.keymap.set("n", "<leader>sql", "<cmd>DBUIToggle<CR>", { desc = "Toggle DBUI" })
         end,
     }
