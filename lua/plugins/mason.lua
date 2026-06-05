@@ -31,6 +31,7 @@ return {
                 "rust_analyzer",
                 "html",
                 "cssls",
+                "postgres-language-server"
 			},
 		},
 		dependencies = {
