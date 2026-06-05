@@ -8,6 +8,7 @@ local enabled_servers = {
     "rust_analyzer",
     "html",
     "cssls",
+    "postgres-language-server",
 }
 local ok, blink = pcall(require, 'blink.cmp')
 vim.lsp.config('*', {
@@ -109,6 +110,10 @@ vim.lsp.config("html", {
 
 vim.lsp.config("cssls", {
     filetypes = { "css", "scss", "less" },
+})
+
+vim.lsp.config("postgres-language-server", {
+    filetypes = { "sql" },
 })
 
 vim.lsp.enable(enabled_servers)
