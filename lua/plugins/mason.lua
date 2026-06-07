@@ -16,6 +16,7 @@ return {
                 "csharpier",
                 "codelldb",
                 "netcoredbg",
+                "postgres-language-server"
             }
         },
 	},
@@ -31,7 +32,6 @@ return {
                 "rust_analyzer",
                 "html",
                 "cssls",
-                "postgres-language-server"
 			},
 		},
 		dependencies = {
