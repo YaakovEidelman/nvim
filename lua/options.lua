@@ -43,4 +43,7 @@ vim.g.netrw_liststyle = 3
 vim.g.netrw_banner = 0
 vim.g.netrw_altv = 1
 
+vim.g.omni_sql_no_default_maps = 1
+
 vim.opt.diffopt:append("vertical")
+
