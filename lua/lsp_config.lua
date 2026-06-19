@@ -114,12 +114,6 @@ vim.lsp.config("cssls", {
 
 vim.lsp.config("postgres_lsp", {
     cmd = { "postgres-language-server", "lsp-proxy" },
-    filetypes = { "sql", },
-    workspace_required = false,
-    root_markers = {},
-    root_dir = function ()
-        return vim.uv.cwd()
-    end,
 })
 
 vim.lsp.enable(enabled_servers)

@@ -58,3 +58,8 @@ vim.keymap.set("n", "<leader>gd", function()
 	end
 	vim.fn.jobstart({ "code", "." })
 end, { desc = "Open folder in vscode" })
+
+vim.keymap.set("n", "<leader>cc", function()
+	vim.fn.setreg('+', '')
+	vim.fn.setreg('*', '')
+end, { desc = "Clear clipboard" })
