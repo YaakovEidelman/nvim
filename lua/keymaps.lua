@@ -20,7 +20,8 @@ vim.keymap.set("v", ">", ">gv")
 vim.keymap.set("v", "<", "<gv")
 
 -- File explorer (netrw)
-vim.keymap.set("n", "<leader>e", "<cmd>Lexplore! %:p:h<cr>", { desc = "Toggle file explorer (current file)" })
+-- vim.keymap.set("n", "<leader>e", "<cmd>Lexplore! %:p:h<cr>", { desc = "Toggle file explorer (current file)" })
+vim.keymap.set("n", "<leader>e", "<cmd>Explore<cr>", { desc = "Toggle file explorer (current file)" })
 
 -- Open file explorer at ~/.config/nvim
 vim.keymap.set("n", "<leader>con", function()
@@ -63,3 +64,4 @@ vim.keymap.set("n", "<leader>cc", function()
 	vim.fn.setreg('+', '')
 	vim.fn.setreg('*', '')
 end, { desc = "Clear clipboard" })
+
