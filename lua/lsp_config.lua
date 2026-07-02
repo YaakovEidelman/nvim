@@ -110,6 +110,13 @@ vim.lsp.config("html", {
 
 vim.lsp.config("cssls", {
     filetypes = { "css", "scss", "less" },
+    settings = {
+        css = {
+            lint = {
+                emptyRules = "ignore",
+            }
+        }
+    }
 })
 
 vim.lsp.config("postgres_lsp", {
