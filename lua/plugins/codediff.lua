@@ -6,13 +6,13 @@ return {
 			-- Highlight configuration
 			highlights = {
 				-- Line-level: accepts highlight group names or hex colors (e.g., "#2ea043")
-				line_insert = "DiffAdd", -- Line-level insertions
-				line_delete = "DiffDelete", -- Line-level deletions
+				line_insert = "#1c3a29", -- Line-level insertions
+				line_delete = "#4b2224", -- Line-level deletions
 
 				-- Character-level: accepts highlight group names or hex colors
 				-- If specified, these override char_brightness calculation
-				char_insert = nil, -- Character-level insertions (nil = auto-derive)
-				char_delete = nil, -- Character-level deletions (nil = auto-derive)
+				char_insert = "#2d6a3f", -- Character-level insertions
+				char_delete = "#7a2e33", -- Character-level deletions
 
 				-- Brightness multiplier (only used when char_insert/char_delete are nil)
 				-- nil = auto-detect based on background (1.4 for dark, 0.92 for light)
