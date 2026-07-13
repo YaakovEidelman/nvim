@@ -44,9 +44,13 @@ for this config will work properly.
 1. Clone this repo to `~/AppData/Local/nvim` (Windows) or `~/.config/nvim` (Linux/macOS).
 2. Start `nvim` — lazy.nvim bootstraps itself and installs plugins.
 3. Run `:Lazy restore` to pin all plugins to the committed `lazy-lock.json`.
-4. Open `:Mason` and install the non-LSP tools (the `ensure_installed` list in
-   `lua/plugins/mason.lua` documents what's expected, but mason.nvim does not
-   auto-install it — LSP servers via mason-lspconfig are the only automatic part):
+4. Install the non-LSP tools by hand. mason.nvim does **not** auto-install these
+   (only LSP servers, via mason-lspconfig, install automatically). Run:
+
+   ```
+   :MasonInstall black prettier stylua clang-format shfmt csharpier debugpy codelldb netcoredbg postgres-language-server
+   ```
+
    - Formatters: `black`, `prettier`, `stylua`, `clang-format`, `shfmt`, `csharpier`
    - Debug adapters: `debugpy`, `codelldb`, `netcoredbg`
    - Other: `postgres-language-server`

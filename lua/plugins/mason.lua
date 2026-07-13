@@ -6,18 +6,6 @@ return {
                 "github:mason-org/mason-registry",
                 "github:Crashdummyy/mason-registry",
             },
-            ensure_installed = {
-                "black",
-                "debugpy",
-                "prettier",
-                "stylua",
-                "clang-format",
-                "shfmt",
-                "csharpier",
-                "codelldb",
-                "netcoredbg",
-                "postgres-language-server"
-            }
         },
 	},
 	{
