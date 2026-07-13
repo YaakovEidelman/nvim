@@ -32,13 +32,11 @@ return {
 						return
 					end
 
-					if vim.tbl_contains(ts.get_installed(), lang) then
+					if vim.tbl_contains(ts.get_available(), lang) then
 						vim.treesitter.start(args.buf, lang)
 					else
-						-- Parser missing: install it, then start highlighting
-						-- if the buffer is still around (mirrors auto_install)
 						ts.install(lang):await(function()
-							if vim.api.nvim_buf_is_valid(args.buf) and vim.tbl_contains(ts.get_installed(), lang) then
+							if vim.api.nvim_buf_is_valid(args.buf) and vim.tbl_contains(ts.get_available(), lang) then
 								vim.treesitter.start(args.buf, lang)
 							end
 						end)
