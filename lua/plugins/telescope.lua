@@ -14,6 +14,7 @@ return {
 			local Telescope = require("telescope")
 			local actions = require("telescope.actions")
 			local builtin = require("telescope.builtin")
+            local os_utils = require("utils.public.os")
 
 			Telescope.setup({
 				defaults = {
@@ -56,7 +57,7 @@ return {
 				})
 			end, { noremap = true })
 			vim.keymap.set("n", "<leader>fF", function()
-				local root = vim.fn.has("win32") == 1 and "C:\\" or "/"
+				local root = os_utils.is_windows and "C:\\" or "/"
 				builtin.find_files({
 					cwd = root,
 					hidden = true,

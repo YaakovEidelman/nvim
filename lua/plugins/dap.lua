@@ -12,6 +12,7 @@ return {
 	{
 		"mfussenegger/nvim-dap",
 		config = function()
+            local os_utils = require("utils.public.os")
 			local dap = require("dap")
 			local dap_ui_widgets = require("dap.ui.widgets")
 
@@ -34,7 +35,7 @@ return {
 				enrich_config = function(config, on_config)
 					if not config.pythonPath then
 						local venv_python
-						if is_windows then
+						if os_utils.is_windows then
 							venv_python = vim.fn.getcwd() .. "/.venv/Scripts/python.exe"
 						else
 							venv_python = vim.fn.getcwd() .. "/.venv/bin/python"
