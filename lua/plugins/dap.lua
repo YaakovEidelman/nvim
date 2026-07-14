@@ -16,17 +16,22 @@ return {
 			local dap = require("dap")
 			local dap_ui_widgets = require("dap.ui.widgets")
 
-			local is_windows = vim.fn.has("win32") == 1
-			local vim_data_path = vim.fn.stdpath("data")
+            local mason = require("utils.mason")
+			local debugpy_python = mason.resolve_bin("debugpy", "venv/Scripts/python.exe", "venv/bin/python")
+			local netcoredbg_bin = mason.resolve_bin("netcoredbg", "netcoredbg/netcoredbg.exe", "netcoredbg/netcoredbg")
+			local codelldb_bin = mason.resolve_bin("codelldb", "extension/adapter/codelldb.exe", "extension/adapter/codelldb")
 
-			local debugpy_python = vim_data_path .. "/mason/packages/debugpy/venv/bin/python"
-			local netcoredbg_bin = vim_data_path .. "/mason/packages/netcoredbg/netcoredbg"
-			local codelldb_bin = vim_data_path:gsub("\\", "/") .. "/mason/packages/codelldb/extension/adapter/codelldb"
-			if is_windows then
-				debugpy_python = vim_data_path .. "/mason/packages/debugpy/venv/Scripts/python.exe"
-				netcoredbg_bin = netcoredbg_bin .. "/netcoredbg.exe"
-				codelldb_bin = codelldb_bin .. ".exe"
-			end
+			-- old (test on linux before removing):
+			-- local is_windows = vim.fn.has("win32") == 1
+			-- local vim_data_path = vim.fn.stdpath("data")
+			-- local debugpy_python = vim_data_path .. "/mason/packages/debugpy/venv/bin/python"
+			-- local netcoredbg_bin = vim_data_path .. "/mason/packages/netcoredbg/netcoredbg"
+			-- local codelldb_bin = vim_data_path:gsub("\\", "/") .. "/mason/packages/codelldb/extension/adapter/codelldb"
+			-- if is_windows then
+			-- 	debugpy_python = vim_data_path .. "/mason/packages/debugpy/venv/Scripts/python.exe"
+			-- 	netcoredbg_bin = netcoredbg_bin .. "/netcoredbg.exe"
+			-- 	codelldb_bin = codelldb_bin .. ".exe"
+			-- end
 
 			dap.adapters.python = {
 				type = "executable",
