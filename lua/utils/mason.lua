@@ -9,6 +9,10 @@ function M.resolve_bin(pkg, win_rel, unix_rel)
 	end
 	local ok_pkg, p = pcall(registry.get_package, pkg)
 	if not ok_pkg or not p:is_installed() then
+		vim.notify(
+			("mason: %s is not installed, run :Mason to install it"):format(pkg),
+			vim.log.levels.WARN
+		)
 		return nil
 	end
 	local full = (p:get_install_path() .. "/" .. (os_utils.is_windows and win_rel or unix_rel)):gsub("\\", "/")
