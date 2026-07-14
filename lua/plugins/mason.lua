@@ -12,16 +12,7 @@ return {
 		"mason-org/mason-lspconfig.nvim",
 		opts = {
 			automatic_enable = false,
-			ensure_installed = {
-				"lua_ls",
-                "pyright",
-				-- "vtsls",
-				"ts_ls",
-                "clangd",
-                "rust_analyzer",
-                "html",
-                "cssls",
-			},
+			ensure_installed = require("lsp.servers"),
 		},
 		dependencies = {
 			"mason-org/mason.nvim",

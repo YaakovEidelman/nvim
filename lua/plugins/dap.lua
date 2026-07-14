@@ -12,11 +12,11 @@ return {
 	{
 		"mfussenegger/nvim-dap",
 		config = function()
-            local os_utils = require("utils.public.os")
 			local dap = require("dap")
 			local dap_ui_widgets = require("dap.ui.widgets")
-
+            local os_utils = require("utils.public.os")
             local mason = require("utils.mason")
+
 			local debugpy_python = mason.resolve_bin("debugpy", "venv/Scripts/python.exe", "venv/bin/python")
 			local netcoredbg_bin = mason.resolve_bin("netcoredbg", "netcoredbg/netcoredbg.exe", "netcoredbg/netcoredbg")
 			local codelldb_bin = mason.resolve_bin("codelldb", "extension/adapter/codelldb.exe", "extension/adapter/codelldb")

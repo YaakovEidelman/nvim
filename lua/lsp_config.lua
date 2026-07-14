@@ -1,15 +1,4 @@
-local enabled_servers = {
-    -- "vtsls",
-    "ts_ls",
-    "pyright",
-    -- "roslyn",
-    "lua_ls",
-    "clangd",
-    "rust_analyzer",
-    "html",
-    "cssls",
-    "postgres_lsp",
-}
+local enabled_servers = require("lsp.servers")
 local ok, blink = pcall(require, 'blink.cmp')
 vim.lsp.config('*', {
     capabilities = ok and blink.get_lsp_capabilities() or vim.lsp.protocol.make_client_capabilities(),
