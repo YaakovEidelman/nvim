@@ -18,7 +18,7 @@ return {
             local mason = require("utils.mason")
 
 			local debugpy_python = mason.resolve_bin("debugpy", "venv/Scripts/python.exe", "venv/bin/python")
-			local netcoredbg_bin = mason.resolve_bin("netcoredbg", "netcoredbg/netcoredbg.exe", "netcoredbg/netcoredbg")
+			local netcoredbg_bin = mason.resolve_bin("netcoredbg", "netcoredbg/netcoredbg.exe", "netcoredbg")
 			local codelldb_bin = mason.resolve_bin("codelldb", "extension/adapter/codelldb.exe", "extension/adapter/codelldb")
 
 			-- old (test on linux before removing):
