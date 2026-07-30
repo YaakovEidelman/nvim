@@ -28,9 +28,37 @@ for this config will work properly.
 
 ### Build tools for plugins
 
-| Tool | Why |
+`telescope-fzf-native` is an optional native fuzzy matcher. Its build command is
+chosen automatically per OS, and it's fully optional — if the toolchain is
+missing, Telescope falls back to its built-in Lua sorter and shows a one-time,
+non-blocking notification telling you what to install for the faster matcher.
+
+| OS | Build needs |
 |------|-----|
-| **make** (or MinGW on Windows) | `telescope-fzf-native` builds with `make` as currently configured. On Windows, without make the build fails and the fzf extension won't load (known issue — cmake-based build is the fix, pending). |
+| **Windows** | CMake + a C compiler (MSVC Build Tools). Build runs `cmake ... --build ... --install ...`. |
+| **Linux / macOS** | `make` + a C compiler (gcc/clang). |
+
+After installing the toolchain, run `:Lazy build telescope-fzf-native.nvim` to
+compile it.
+
+**Windows rebuild gotcha.** The first build (fresh install, before Telescope
+loads) works from inside Neovim. But once nvim has loaded the fzf extension it
+holds `build/libfzf.dll` open, and Windows won't let the linker overwrite a
+loaded DLL — so a later `:Lazy build` fails with
+`cannot open output file libfzf.dll: Permission denied`. That's a file lock, not
+a toolchain problem. To rebuild: **close all Neovim instances**, then run it from
+a terminal (e.g. msys2, which already has `make`/`cmake`):
+
+```
+cd /c/Users/yeide/AppData/Local/nvim-data/lazy/telescope-fzf-native.nvim
+rm -rf build
+cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release
+cmake --build build --config Release
+cmake --install build --prefix build
+```
+
+If it still fails with a fresh nvim closed, check for stray processes
+(`Get-Process nvim`) or antivirus briefly locking the new `.dll`.
 
 ### Optional
 
