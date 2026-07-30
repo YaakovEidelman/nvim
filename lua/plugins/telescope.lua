@@ -1,3 +1,5 @@
+local os_utils = require("utils.public.os")
+
 return {
 	{
 		"nvim-telescope/telescope.nvim",
@@ -7,14 +9,15 @@ return {
 			"nvim-lua/plenary.nvim",
 			{
 				"nvim-telescope/telescope-fzf-native.nvim",
-				build = "make",
+				build = os_utils.is_windows
+						and "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build"
+					or "make",
 			},
 		},
 		config = function()
 			local Telescope = require("telescope")
 			local actions = require("telescope.actions")
 			local builtin = require("telescope.builtin")
-            local os_utils = require("utils.public.os")
 
 			Telescope.setup({
 				defaults = {
@@ -48,7 +51,19 @@ return {
 				},
 			})
 
-			Telescope.load_extension("fzf")
+			if not pcall(Telescope.load_extension, "fzf") then
+				local deps = os_utils.is_windows and "CMake and a C compiler (e.g. Visual Studio Build Tools)"
+					or "make and a C compiler (gcc/clang)"
+				vim.schedule(function()
+					vim.notify(
+						"Telescope: using the built-in Lua sorter. For faster fuzzy matching, install "
+							.. deps
+							.. ", then run :Lazy build telescope-fzf-native.nvim",
+						vim.log.levels.INFO,
+						{ title = "telescope-fzf-native" }
+					)
+				end)
+			end
 			require("utils.multigrep").setup()
 
 			vim.keymap.set("n", "<leader>ff", function()
