@@ -38,18 +38,17 @@ findable is `desc`, not file layout.
 
 ## Remaining
 
-- [ ] **nvim-dap** (`plugins/dap.lua`) — the big one. 13 bindings, currently built from a
-      `{ mode, lhs, rhs, desc }` table plus a `for` loop; that table becomes the `keys`
-      spec almost verbatim, so item 6 from `TODO.md` dies with it. Descriptions already
-      follow the convention. Careful: `<leader>dt` calls `require("dapui")` and `<leader>da`
-      builds a `dap.run` config inline. The adapter definitions and sign/highlight setup
-      must stay in `config`.
-
 - [ ] **persistent-breakpoints** (`plugins/persistent-breakpoints.lua`) — `<leader>bp`,
       no `desc` today. Needs `event = "BufReadPost"` regardless, because `auto_load` has to
       restore saved breakpoints without a keypress; the `keys` entry is then for locality
       and discoverability, and lazy handles both triggers. Drop the bare `require("dap")`
       and the four commented-out example mappings.
+
+      **Also blocks nvim-dap from ever lazy-loading.** It declares nvim-dap as a dependency
+      and has no trigger of its own, so it drags dap in at startup. Same for
+      **nvim-dap-ui** (`plugins/nvim-dap-ui.lua`), which is eager for the same reason. Until
+      both are converted, dap's `keys` spec buys locality and descriptions but no startup
+      win. nvim-dap-ui only needs to load when `<leader>dt` is pressed or a session starts.
 
 - [ ] **vim-dadbod / dadbod-ui** (`plugins/nvim-dadbod.lua`) — fixes item 3 from `TODO.md`
       at the same time. `<leader>eq` (visual, execute selection) currently never gets bound
@@ -63,7 +62,8 @@ findable is `desc`, not file layout.
 
 - [ ] **overseer** (`plugins/dap.lua`) — has no bindings at all right now; tasks are only
       reachable by typing `:OverseerRun`. Worth adding `cmd = { "OverseerRun", "OverseerToggle" }`
-      and a described binding while passing through.
+      and a described binding while passing through. Note nvim-dap's `config` ends with
+      `require("overseer").enable_dap()`, so overseer must be loadable at that point.
 
 ## Then: backfill `keymaps.lua`
 

@@ -11,9 +11,75 @@ return {
   },
   {
     "mfussenegger/nvim-dap",
+    cmd = { "DapNew", "DapEval", "DapShowLog", "DapClearBreakpoints" },
+    keys = {
+      { "<leader>dc", "<cmd>DapContinue<cr>", desc = "Debug: start/continue" },
+      {
+        "<leader>da",
+        function()
+          require("dap").run({
+            type = "coreclr",
+            request = "attach",
+            name = "Attach debugger",
+            processId = require("dap.utils").pick_process,
+          })
+        end,
+        desc = "Debug: attach to process",
+      },
+      {
+        "<leader>dR",
+        function()
+          require("dap").restart()
+        end,
+        desc = "Debug: restart",
+      },
+      { "<leader>dq", "<cmd>DapTerminate<cr>", desc = "Debug: stop" },
+      { "<leader>dn", "<cmd>DapStepOver<cr>", desc = "Debug: step over" },
+      { "<leader>di", "<cmd>DapStepInto<cr>", desc = "Debug: step into" },
+      { "<leader>do", "<cmd>DapStepOut<cr>", desc = "Debug: step out" },
+      { "<leader>dr", "<cmd>DapToggleRepl<cr>", desc = "Debug: toggle repl" },
+      {
+        "<leader>dh",
+        function()
+          require("dap.ui.widgets").hover()
+        end,
+        mode = { "n", "v" },
+        desc = "Debug: hover",
+      },
+      {
+        "<leader>dp",
+        function()
+          require("dap.ui.widgets").preview()
+        end,
+        mode = { "n", "v" },
+        desc = "Debug: preview",
+      },
+      {
+        "<leader>df",
+        function()
+          local widgets = require("dap.ui.widgets")
+          widgets.centered_float(widgets.frames)
+        end,
+        desc = "Debug: frames",
+      },
+      {
+        "<leader>ds",
+        function()
+          local widgets = require("dap.ui.widgets")
+          widgets.centered_float(widgets.scopes)
+        end,
+        desc = "Debug: scopes",
+      },
+      {
+        "<leader>dt",
+        function()
+          require("dapui").toggle()
+        end,
+        desc = "Debug: toggle UI",
+      },
+    },
     config = function()
       local dap = require("dap")
-      local dap_ui_widgets = require("dap.ui.widgets")
       local os_utils = require("utils.public.os")
       local mason = require("utils.mason")
 
@@ -95,15 +161,6 @@ return {
       -- 	},
       -- }
 
-      vim.keymap.set("n", "<leader>da", function()
-        dap.run({
-          type = "coreclr",
-          request = "attach",
-          name = "Attach debugger",
-          processId = require("dap.utils").pick_process,
-        })
-      end)
-
       local function set_dap_highlights()
         vim.api.nvim_set_hl(0, "DapBreakpointColor", { fg = "#FF0000" })
         vim.api.nvim_set_hl(0, "DapStopped", { fg = "#ffe032" })
@@ -125,56 +182,6 @@ return {
         texthl = "DapStopped",
         linehl = "DapStoppedLine",
       })
-
-      local keymaps = {
-        { mode = "n", lhs = "<leader>dc", rhs = dap.continue, desc = "Debug: start/continue" },
-        { mode = "n", lhs = "<leader>dR", rhs = dap.restart, desc = "Debug: restart" },
-        { mode = "n", lhs = "<leader>dq", rhs = dap.terminate, desc = "Debug: stop" },
-        { mode = "n", lhs = "<leader>dn", rhs = dap.step_over, desc = "Debug: step over" },
-        { mode = "n", lhs = "<leader>di", rhs = dap.step_into, desc = "Debug: step into" },
-        { mode = "n", lhs = "<leader>do", rhs = dap.step_out, desc = "Debug: step out" },
-        { mode = "n", lhs = "<leader>dr", rhs = dap.repl.toggle, desc = "Debug: toggle repl" },
-        {
-          mode = { "n", "v" },
-          lhs = "<leader>dh",
-          rhs = dap_ui_widgets.hover,
-          desc = "Debug: hover",
-        },
-        {
-          mode = { "n", "v" },
-          lhs = "<leader>dp",
-          rhs = dap_ui_widgets.preview,
-          desc = "Debug: preview",
-        },
-        {
-          mode = "n",
-          lhs = "<leader>df",
-          rhs = function()
-            dap_ui_widgets.centered_float(dap_ui_widgets.frames)
-          end,
-          desc = "Debug: frames",
-        },
-        {
-          mode = "n",
-          lhs = "<leader>ds",
-          rhs = function()
-            dap_ui_widgets.centered_float(dap_ui_widgets.scopes)
-          end,
-          desc = "Debug: scopes",
-        },
-        {
-          mode = "n",
-          lhs = "<leader>dt",
-          rhs = function()
-            require("dapui").toggle()
-          end,
-          desc = "Debug: toggle UI",
-        },
-      }
-
-      for _, m in ipairs(keymaps) do
-        vim.keymap.set(m.mode, m.lhs, m.rhs, { desc = m.desc })
-      end
 
       require("overseer").enable_dap()
     end,
