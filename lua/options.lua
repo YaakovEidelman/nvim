@@ -19,7 +19,6 @@ vim.opt.foldenable = true
 vim.opt.foldcolumn = "auto"
 vim.opt.foldtext = ""
 
-
 vim.opt.swapfile = false
 
 -- vim.opt.autocomplete = true
@@ -33,17 +32,17 @@ vim.opt.updatetime = 300
 
 vim.cmd.colorscheme("lunaperche")
 local function set_ui_highlights()
-	vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-	vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
-	vim.api.nvim_set_hl(0, "LspReferenceText",  { bg = "#2d5986" })
-	vim.api.nvim_set_hl(0, "LspReferenceRead",  { bg = "#2d5986" })
-	vim.api.nvim_set_hl(0, "LspReferenceWrite", { bg = "#2d5986", underline = true })
+  vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+  vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+  vim.api.nvim_set_hl(0, "LspReferenceText", { bg = "#2d5986" })
+  vim.api.nvim_set_hl(0, "LspReferenceRead", { bg = "#2d5986" })
+  vim.api.nvim_set_hl(0, "LspReferenceWrite", { bg = "#2d5986", underline = true })
 end
 
 set_ui_highlights()
 vim.api.nvim_create_autocmd("ColorScheme", {
-	pattern = "*",
-	callback = set_ui_highlights,
+  pattern = "*",
+  callback = set_ui_highlights,
 })
 
 vim.g.netrw_winsize = 20
@@ -54,4 +53,3 @@ vim.g.netrw_altv = 1
 vim.g.omni_sql_no_default_maps = 1
 
 vim.opt.diffopt:append("vertical")
-

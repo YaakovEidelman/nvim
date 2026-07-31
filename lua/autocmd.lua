@@ -1,10 +1,10 @@
 -- Highlight when yanking text
 vim.api.nvim_create_autocmd("TextYankPost", {
-	desc = "Highlight when yanking (copying) text",
-	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
-	callback = function()
-        vim.hl.on_yank()
-	end,
+  desc = "Highlight when yanking (copying) text",
+  group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+  callback = function()
+    vim.hl.on_yank()
+  end,
 })
 
 -- Add all diagnostics to quick fix list
@@ -21,11 +21,11 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 -- Redraw the statusline while a language server reports indexing progress
 vim.api.nvim_create_autocmd("LspProgress", {
-	group = vim.api.nvim_create_augroup("lsp-progress", { clear = true }),
-	desc = "Refresh statusline on LSP progress",
-	callback = function()
-		vim.cmd("redrawstatus")
-	end,
+  group = vim.api.nvim_create_augroup("lsp-progress", { clear = true }),
+  desc = "Refresh statusline on LSP progress",
+  callback = function()
+    vim.cmd("redrawstatus")
+  end,
 })
 
 -- netrw keybindings
@@ -33,19 +33,19 @@ vim.api.nvim_create_autocmd("LspProgress", {
 -- inside NetrwMaps() which fires after the FileType event. Scheduling ensures our maps
 -- are applied last and actually stick.
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = "netrw",
-	group = vim.api.nvim_create_augroup("netrw-fixes", { clear = true }),
-	desc = "Better mappings for Netrw",
-	callback = function()
-		vim.schedule(function()
-			local bind = function(lhs, rhs)
-				vim.keymap.set("n", lhs, rhs, { noremap = true, buffer = true, nowait = true })
-			end
+  pattern = "netrw",
+  group = vim.api.nvim_create_augroup("netrw-fixes", { clear = true }),
+  desc = "Better mappings for Netrw",
+  callback = function()
+    vim.schedule(function()
+      local bind = function(lhs, rhs)
+        vim.keymap.set("n", lhs, rhs, { noremap = true, buffer = true, nowait = true })
+      end
 
-			bind("<C-h>", "<C-w>h")
-			bind("<C-j>", "<C-w>j")
-			bind("<C-k>", "<C-w>k")
-			bind("<C-l>", "<C-w>l")
-		end)
-	end,
+      bind("<C-h>", "<C-w>h")
+      bind("<C-j>", "<C-w>j")
+      bind("<C-k>", "<C-w>k")
+      bind("<C-l>", "<C-w>l")
+    end)
+  end,
 })

@@ -21,23 +21,33 @@ vim.keymap.set("v", "<", "<gv")
 
 -- File explorer (netrw)
 -- vim.keymap.set("n", "<leader>e", "<cmd>Lexplore! %:p:h<cr>", { desc = "Toggle file explorer (current file)" })
-vim.keymap.set("n", "<leader>e", "<cmd>Explore<cr>", { desc = "Toggle file explorer (current file)" })
+vim.keymap.set(
+  "n",
+  "<leader>e",
+  "<cmd>Explore<cr>",
+  { desc = "Toggle file explorer (current file)" }
+)
 
 -- Open file explorer at ~/.config/nvim
 vim.keymap.set("n", "<leader>con", function()
-	local config_path = vim.fn.stdpath("config")
-	vim.cmd.edit(config_path)
+  local config_path = vim.fn.stdpath("config")
+  vim.cmd.edit(config_path)
 end, { desc = "Edit Nvim config directory" })
 
 -- LSP format the buffer/file
 vim.keymap.set("n", "<M-F>", function()
-	require("conform").format()
+  require("conform").format()
 end)
 
 vim.keymap.set("n", "<leader>tn", ":tabnew<cr>")
 
 vim.keymap.set("i", "<C-bs>", "<C-w>", { desc = "Delete previous word", noremap = true })
-vim.keymap.set("i", "<C-H>", "<C-w>", { desc = "Delete previous word (Windows/WSL)", noremap = true })
+vim.keymap.set(
+  "i",
+  "<C-H>",
+  "<C-w>",
+  { desc = "Delete previous word (Windows/WSL)", noremap = true }
+)
 
 vim.keymap.set("t", "<C-e>", [[<C-\><C-n>]], { noremap = true, silent = true })
 
@@ -52,25 +62,32 @@ vim.keymap.set("n", "<leader>bn", ":bn<cr>", { desc = "Go to next buffer" })
 vim.keymap.set("n", "<leader>ya", ":%y<cr>", { desc = "Copy full page" })
 
 vim.keymap.set("n", "<leader>gd", function()
-	if vim.fn.executable("code") == 0 then
-		vim.notify("VSCode not found — install it at https://code.visualstudio.com/download", vim.log.levels.WARN)
-		return
-	end
-	vim.fn.jobstart({ "code", "." })
+  if vim.fn.executable("code") == 0 then
+    vim.notify(
+      "VSCode not found — install it at https://code.visualstudio.com/download",
+      vim.log.levels.WARN
+    )
+    return
+  end
+  vim.fn.jobstart({ "code", "." })
 end, { desc = "Open folder in vscode" })
 
 vim.keymap.set("n", "<leader>cc", function()
-	vim.fn.setreg('+', '')
-	vim.fn.setreg('*', '')
+  vim.fn.setreg("+", "")
+  vim.fn.setreg("*", "")
 end, { desc = "Clear clipboard" })
 
-vim.keymap.set("n", "<leader>lr", "<cmd>lsp restart<cr>", { desc = "Restart LSP clients for this buffer" })
+vim.keymap.set(
+  "n",
+  "<leader>lr",
+  "<cmd>lsp restart<cr>",
+  { desc = "Restart LSP clients for this buffer" }
+)
 
 vim.keymap.set("n", "<leader>lt", function()
-	if vim.fn.exists(":Roslyn") == 0 then
-		vim.notify("Roslyn is not loaded in this buffer", vim.log.levels.WARN)
-		return
-	end
-	vim.cmd("Roslyn target")
+  if vim.fn.exists(":Roslyn") == 0 then
+    vim.notify("Roslyn is not loaded in this buffer", vim.log.levels.WARN)
+    return
+  end
+  vim.cmd("Roslyn target")
 end, { desc = "Pick the Roslyn solution target" })
-

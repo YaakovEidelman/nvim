@@ -1,27 +1,27 @@
 local enabled_servers = require("lsp.servers")
-local ok, blink = pcall(require, 'blink.cmp')
-vim.lsp.config('*', {
-    capabilities = ok and blink.get_lsp_capabilities() or vim.lsp.protocol.make_client_capabilities(),
-    on_attach = function(client, bufnr)
-        if client:supports_method('textDocument/inlayHint') then
-            vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-        end
+local ok, blink = pcall(require, "blink.cmp")
+vim.lsp.config("*", {
+  capabilities = ok and blink.get_lsp_capabilities() or vim.lsp.protocol.make_client_capabilities(),
+  on_attach = function(client, bufnr)
+    if client:supports_method("textDocument/inlayHint") then
+      vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+    end
 
-        if client:supports_method('textDocument/documentHighlight') then
-            local group = vim.api.nvim_create_augroup('lsp_document_highlight', { clear = false })
-            vim.api.nvim_clear_autocmds({ group = group, buffer = bufnr })
-            vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-                buffer = bufnr,
-                group = group,
-                callback = vim.lsp.buf.document_highlight,
-            })
-            vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-                buffer = bufnr,
-                group = group,
-                callback = vim.lsp.buf.clear_references,
-            })
-        end
-    end,
+    if client:supports_method("textDocument/documentHighlight") then
+      local group = vim.api.nvim_create_augroup("lsp_document_highlight", { clear = false })
+      vim.api.nvim_clear_autocmds({ group = group, buffer = bufnr })
+      vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+        buffer = bufnr,
+        group = group,
+        callback = vim.lsp.buf.document_highlight,
+      })
+      vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+        buffer = bufnr,
+        group = group,
+        callback = vim.lsp.buf.clear_references,
+      })
+    end
+  end,
 })
 
 -- vim.lsp.config("vtsls", {
@@ -43,98 +43,98 @@ vim.lsp.config('*', {
 -- })
 
 vim.lsp.config("ts_ls", {
-    filetypes = {
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact",
-    },
+  filetypes = {
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+  },
 })
 
 vim.lsp.config("pyright", {
-    cmd = { "pyright-langserver", "--stdio" },
-    filetypes = {
-        "python",
+  cmd = { "pyright-langserver", "--stdio" },
+  filetypes = {
+    "python",
+  },
+  settings = {
+    python = {
+      venvPath = ".",
+      venv = ".venv",
+      analysis = {
+        autoImportCompletions = true,
+        autoSearchPaths = true,
+        useLibraryCodeForTypes = true,
+      },
     },
-    settings = {
-        python = {
-            venvPath = ".",
-            venv = ".venv",
-            analysis = {
-                autoImportCompletions = true,
-                autoSearchPaths = true,
-                useLibraryCodeForTypes = true,
-            },
-        },
-    },
+  },
 })
 
 vim.lsp.config("lua_ls", {
-    filetypes = {
-        "lua",
+  filetypes = {
+    "lua",
+  },
+  settings = {
+    Lua = {
+      diagnostics = {
+        globals = { "vim" },
+      },
     },
-    settings = {
-        Lua = {
-            diagnostics = {
-                globals = { "vim" },
-            }
-        }
-    },
+  },
 })
 
 vim.lsp.config("clangd", {
-    filetypes = { "c", "cpp" },
+  filetypes = { "c", "cpp" },
 })
 
 vim.lsp.config("rust_analyzer", {
-    filetypes = { "rust" },
+  filetypes = { "rust" },
 })
 
 vim.lsp.config("html", {
-    filetypes = { "html" },
-    init_options = {
-        provideFormatter = false, -- defer to prettier
-    },
+  filetypes = { "html" },
+  init_options = {
+    provideFormatter = false, -- defer to prettier
+  },
 })
 
 vim.lsp.config("cssls", {
-    filetypes = { "css", "scss", "less" },
-    settings = {
-        css = {
-            lint = {
-                emptyRules = "ignore",
-            }
-        }
-    }
+  filetypes = { "css", "scss", "less" },
+  settings = {
+    css = {
+      lint = {
+        emptyRules = "ignore",
+      },
+    },
+  },
 })
 
 vim.lsp.config("postgres_lsp", {
-    cmd = { "postgres-language-server", "lsp-proxy" },
+  cmd = { "postgres-language-server", "lsp-proxy" },
 })
 
 vim.lsp.config("roslyn", {
-    settings = {
-        ["csharp|inlay_hints"] = {
-            csharp_enable_inlay_hints_for_implicit_object_creation = true,
-            csharp_enable_inlay_hints_for_implicit_variable_types = true,
-        },
-        ["csharp|code_lens"] = {
-            dotnet_enable_references_code_lens = true,
-        },
+  settings = {
+    ["csharp|inlay_hints"] = {
+      csharp_enable_inlay_hints_for_implicit_object_creation = true,
+      csharp_enable_inlay_hints_for_implicit_variable_types = true,
     },
+    ["csharp|code_lens"] = {
+      dotnet_enable_references_code_lens = true,
+    },
+  },
 })
 
 vim.lsp.enable(enabled_servers)
 
 -- LSP to show error in code window
 vim.diagnostic.config({
-    virtual_lines = false,
-    virtual_text = {
-        prefix = "●",
-    },
-    float = {
-        border = "rounded",
-        max_width = 100,
-        source = true,
-    },
+  virtual_lines = false,
+  virtual_text = {
+    prefix = "●",
+  },
+  float = {
+    border = "rounded",
+    max_width = 100,
+    source = true,
+  },
 })
