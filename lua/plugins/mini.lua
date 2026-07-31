@@ -25,7 +25,12 @@ return {
 							local names = vim.tbl_map(function(c)
 								return c.name
 							end, clients)
-							return "󰰎 " .. table.concat(names, ", ")
+							local section = "󰰎 " .. table.concat(names, ", ")
+							local progress = vim.lsp.status()
+							if progress ~= "" then
+								section = section .. " │ " .. progress
+							end
+							return section
 						end)()
 						-- local filename = vim.bo.buftype == "terminal" and "%t" or "%F%{&modified?'*':''}%r"
 						local fileinfo = statusline.section_fileinfo({ trunc_width = 120 })

@@ -19,6 +19,15 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- 	end,
 -- })
 
+-- Redraw the statusline while a language server reports indexing progress
+vim.api.nvim_create_autocmd("LspProgress", {
+	group = vim.api.nvim_create_augroup("lsp-progress", { clear = true }),
+	desc = "Refresh statusline on LSP progress",
+	callback = function()
+		vim.cmd("redrawstatus")
+	end,
+})
+
 -- netrw keybindings
 -- vim.schedule is required: netrw sets its own buffer-local maps (e.g. <C-l> for refresh)
 -- inside NetrwMaps() which fires after the FileType event. Scheduling ensures our maps

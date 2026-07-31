@@ -64,3 +64,13 @@ vim.keymap.set("n", "<leader>cc", function()
 	vim.fn.setreg('*', '')
 end, { desc = "Clear clipboard" })
 
+vim.keymap.set("n", "<leader>lr", "<cmd>lsp restart<cr>", { desc = "Restart LSP clients for this buffer" })
+
+vim.keymap.set("n", "<leader>lt", function()
+	if vim.fn.exists(":Roslyn") == 0 then
+		vim.notify("Roslyn is not loaded in this buffer", vim.log.levels.WARN)
+		return
+	end
+	vim.cmd("Roslyn target")
+end, { desc = "Pick the Roslyn solution target" })
+
