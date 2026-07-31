@@ -129,8 +129,3 @@ different trees.
   `map(mode, lhs, rhs, desc)` helper would keep the file scannable as what it is: a table
   of bindings.
 
-## Notes
-
-- `codediff.nvim`: `explorer.position = "left"` is kept explicitly even though it matches
-  the plugin default, because there is an open PR to allow `"right"` and it should be
-  flipped once that merges.
