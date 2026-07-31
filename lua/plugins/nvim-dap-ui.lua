@@ -5,6 +5,15 @@ return {
       "mfussenegger/nvim-dap",
       "nvim-neotest/nvim-nio",
     },
+    keys = {
+      {
+        "<leader>dt",
+        function()
+          require("dapui").toggle()
+        end,
+        desc = "Debug: toggle UI",
+      },
+    },
     config = function()
       local dapui = require("dapui")
       dapui.setup()

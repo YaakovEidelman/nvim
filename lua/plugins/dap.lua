@@ -70,13 +70,6 @@ return {
         end,
         desc = "Debug: scopes",
       },
-      {
-        "<leader>dt",
-        function()
-          require("dapui").toggle()
-        end,
-        desc = "Debug: toggle UI",
-      },
     },
     config = function()
       local dap = require("dap")

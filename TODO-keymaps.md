@@ -38,18 +38,6 @@ findable is `desc`, not file layout.
 
 ## Remaining
 
-- [ ] **persistent-breakpoints** (`plugins/persistent-breakpoints.lua`) — `<leader>bp`,
-      no `desc` today. Needs `event = "BufReadPost"` regardless, because `auto_load` has to
-      restore saved breakpoints without a keypress; the `keys` entry is then for locality
-      and discoverability, and lazy handles both triggers. Drop the bare `require("dap")`
-      and the four commented-out example mappings.
-
-      **Also blocks nvim-dap from ever lazy-loading.** It declares nvim-dap as a dependency
-      and has no trigger of its own, so it drags dap in at startup. Same for
-      **nvim-dap-ui** (`plugins/nvim-dap-ui.lua`), which is eager for the same reason. Until
-      both are converted, dap's `keys` spec buys locality and descriptions but no startup
-      win. nvim-dap-ui only needs to load when `<leader>dt` is pressed or a session starts.
-
 - [ ] **vim-dadbod / dadbod-ui** (`plugins/nvim-dadbod.lua`) — fixes item 3 from `TODO.md`
       at the same time. `<leader>eq` (visual, execute selection) currently never gets bound
       because vim-dadbod is `lazy = true` with no trigger, so its `config` never runs.
@@ -77,6 +65,14 @@ adding, so the file reads as one scannable table of bindings instead of stylua-w
 six-line calls.
 
 ## Open decisions
+
+- **dap-ui auto-open is now load-gated.** nvim-dap-ui loads only on `<leader>dt`. The three
+  `dap.listeners` in its config have commented-out bodies, so nothing auto-opens today and
+  this is fine. But if you ever uncomment `dapui.open()` in `event_initialized`, it will not
+  fire — dap-ui won't be loaded when a session starts. To get auto-open back, dap-ui needs
+  to load with dap (move the listeners into nvim-dap's `config`, or drop the `keys` trigger).
+
+
 
 - **mini.clue** — ships inside the mini.nvim already installed (`lua/mini/clue.lua`), so it
   costs zero new plugins. Press `<leader>`, get a window listing every continuation with
