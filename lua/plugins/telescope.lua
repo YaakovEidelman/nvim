@@ -5,6 +5,32 @@ return {
     "nvim-telescope/telescope.nvim",
     -- branch = "master",
     version = "*",
+    cmd = "Telescope",
+    keys = {
+      { "<leader>ff", "<cmd>Telescope find_files hidden=true<cr>", desc = "Find: files" },
+      {
+        "<leader>fF",
+        function()
+          require("telescope.builtin").find_files({
+            cwd = os_utils.is_windows and "C:\\" or "/",
+            hidden = true,
+          })
+        end,
+        desc = "Find: files from filesystem root",
+      },
+      {
+        "<leader>fg",
+        function()
+          require("utils.multigrep").live_multigrep()
+        end,
+        desc = "Find: grep (pattern<space><space>glob)",
+      },
+      { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Find: buffers" },
+      { "<leader>fd", "<cmd>Telescope diagnostics<cr>", desc = "Find: diagnostics" },
+      { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Find: help tags" },
+      { "<leader>bi", "<cmd>Telescope builtin<cr>", desc = "Find: telescope pickers" },
+      { "grr", "<cmd>Telescope lsp_references<cr>", desc = "Find: LSP references" },
+    },
     dependencies = {
       "nvim-lua/plenary.nvim",
       {
@@ -16,22 +42,12 @@ return {
     },
     config = function()
       local Telescope = require("telescope")
-      local actions = require("telescope.actions")
-      local builtin = require("telescope.builtin")
 
       Telescope.setup({
         defaults = {
           preview = {
             treesitter = false,
           },
-          -- mappings = {
-          -- 	i = {
-          -- 		["<CR>"] = actions.select_tab,
-          -- 	},
-          -- 	n = {
-          -- 		["<CR>"] = actions.select_tab,
-          -- 	},
-          -- },
         },
         pickers = {
           buffers = { theme = "ivy", previewer = false },
@@ -65,45 +81,6 @@ return {
           )
         end)
       end
-      require("utils.multigrep").setup()
-
-      vim.keymap.set("n", "<leader>ff", function()
-        builtin.find_files({
-          hidden = true,
-        })
-      end, { noremap = true })
-      vim.keymap.set("n", "<leader>fF", function()
-        local root = os_utils.is_windows and "C:\\" or "/"
-        builtin.find_files({
-          cwd = root,
-          hidden = true,
-        })
-      end, { noremap = true, desc = "Find files from root (global)" })
-      vim.keymap.set("n", "<leader>fb", function()
-        builtin.buffers()
-      end, { noremap = true })
-      vim.keymap.set("n", "<leader>fh", function()
-        builtin.help_tags()
-      end, { noremap = true })
-      vim.keymap.set("n", "<leader>bi", function()
-        builtin.builtin()
-      end, { noremap = true })
-      vim.keymap.set("n", "<leader>fd", function()
-        builtin.diagnostics()
-      end, { noremap = true })
-      vim.keymap.set("n", "grr", function()
-        builtin.lsp_references()
-      end, { noremap = true })
-      -- vim.keymap.set("n", "<leader>en", function()
-      --   builtin.find_files({
-      --     cwd = vim.fn.stdpath("config"),
-      --   })
-      -- end)
-      -- vim.keymap.set("n", "<leader>ep", function()
-      --   builtin.find_files({
-      --     cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy"),
-      --   })
-      -- end)
     end,
   },
 }

@@ -6,12 +6,12 @@ local themes = require("telescope.themes")
 
 local M = {}
 
-local live_multigrep = function(opts)
+function M.live_multigrep(opts)
   opts = opts or {}
   opts = themes.get_ivy(opts)
   opts.cwd = opts.cwd or vim.uv.cwd()
 
-  local finders = finders.new_async_job({
+  local finder = finders.new_async_job({
     command_generator = function(prompt)
       if not prompt or prompt == "" then
         return nil
@@ -52,15 +52,11 @@ local live_multigrep = function(opts)
     .new(opts, {
       debounce = 100,
       prompt_title = "Multi Grep",
-      finder = finders,
+      finder = finder,
       previewer = conf.grep_previewer(opts),
       sorter = require("telescope.sorters").empty(),
     })
     :find()
-end
-
-M.setup = function()
-  vim.keymap.set("n", "<leader>fg", live_multigrep)
 end
 
 return M
