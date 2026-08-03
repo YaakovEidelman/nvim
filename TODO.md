@@ -9,23 +9,9 @@ mini.clue is set up in `plugins/mini.lua` (`<Leader>`, `g`, `z`, `<C-w>`, `"`, i
 Still eager by necessity, not oversight: overseer (nvim-dap's `config` calls
 `require("overseer").enable_dap()`), mini.nvim (statusline + clue), mason-lspconfig,
 persistent-breakpoints (`BufReadPost`, so saved breakpoints load with the file).
-indent-blankline is covered by item 2.
+indent-blankline is covered by item 1.
 
-## 1. LSP config is split across three files
-
-`lsp/servers.lua` holds the server names, `lsp_config.lua` holds their settings,
-`plugins/mason.lua` re-requires the names for `ensure_installed`. Adding a server is a
-two-file edit.
-
-One table keyed by server name (`{ pyright = {...}, cssls = {...} }`) gives
-`ensure_installed = vim.tbl_keys(servers)`, a loop calling `vim.lsp.config`, and
-`vim.lsp.enable(vim.tbl_keys(servers))` from one place.
-
-Clearest symptom of the current split: roslyn's settings sit in `lsp_config.lua` while
-roslyn is commented out of `servers.lua` and actually enabled by roslyn.nvim. Those
-settings belong in `plugins/roslyn.lua`.
-
-## 2. Dead code that looks alive
+## 1. Dead code that looks alive
 
 - `plugins/nvim-dap-ui.lua` registers three dap listeners whose bodies are entirely
   commented out — it installs three no-ops. Note before touching them: dap-ui now loads only
@@ -39,7 +25,7 @@ settings belong in `plugins/roslyn.lua`.
   collapses to just the plugin name.
 - `plugins/telescope.lua`: `extensions = { fzf = {} }` is a no-op.
 
-## 3. `plugins/mini.lua`
+## 2. `plugins/mini.lua`
 
 - `local pairs = require("mini.pairs")` shadows Lua's builtin `pairs`. Harmless as written
   since nothing iterates afterward, but a trap.
@@ -47,13 +33,13 @@ settings belong in `plugins/roslyn.lua`.
   `(function() ... end)()` — the most opaque construct in the config. A named
   `local function lsp_section()` above the `active` callback says the same thing readably.
 
-## 4. `utils/public/os.lua`
+## 3. `utils/public/os.lua`
 
 A directory named `public` implies a private counterpart that does not exist. It holds one
 file with one line: `vim.fn.has("win32") == 1`. Three files require it. Flatten to
 `utils/os.lua`.
 
-## 5. The overseer template is invisible magic
+## 4. The overseer template is invisible magic
 
 `lua/overseer/template/vscode_tasks.lua` works only because overseer scans every
 `lua/overseer/template/` directory on the runtimepath. Nothing outside that file hints at
@@ -63,7 +49,7 @@ It is also one of two files named `vscode_tasks` — `utils/vscode_tasks.lua` is
 used by nothing else, so one feature is split across two identically-named files in
 different trees.
 
-## 6. Smaller things
+## 5. Smaller things
 
 - The reapply-highlights-on-`ColorScheme` pattern appears twice with the same shape, in
   `options.lua` (`set_ui_highlights`) and `plugins/dap.lua` (`set_dap_highlights`).

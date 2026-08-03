@@ -16,6 +16,7 @@ return {
         position = "left",
         initial_focus = "modified",
         focus_on_select = true,
+        width = 30,
       },
     },
   },

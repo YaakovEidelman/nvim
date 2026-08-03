@@ -12,7 +12,7 @@ return {
     "mason-org/mason-lspconfig.nvim",
     opts = {
       automatic_enable = false,
-      ensure_installed = require("lsp.servers"),
+      ensure_installed = vim.tbl_keys(require("lsp.servers")),
     },
     dependencies = {
       "mason-org/mason.nvim",

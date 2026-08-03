@@ -1,4 +1,4 @@
-local enabled_servers = require("lsp.servers")
+local servers = require("lsp.servers")
 local ok, blink = pcall(require, "blink.cmp")
 vim.lsp.config("*", {
   capabilities = ok and blink.get_lsp_capabilities() or vim.lsp.protocol.make_client_capabilities(),
@@ -24,67 +24,11 @@ vim.lsp.config("*", {
   end,
 })
 
--- vim.lsp.config("vtsls", {
---     filetypes = {
---         "javascript",
---         "javascriptreact",
---         "typescript",
---         "typescriptreact",
---     },
---     settings = {
---         typescript = {
---             updateImportsOnFileMove = { enabled = "always" },
---             suggest = { completeFunctionCalls = true },
---         },
---         javascript = {
---             updateImportsOnFileMove = { enabled = "always" },
---         },
---     },
--- })
+for name, config in pairs(servers) do
+  vim.lsp.config(name, config)
+end
 
-vim.lsp.config("pyright", {
-  settings = {
-    python = {
-      venvPath = ".",
-      venv = ".venv",
-      analysis = {
-        autoImportCompletions = true,
-        autoSearchPaths = true,
-        useLibraryCodeForTypes = true,
-      },
-    },
-  },
-})
-
-vim.lsp.config("html", {
-  init_options = {
-    provideFormatter = false, -- defer to prettier
-  },
-})
-
-vim.lsp.config("cssls", {
-  settings = {
-    css = {
-      lint = {
-        emptyRules = "ignore",
-      },
-    },
-  },
-})
-
-vim.lsp.config("roslyn", {
-  settings = {
-    ["csharp|inlay_hints"] = {
-      csharp_enable_inlay_hints_for_implicit_object_creation = true,
-      csharp_enable_inlay_hints_for_implicit_variable_types = true,
-    },
-    ["csharp|code_lens"] = {
-      dotnet_enable_references_code_lens = true,
-    },
-  },
-})
-
-vim.lsp.enable(enabled_servers)
+vim.lsp.enable(vim.tbl_keys(servers))
 
 -- LSP to show error in code window
 vim.diagnostic.config({
