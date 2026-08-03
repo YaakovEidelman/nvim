@@ -7,16 +7,14 @@ return {
       {
         "<leader>bp",
         function()
-          local pbapi = require("persistent-breakpoints.api")
-          pb.toggle_breakpoint()
+          require("persistent-breakpoints.api").toggle_breakpoint()
         end,
         desc = "Debug: toggle breakpoint",
       },
       {
         "<leader>bca",
         function()
-          local pbapi = require("persistent-breakpoints.api")
-          pb.clear_all_breakpoints()
+          require("persistent-breakpoints.api").clear_all_breakpoints()
         end,
         desc = "Debug: clear all breakpoints",
       },

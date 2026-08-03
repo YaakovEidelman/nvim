@@ -1,6 +1,15 @@
 return {
   "stevearc/conform.nvim",
-  event = "VeryLazy",
+  cmd = { "ConformInfo" },
+  keys = {
+    {
+      "<M-F>",
+      function()
+        require("conform").format()
+      end,
+      desc = "Format: buffer",
+    },
+  },
   config = function()
     require("conform").setup({
       formatters = {

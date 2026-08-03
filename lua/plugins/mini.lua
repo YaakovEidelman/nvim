@@ -6,6 +6,7 @@ return {
       local pairs = require("mini.pairs")
       local minigit = require("mini.git")
       local minidiff = require("mini.diff")
+      local clue = require("mini.clue")
 
       statusline.setup({
         use_icons = true,
@@ -55,6 +56,44 @@ return {
       minidiff.setup({
         view = {
           signs = { add = "▎", change = "▎", delete = "▎" },
+        },
+      })
+
+      clue.setup({
+        triggers = {
+          { mode = "n", keys = "<Leader>" },
+          { mode = "x", keys = "<Leader>" },
+          { mode = "n", keys = "g" },
+          { mode = "x", keys = "g" },
+          { mode = "n", keys = "z" },
+          { mode = "x", keys = "z" },
+          { mode = "n", keys = "<C-w>" },
+          { mode = "n", keys = '"' },
+          { mode = "x", keys = '"' },
+          { mode = "i", keys = "<C-r>" },
+        },
+        clues = {
+          clue.gen_clues.builtin_completion(),
+          clue.gen_clues.g(),
+          clue.gen_clues.registers(),
+          clue.gen_clues.windows(),
+          clue.gen_clues.z(),
+          { mode = "n", keys = "<Leader><Leader>", desc = "+source" },
+          { mode = "n", keys = "<Leader>b", desc = "+buffers/breakpoints" },
+          { mode = "n", keys = "<Leader>bc", desc = "+breakpoints clear" },
+          { mode = "n", keys = "<Leader>c", desc = "+config/clipboard" },
+          { mode = "n", keys = "<Leader>d", desc = "+debug" },
+          { mode = "n", keys = "<Leader>f", desc = "+find" },
+          { mode = "n", keys = "<Leader>g", desc = "+tools" },
+          { mode = "n", keys = "<Leader>l", desc = "+lsp" },
+          { mode = "n", keys = "<Leader>s", desc = "+sql" },
+          { mode = "n", keys = "<Leader>t", desc = "+tabs" },
+          { mode = "n", keys = "<Leader>y", desc = "+yank" },
+          { mode = "x", keys = "<Leader>e", desc = "+execute" },
+        },
+        window = {
+          delay = 200,
+          config = { width = "auto" },
         },
       })
     end,

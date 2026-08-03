@@ -1,67 +1,57 @@
+local function map(mode, lhs, rhs, desc, opts)
+  opts = vim.tbl_extend("force", { noremap = true, desc = desc }, opts or {})
+  vim.keymap.set(mode, lhs, rhs, opts)
+end
+
+local silent = { silent = true }
+
 -- Quickly source (:so) a file or line
-vim.keymap.set("n", "<leader><leader>x", "<cmd>source %<CR>", { noremap = true })
-vim.keymap.set("n", "<leader>x", ":.lua<CR>", { noremap = true })
-vim.keymap.set("v", "<leader>x", ":lua<CR>", { noremap = true })
+map("n", "<leader><leader>x", "<cmd>source %<CR>", "Lua: source this file")
+map("n", "<leader>x", ":.lua<CR>", "Lua: source this line")
+map("v", "<leader>x", ":lua<CR>", "Lua: source selection")
 
 -- Change windows with only one ctrl click
-vim.keymap.set("n", "<C-h>", "<C-w>h", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-j>", "<C-w>j", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-k>", "<C-w>k", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
+map("n", "<C-h>", "<C-w>h", "Window: focus left", silent)
+map("n", "<C-j>", "<C-w>j", "Window: focus down", silent)
+map("n", "<C-k>", "<C-w>k", "Window: focus up", silent)
+map("n", "<C-l>", "<C-w>l", "Window: focus right", silent)
 
 -- Move lines up or down using the alt key, like in vscode
-vim.keymap.set("n", "<M-j>", ":m .+1<CR>==", { noremap = true, silent = true })
-vim.keymap.set("n", "<M-k>", ":m .-2<CR>==", { noremap = true, silent = true })
-vim.keymap.set("v", "<M-j>", ":m '>+1<CR>gv=gv", { noremap = true, silent = true })
-vim.keymap.set("v", "<M-k>", ":m '<-2<CR>gv=gv", { noremap = true, silent = true })
+map("n", "<M-j>", ":m .+1<CR>==", "Edit: move line down", silent)
+map("n", "<M-k>", ":m .-2<CR>==", "Edit: move line up", silent)
+map("v", "<M-j>", ":m '>+1<CR>gv=gv", "Edit: move selection down", silent)
+map("v", "<M-k>", ":m '<-2<CR>gv=gv", "Edit: move selection up", silent)
 
 -- Rehighlight selection after indenting for vscode like experiance
-vim.keymap.set("v", ">", ">gv")
-vim.keymap.set("v", "<", "<gv")
+map("v", ">", ">gv", "Edit: indent right, keep selection")
+map("v", "<", "<gv", "Edit: indent left, keep selection")
 
 -- File explorer (netrw)
--- vim.keymap.set("n", "<leader>e", "<cmd>Lexplore! %:p:h<cr>", { desc = "Toggle file explorer (current file)" })
-vim.keymap.set(
-  "n",
-  "<leader>e",
-  "<cmd>Explore<cr>",
-  { desc = "Toggle file explorer (current file)" }
-)
+map("n", "<leader>e", "<cmd>Explore<cr>", "File: toggle explorer (current file)")
 
 -- Open file explorer at ~/.config/nvim
-vim.keymap.set("n", "<leader>con", function()
-  local config_path = vim.fn.stdpath("config")
-  vim.cmd.edit(config_path)
-end, { desc = "Edit Nvim config directory" })
+map("n", "<leader>con", function()
+  vim.cmd.edit(vim.fn.stdpath("config"))
+end, "Config: open nvim config directory")
 
--- LSP format the buffer/file
-vim.keymap.set("n", "<M-F>", function()
-  require("conform").format()
-end)
+map("n", "<leader>tn", ":tabnew<cr>", "Tab: new")
 
-vim.keymap.set("n", "<leader>tn", ":tabnew<cr>")
+map("i", "<C-bs>", "<C-w>", "Edit: delete previous word")
+map("i", "<C-H>", "<C-w>", "Edit: delete previous word (Windows/WSL)")
 
-vim.keymap.set("i", "<C-bs>", "<C-w>", { desc = "Delete previous word", noremap = true })
-vim.keymap.set(
-  "i",
-  "<C-H>",
-  "<C-w>",
-  { desc = "Delete previous word (Windows/WSL)", noremap = true }
-)
+map("t", "<C-e>", [[<C-\><C-n>]], "Terminal: exit to normal mode", silent)
 
-vim.keymap.set("t", "<C-e>", [[<C-\><C-n>]], { noremap = true, silent = true })
+map("n", "gd", vim.lsp.buf.definition, "LSP: go to definition")
+map("n", "gl", vim.diagnostic.open_float, "LSP: show diagnostic float")
 
-vim.keymap.set("n", "gd", vim.lsp.buf.definition)
-vim.keymap.set("n", "gl", vim.diagnostic.open_float, { desc = "Show diagnostic float" })
+map("n", "<leader>m", "'", "Jump: to mark", { noremap = false })
+map("n", "<leader>w", ":w<cr>", "File: save")
+map("n", "<leader>q", ":q<cr>", "File: quit")
+map("n", "<leader>bb", ":bp<cr>", "Buffer: previous")
+map("n", "<leader>bn", ":bn<cr>", "Buffer: next")
+map("n", "<leader>ya", ":%y<cr>", "Edit: yank whole buffer")
 
-vim.keymap.set("n", "<leader>m", "'", { desc = "Go to mark", noremap = false })
-vim.keymap.set("n", "<leader>w", ":w<cr>", { desc = "Save" })
-vim.keymap.set("n", "<leader>q", ":q<cr>", { desc = "Quit" })
-vim.keymap.set("n", "<leader>bb", ":bp<cr>", { desc = "Go to previous buffer" })
-vim.keymap.set("n", "<leader>bn", ":bn<cr>", { desc = "Go to next buffer" })
-vim.keymap.set("n", "<leader>ya", ":%y<cr>", { desc = "Copy full page" })
-
-vim.keymap.set("n", "<leader>gd", function()
+map("n", "<leader>gd", function()
   if vim.fn.executable("code") == 0 then
     vim.notify(
       "VSCode not found — install it at https://code.visualstudio.com/download",
@@ -70,24 +60,19 @@ vim.keymap.set("n", "<leader>gd", function()
     return
   end
   vim.fn.jobstart({ "code", "." })
-end, { desc = "Open folder in vscode" })
+end, "Tool: open folder in VS Code")
 
-vim.keymap.set("n", "<leader>cc", function()
+map("n", "<leader>cc", function()
   vim.fn.setreg("+", "")
   vim.fn.setreg("*", "")
-end, { desc = "Clear clipboard" })
+end, "Clipboard: clear")
 
-vim.keymap.set(
-  "n",
-  "<leader>lr",
-  "<cmd>lsp restart<cr>",
-  { desc = "Restart LSP clients for this buffer" }
-)
+map("n", "<leader>lr", "<cmd>lsp restart<cr>", "LSP: restart clients for this buffer")
 
-vim.keymap.set("n", "<leader>lt", function()
+map("n", "<leader>lt", function()
   if vim.fn.exists(":Roslyn") == 0 then
     vim.notify("Roslyn is not loaded in this buffer", vim.log.levels.WARN)
     return
   end
   vim.cmd("Roslyn target")
-end, { desc = "Pick the Roslyn solution target" })
+end, "LSP: pick Roslyn solution target")

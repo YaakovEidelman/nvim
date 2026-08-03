@@ -38,25 +38,29 @@ findable is `desc`, not file layout.
 
 ## Remaining
 
-- [ ] **conform** (`keymaps.lua`) — `<M-F>` calls `require("conform").format()` from
-      `keymaps.lua`, so it is a plugin binding sitting in the core file. Move to a `keys`
-      entry on the conform spec, which also lets `event = "VeryLazy"` go away.
+- [x] **conform** — `<M-F>` moved to a `keys` entry on the conform spec with
+      `desc = "Format: buffer"`. `event = "VeryLazy"` is gone; the spec now loads on that key
+      or on `:ConformInfo`.
 
-- [ ] **overseer** (`plugins/dap.lua`) — has no bindings at all right now; tasks are only
-      reachable by typing `:OverseerRun`. Worth adding `cmd = { "OverseerRun", "OverseerToggle" }`
-      and a described binding while passing through. Note nvim-dap's `config` ends with
-      `require("overseer").enable_dap()`, so overseer must be loadable at that point.
+- **overseer** — deliberately left with no bindings. It is only ever used indirectly, through
+  nvim-dap's `require("overseer").enable_dap()` and the `vscode_tasks` template, so a
+  user-facing binding would be noise. It stays eagerly loadable for that reason: do **not**
+  give it a `cmd`/`keys` trigger, because nvim-dap's `config` needs it loaded at that point.
 
-## Then: backfill `keymaps.lua`
+## Done: `keymaps.lua` backfill
 
-Once the plugin specs are done, `keymaps.lua` holds only core bindings — and most of them
-still have no `desc`: window navigation, the alt-key line moves, the visual-mode indent
-rebinds, `<leader>tn`, `<C-bs>`/`<C-H>`, `<C-e>`, `gd`. Add descriptions using the same
-group-prefix convention (`Window: focus left`, `Edit: move line down`).
+`keymaps.lua` now holds only core bindings, all of them described, behind a local
+`map(mode, lhs, rhs, desc, opts)` helper (item 11 from `TODO.md`). Groups in use there:
+`Window:`, `Edit:`, `File:`, `Buffer:`, `Tab:`, `Jump:`, `Lua:`, `Config:`, `Clipboard:`,
+`Terminal:`, `Tool:`, `LSP:`. Plugin specs own `Find:`, `Debug:`, `DB:` and `Format:`.
 
-At that point the small local `map(mode, lhs, rhs, desc)` helper from item 11 is worth
-adding, so the file reads as one scannable table of bindings instead of stylua-wrapped
-six-line calls.
+Verification: every `<leader>` mapping in normal mode reports a non-empty `desc` from
+`nvim_get_keymap("n")`.
+
+Fixed while passing through: `plugins/persistent-breakpoints.lua` bound both breakpoint keys
+to `pb.toggle_breakpoint()` / `pb.clear_all_breakpoints()`, but `pb` was a local inside
+`config` and not visible in the `keys` closures — both keys errored on press. They now call
+`require("persistent-breakpoints.api")` directly.
 
 ## Open decisions
 
@@ -68,13 +72,12 @@ six-line calls.
 
 
 
-- **mini.clue** — ships inside the mini.nvim already installed (`lua/mini/clue.lua`), so it
-  costs zero new plugins. Press `<leader>`, get a window listing every continuation with
-  its description. This is the payoff for the `desc` discipline above. Needs
-  `vim.o.timeoutlen` lowered (~400) or the popup feels sluggish. Do this last, once
-  descriptions exist to display.
+- **mini.clue — added, on trial.** Set up in `plugins/mini.lua`; `vim.opt.timeoutlen = 400`
+  in `options.lua` and `window.delay = 200`. Triggers: `<Leader>` (n/x), `g`, `z`, `<C-w>`,
+  `"`, and `<C-r>` in insert. Prefix groups are named (`+debug`, `+find`, `+lsp`, …) and the
+  built-in clue generators fill in registers/windows/`z`/`g`. Keep or drop after living with
+  it; if it goes, `timeoutlen = 400` is worth keeping anyway.
 
-- **`<leader>b` collision** — codediff binds `<leader>b` to toggle its explorer, and there
-  are four global `<leader>b*` maps (`bb`, `bn`, `bi`, `bp`). Inside a codediff tab all
-  four stall for `timeoutlen` before resolving. Rebinding one side is the real fix;
-  lowering `timeoutlen` only makes it less painful.
+- **`<leader>b` collision — not a real problem.** codediff binds `<leader>b` to toggle its
+  explorer, which shadows the global `<leader>b*` maps inside a diff tab. Breakpoints are
+  never set from inside codediff, so the stall never actually happens. No rebinding needed.

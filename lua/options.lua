@@ -29,6 +29,7 @@ vim.opt.winbar = "%F %{&modified ? '[+]' : ''}"
 vim.opt.showmode = false
 
 vim.opt.updatetime = 300
+vim.opt.timeoutlen = 400
 
 vim.cmd.colorscheme("lunaperche")
 local function set_ui_highlights()
