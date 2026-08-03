@@ -38,12 +38,6 @@ findable is `desc`, not file layout.
 
 ## Remaining
 
-- [ ] **vim-dadbod / dadbod-ui** (`plugins/nvim-dadbod.lua`) — fixes item 3 from `TODO.md`
-      at the same time. `<leader>eq` (visual, execute selection) currently never gets bound
-      because vim-dadbod is `lazy = true` with no trigger, so its `config` never runs.
-      As a `keys` entry with `mode = "v"` it works and becomes the dadbod load trigger.
-      `<leader>sql` and `<leader>sf` move from `init` to `keys` on the dadbod-ui spec.
-
 - [ ] **conform** (`keymaps.lua`) — `<M-F>` calls `require("conform").format()` from
       `keymaps.lua`, so it is a plugin binding sitting in the core file. Move to a `keys`
       entry on the conform spec, which also lets `event = "VeryLazy"` go away.

@@ -34,16 +34,6 @@ triggers.
 Moving plugin mappings into `keys =` (item 1) converts most of these to on-demand without
 adding a line of config.
 
-## 3. `vim-dadbod` never runs its `config` — `<leader>eq` is dead
-
-`plugins/nvim-dadbod.lua` declares vim-dadbod as `lazy = true` with no `event`, `cmd`,
-`keys` or `ft`. Nothing triggers it, so its `config` function (which sets the visual-mode
-`<leader>eq` "execute selection") never runs until something else pulls dadbod in —
-in practice, opening `:DBUI`. So the mapping silently does not exist on a fresh session.
-
-Fix: move that mapping into the dadbod-ui `init` next to the other two, or make it a
-`keys` entry.
-
 ## 4. `lsp_config.lua` — ~40 lines are copies of lspconfig defaults
 
 Verified against nvim-lspconfig's shipped configs: the `filetypes` lists for `ts_ls`,

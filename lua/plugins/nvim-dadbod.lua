@@ -1,15 +1,14 @@
 return {
   {
     "tpope/vim-dadbod",
-    lazy = true,
-    config = function()
-      vim.keymap.set("v", "<leader>eq", ":DB<CR>", { silent = true, desc = "Execute Selection" })
-    end,
+    cmd = "DB",
+    keys = {
+      { "<leader>eq", ":DB<CR>", mode = "v", silent = true, desc = "DB: execute selection" },
+    },
   },
   {
     "kristijanhusak/vim-dadbod-completion",
     ft = { "sql", "mysql", "plsql" },
-    lazy = true,
   },
   {
     "kristijanhusak/vim-dadbod-ui",
@@ -23,16 +22,13 @@ return {
       "DBUIAddConnection",
       "DBUIFindBuffer",
     },
+    keys = {
+      { "<leader>sql", "<cmd>DBUIToggle<cr>", desc = "DB: toggle UI" },
+      { "<leader>sf", "<cmd>DBUIFindBuffer<cr>", desc = "DB: connect file to sql buffer" },
+    },
     init = function()
       vim.g.db_ui_use_nerd_fonts = 1
       vim.g.db_ui_execute_on_save = 0
-      vim.keymap.set("n", "<leader>sql", "<cmd>DBUIToggle<CR>", { desc = "Toggle DBUI" })
-      vim.keymap.set(
-        "n",
-        "<leader>sf",
-        "<cmd>DBUIFindBuffer<CR>",
-        { desc = "Connect open file to sql buffer" }
-      )
     end,
   },
 }
