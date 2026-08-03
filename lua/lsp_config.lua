@@ -42,20 +42,7 @@ vim.lsp.config("*", {
 --     },
 -- })
 
-vim.lsp.config("ts_ls", {
-  filetypes = {
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-  },
-})
-
 vim.lsp.config("pyright", {
-  cmd = { "pyright-langserver", "--stdio" },
-  filetypes = {
-    "python",
-  },
   settings = {
     python = {
       venvPath = ".",
@@ -69,36 +56,13 @@ vim.lsp.config("pyright", {
   },
 })
 
-vim.lsp.config("lua_ls", {
-  filetypes = {
-    "lua",
-  },
-  settings = {
-    Lua = {
-      diagnostics = {
-        globals = { "vim" },
-      },
-    },
-  },
-})
-
-vim.lsp.config("clangd", {
-  filetypes = { "c", "cpp" },
-})
-
-vim.lsp.config("rust_analyzer", {
-  filetypes = { "rust" },
-})
-
 vim.lsp.config("html", {
-  filetypes = { "html" },
   init_options = {
     provideFormatter = false, -- defer to prettier
   },
 })
 
 vim.lsp.config("cssls", {
-  filetypes = { "css", "scss", "less" },
   settings = {
     css = {
       lint = {
@@ -106,10 +70,6 @@ vim.lsp.config("cssls", {
       },
     },
   },
-})
-
-vim.lsp.config("postgres_lsp", {
-  cmd = { "postgres-language-server", "lsp-proxy" },
 })
 
 vim.lsp.config("roslyn", {
