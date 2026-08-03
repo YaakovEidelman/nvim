@@ -38,14 +38,14 @@ vim.api.nvim_create_autocmd("FileType", {
   desc = "Better mappings for Netrw",
   callback = function()
     vim.schedule(function()
-      local bind = function(lhs, rhs)
-        vim.keymap.set("n", lhs, rhs, { noremap = true, buffer = true, nowait = true })
+      local bind = function(lhs, rhs, desc)
+        vim.keymap.set("n", lhs, rhs, { noremap = true, buffer = true, nowait = true, desc = desc })
       end
 
-      bind("<C-h>", "<C-w>h")
-      bind("<C-j>", "<C-w>j")
-      bind("<C-k>", "<C-w>k")
-      bind("<C-l>", "<C-w>l")
+      bind("<C-h>", "<C-w>h", "Window: focus left")
+      bind("<C-j>", "<C-w>j", "Window: focus down")
+      bind("<C-k>", "<C-w>k", "Window: focus up")
+      bind("<C-l>", "<C-w>l", "Window: focus right")
     end)
   end,
 })

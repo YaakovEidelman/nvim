@@ -2,37 +2,20 @@
 
 Open items from the config review. Ordered roughly by payoff. Work through one at a time.
 
-## 1. Keymaps are scattered across 8 files
+Items 1 (scattered keymaps), 2 (lazy-loading) and 3 are done. Plugin bindings now live in
+their own `keys =` specs, `keymaps.lua` holds only core Neovim bindings behind a local
+`map(mode, lhs, rhs, desc, opts)` helper, and every mapping in the config carries a
+group-prefixed `desc` (`Find:`, `Debug:`, `DB:`, `Window:`, `Edit:`, `LSP:`, …). Adding a
+binding means adding it to the owning plugin's spec, with a `desc`.
 
-Bindings currently live in `keymaps.lua`, `plugins/telescope.lua`, `plugins/dap.lua`,
-`plugins/nvim-dadbod.lua`, `plugins/persistent-breakpoints.lua`, `utils/multigrep.lua`,
-`plugins/codediff.lua` (via plugin opts), and `autocmd.lua` (netrw buffer-local maps).
+mini.clue is set up in `plugins/mini.lua` (`<Leader>`, `g`, `z`, `<C-w>`, `"`, insert
+`<C-r>`) with `timeoutlen = 400`. It is on trial — if it goes, keep the lowered
+`timeoutlen`.
 
-There is no single file that answers "what is `<leader>d` bound to". That is the main
-source of feeling locked out of the config.
-
-Two coherent options, pick one and apply it everywhere:
-
-- **Everything in `keymaps.lua`** (split into `keymaps/` files later if it outgrows one
-  file). Easy to find, but a mapping can fire before its plugin is loaded, so each one
-  needs a `require` inside a closure.
-- **lazy.nvim `keys = { ... }` per plugin spec.** The binding lives next to the plugin it
-  drives, and lazy.nvim loads the plugin on first press. Costs discoverability unless
-  paired with a `:Telescope keymaps` habit.
-
-Recommendation: `keys =` for plugin-owned mappings, `keymaps.lua` for everything that
-belongs to core Neovim (window nav, line moves, save/quit, netrw). That also solves item 2
-for free.
-
-## 2. Almost nothing lazy-loads
-
-Loaded eagerly on every startup: telescope, nvim-dap, nvim-dap-ui, overseer,
-persistent-breakpoints, mini.nvim, indent-blankline, mason-lspconfig.
-Only conform (`VeryLazy`), lazydev (`ft`), codediff (`cmd`) and dadbod-ui (`cmd`) have
-triggers.
-
-Moving plugin mappings into `keys =` (item 1) converts most of these to on-demand without
-adding a line of config.
+Still eager by necessity, not oversight: overseer (nvim-dap's `config` calls
+`require("overseer").enable_dap()`), mini.nvim (statusline + clue), mason-lspconfig,
+persistent-breakpoints (`BufReadPost`, so saved breakpoints load with the file).
+indent-blankline is covered by item 7.
 
 ## 4. `lsp_config.lua` — ~40 lines are copies of lspconfig defaults
 
@@ -76,7 +59,10 @@ settings belong in `plugins/roslyn.lua`.
 ## 7. Dead code that looks alive
 
 - `plugins/nvim-dap-ui.lua` registers three dap listeners whose bodies are entirely
-  commented out — it installs three no-ops.
+  commented out — it installs three no-ops. Note before touching them: dap-ui now loads only
+  on `<leader>dt`, so uncommenting `dapui.open()` in `event_initialized` would never fire —
+  dap-ui is not loaded when a session starts. Auto-open needs the listeners moved into
+  nvim-dap's `config`, or the `keys` trigger dropped.
 - `plugins/conform.lua`: `format_on_save = function() return nil end` is exactly
   equivalent to omitting the key.
 - `plugins/indent-blankline.lua` sets `main = "ibl"` and `opts = {}`, then a `config`
