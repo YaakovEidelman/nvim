@@ -17,6 +17,7 @@ return {
         initial_focus = "modified",
         focus_on_select = true,
         width = 30,
+        view_mode = "tree",
       },
     },
   },
