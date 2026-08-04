@@ -62,9 +62,6 @@ return {
           symbols = { theme = "ivy" },
           builtin = { theme = "ivy" },
         },
-        extensions = {
-          fzf = {},
-        },
       })
 
       if not pcall(Telescope.load_extension, "fzf") then

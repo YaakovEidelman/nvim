@@ -8,24 +8,10 @@ mini.clue is set up in `plugins/mini.lua` (`<Leader>`, `g`, `z`, `<C-w>`, `"`, i
 
 Still eager by necessity, not oversight: overseer (nvim-dap's `config` calls
 `require("overseer").enable_dap()`), mini.nvim (statusline + clue), mason-lspconfig,
-persistent-breakpoints (`BufReadPost`, so saved breakpoints load with the file).
-indent-blankline is covered by item 1.
+persistent-breakpoints (`BufReadPost`, so saved breakpoints load with the file),
+indent-blankline.
 
-## 1. Dead code that looks alive
-
-- `plugins/nvim-dap-ui.lua` registers three dap listeners whose bodies are entirely
-  commented out — it installs three no-ops. Note before touching them: dap-ui now loads only
-  on `<leader>dt`, so uncommenting `dapui.open()` in `event_initialized` would never fire —
-  dap-ui is not loaded when a session starts. Auto-open needs the listeners moved into
-  nvim-dap's `config`, or the `keys` trigger dropped.
-- `plugins/conform.lua`: `format_on_save = function() return nil end` is exactly
-  equivalent to omitting the key.
-- `plugins/indent-blankline.lua` sets `main = "ibl"` and `opts = {}`, then a `config`
-  function that ignores both. `scope.enabled = true` is already ibl's default, so the file
-  collapses to just the plugin name.
-- `plugins/telescope.lua`: `extensions = { fzf = {} }` is a no-op.
-
-## 2. `plugins/mini.lua`
+## 1. `plugins/mini.lua`
 
 - `local pairs = require("mini.pairs")` shadows Lua's builtin `pairs`. Harmless as written
   since nothing iterates afterward, but a trap.
@@ -33,13 +19,13 @@ indent-blankline is covered by item 1.
   `(function() ... end)()` — the most opaque construct in the config. A named
   `local function lsp_section()` above the `active` callback says the same thing readably.
 
-## 3. `utils/public/os.lua`
+## 2. `utils/public/os.lua`
 
 A directory named `public` implies a private counterpart that does not exist. It holds one
 file with one line: `vim.fn.has("win32") == 1`. Three files require it. Flatten to
 `utils/os.lua`.
 
-## 4. The overseer template is invisible magic
+## 3. The overseer template is invisible magic
 
 `lua/overseer/template/vscode_tasks.lua` works only because overseer scans every
 `lua/overseer/template/` directory on the runtimepath. Nothing outside that file hints at
@@ -49,12 +35,13 @@ It is also one of two files named `vscode_tasks` — `utils/vscode_tasks.lua` is
 used by nothing else, so one feature is split across two identically-named files in
 different trees.
 
-## 5. Smaller things
+## 4. Smaller things
 
 - The reapply-highlights-on-`ColorScheme` pattern appears twice with the same shape, in
   `options.lua` (`set_ui_highlights`) and `plugins/dap.lua` (`set_dap_highlights`).
-- `keymaps.lua` reads raggedly because stylua at `column_width = 100` explodes some
-  `vim.keymap.set` calls across six lines while their neighbours fit on one. A small local
-  `map(mode, lhs, rhs, desc)` helper would keep the file scannable as what it is: a table
-  of bindings.
 
+## 5. Update README
+
+The read me doesn't list nicely all the prerequisites that need to be downloaded such as
+`unzip`, and I'm sure there are others.
+Also, the readme needs to be made much nicer than it is right now.
