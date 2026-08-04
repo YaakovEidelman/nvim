@@ -1,6 +1,6 @@
 local M = {}
 
-local os_utils = require("utils.public.os")
+local os_utils = require("utils.os")
 
 function M.resolve_bin(pkg, win_rel, unix_rel)
   local ok, registry = pcall(require, "mason-registry")

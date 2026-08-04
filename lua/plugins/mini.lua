@@ -3,10 +3,29 @@ return {
     "echasnovski/mini.nvim",
     config = function()
       local statusline = require("mini.statusline")
-      local pairs = require("mini.pairs")
+      local minipairs = require("mini.pairs")
       local minigit = require("mini.git")
       local minidiff = require("mini.diff")
       local clue = require("mini.clue")
+
+      local function lsp_section()
+        if statusline.is_truncated(75) then
+          return ""
+        end
+        local clients = vim.lsp.get_clients({ bufnr = 0 })
+        if #clients == 0 then
+          return ""
+        end
+        local names = vim.tbl_map(function(c)
+          return c.name
+        end, clients)
+        local section = "󰰎 " .. table.concat(names, ", ")
+        local progress = vim.lsp.status()
+        if progress ~= "" then
+          section = section .. " │ " .. progress
+        end
+        return section
+      end
 
       statusline.setup({
         use_icons = true,
@@ -15,24 +34,7 @@ return {
             local mode, mode_hl = statusline.section_mode({ trunc_width = 120 })
             local git = statusline.section_git({ trunc_width = 40 })
             local diagnostics = statusline.section_diagnostics({ trunc_width = 75 })
-            local lsp = (function()
-              if statusline.is_truncated(75) then
-                return ""
-              end
-              local clients = vim.lsp.get_clients({ bufnr = 0 })
-              if #clients == 0 then
-                return ""
-              end
-              local names = vim.tbl_map(function(c)
-                return c.name
-              end, clients)
-              local section = "󰰎 " .. table.concat(names, ", ")
-              local progress = vim.lsp.status()
-              if progress ~= "" then
-                section = section .. " │ " .. progress
-              end
-              return section
-            end)()
+            local lsp = lsp_section()
             -- local filename = vim.bo.buftype == "terminal" and "%t" or "%F%{&modified?'*':''}%r"
             local fileinfo = statusline.section_fileinfo({ trunc_width = 120 })
             local location = statusline.is_truncated(75) and "Ln %l│Col %v" or "Ln %l|Col %v"
@@ -51,7 +53,7 @@ return {
         },
       })
 
-      pairs.setup({})
+      minipairs.setup({})
       minigit.setup()
       minidiff.setup({
         view = {

@@ -73,7 +73,7 @@ return {
     },
     config = function()
       local dap = require("dap")
-      local os_utils = require("utils.public.os")
+      local os_utils = require("utils.os")
       local mason = require("utils.mason")
 
       local debugpy_python =

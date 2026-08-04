@@ -1,4 +1,4 @@
-local os_utils = require("utils.public.os")
+local os_utils = require("utils.os")
 
 return {
   {

@@ -7,6 +7,7 @@ vim.opt.clipboard = "unnamedplus"
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.wrap = false
+vim.opt.sidescrolloff = 8
 vim.opt.scrolloff = 10
 vim.opt.termguicolors = true
 vim.opt.colorcolumn = "100"
