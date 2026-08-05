@@ -22,6 +22,11 @@ map("n", "<M-k>", ":m .-2<CR>==", "Edit: move line up", silent)
 map("v", "<M-j>", ":m '>+1<CR>gv=gv", "Edit: move selection down", silent)
 map("v", "<M-k>", ":m '<-2<CR>gv=gv", "Edit: move selection up", silent)
 
+map("n", "<M-h>", "zh", "Scroll: view left one column", silent)
+map("n", "<M-l>", "zl", "Scroll: view right one column", silent)
+map("v", "<M-h>", "zh", "Scroll: view left one column", silent)
+map("v", "<M-l>", "zl", "Scroll: view right one column", silent)
+
 -- Rehighlight selection after indenting for vscode like experiance
 map("v", ">", ">gv", "Edit: indent right, keep selection")
 map("v", "<", "<gv", "Edit: indent left, keep selection")
