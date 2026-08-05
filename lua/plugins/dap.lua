@@ -5,7 +5,6 @@ return {
       require("overseer").setup({
         -- log_level = "INFO",
         dap = false, -- registered manually after dap loads to avoid load-order issues
-        templates = { "builtin", "vscode_tasks" },
       })
     end,
   },
