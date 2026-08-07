@@ -2,6 +2,9 @@ return {
   "seblyng/roslyn.nvim",
   ---@module 'roslyn.config'
   ---@type RoslynNvimConfig
+  enabled = function()
+    return vim.fn.executable("dotnet") == 1
+  end,
   lazy = false,
   opts = {
     filewatching = "roslyn",

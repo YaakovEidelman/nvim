@@ -28,6 +28,22 @@ vim.api.nvim_create_autocmd("LspProgress", {
   end,
 })
 
+-- Install a language's mason packages the first time you open one of its files.
+-- Checked once per filetype per session, nothing is written to disk.
+local lang_checked = {}
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("lang-install", { clear = true }),
+  desc = "Install mason packages for the current filetype",
+  callback = function(args)
+    local ft = vim.bo[args.buf].filetype
+    if ft == "" or lang_checked[ft] then
+      return
+    end
+    lang_checked[ft] = true
+    require("utils.mason").ensure_installed(require("lang").packages_for_filetype(ft))
+  end,
+})
+
 -- netrw keybindings
 -- vim.schedule is required: netrw sets its own buffer-local maps (e.g. <C-l> for refresh)
 -- inside NetrwMaps() which fires after the FileType event. Scheduling ensures our maps
