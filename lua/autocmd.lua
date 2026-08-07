@@ -40,7 +40,13 @@ vim.api.nvim_create_autocmd("FileType", {
       return
     end
     lang_checked[ft] = true
-    require("utils.mason").ensure_installed(require("lang").packages_for_filetype(ft))
+    require("utils.mason").ensure_installed(require("lang").packages_for_filetype(ft), function()
+      -- The buffer already passed its FileType event, so re-fire it to let the
+      -- freshly installed server attach without reopening the file.
+      if vim.api.nvim_buf_is_valid(args.buf) then
+        vim.api.nvim_exec_autocmds("FileType", { buffer = args.buf })
+      end
+    end)
   end,
 })
 

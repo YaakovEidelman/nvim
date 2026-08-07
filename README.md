@@ -1,45 +1,44 @@
 # nvim config
 
-Everything a fresh machine needs. Install the system packages for your OS, clone
-this repo, start `nvim`.
+Install the system packages for your OS, clone this repo, start `nvim`.
 
 Clone to `%LOCALAPPDATA%\nvim` on Windows, `~/.config/nvim` on Linux.
 
 There are scripts in `scripts/` that run these installs for you — `windows.ps1`
-(winget) and `arch.sh` (pacman). Both install the required list only; pass
+(winget) and `arch.sh` (pacman). Both install the core list only; pass
 `-Optional` / `--optional` to get the extras too. Other distros: read the Linux
 list and use your own package manager.
 
-"Required" means a first boot needs it. The eight LSP servers in
-`lua/lsp/servers.lua` install themselves on first start whether you want them or
-not, and four of those are npm packages, so node is not optional. Nothing
-auto-installed needs python or dotnet — those are only for the manual
-`:MasonInstall` line, so they live under optional.
+Nothing installs at startup. Language servers, formatters and debug adapters are
+pulled from Mason the first time you open a file of that language, so a fresh
+machine only needs the core list below. The per-language toolchains — node,
+python, dotnet — are only needed once you actually open that kind of file.
 
-## Windows
+## Core (Windows)
 
 - Neovim 0.12+ — `winget install Neovim.Neovim`
 - Git — `winget install Git.Git`
 - MSVC C/C++ compiler — `winget install Microsoft.VisualStudio.2022.BuildTools -e --override "--quiet --wait --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended"`
 - CMake — `winget install Kitware.CMake`
-- Node.js LTS + npm — `winget install OpenJS.NodeJS.LTS`
 - ripgrep — `winget install BurntSushi.ripgrep.MSVC`
 - A Nerd Font — `winget install DEVCOM.JetBrainsMonoNerdFont`, then set it in your terminal
 - `curl`, `tar`, PowerShell 5.1 — already in Windows 10/11, nothing to do
 - tree-sitter CLI — no good winget package, get it from Mason: `:MasonInstall tree-sitter-cli`
 
+The compiler and the tree-sitter CLI are not optional. Treesitter installs a
+parser the first time you open any file type it doesn't have yet, and it does
+that by shelling out to `tree-sitter` and compiling C. Without both you get no
+highlighting and a red error.
+
 Optional:
 
-- Python 3 — only for black, ruff and debugpy — `winget install Python.Python.3.13`
-- .NET SDK — only for Roslyn (C#) and csharpier — `winget install Microsoft.DotNet.SDK.9`
-- Rust toolchain — only for `rustfmt` — `winget install Rustlang.Rustup`
 - `fd` — faster Telescope `find_files` — `winget install sharkdp.fd`
 - VS Code — `<leader>gd` opens the cwd in it — `winget install Microsoft.VisualStudioCode`
 
-## Linux (Arch)
+## Core (Arch)
 
 ```
-sudo pacman -S --needed neovim git gcc make cmake nodejs npm ripgrep unzip \
+sudo pacman -S --needed neovim git gcc make cmake ripgrep unzip \
   tree-sitter-cli ttf-jetbrains-mono-nerd wl-clipboard
 ```
 
@@ -57,31 +56,80 @@ sudo pacman -S --needed neovim git gcc make cmake nodejs npm ripgrep unzip \
 
 Optional:
 
-- `python` and `python-pip` — only for black, ruff and debugpy
-- `dotnet-sdk` — only for Roslyn (C#) and csharpier
-- `rustup` — only for `rustfmt`
 - `fd` — faster Telescope `find_files`
 - `postgresql` / `mariadb-clients` — dadbod DBUI needs the client CLI of whatever
   database you connect to
 
-## Mason packages
+## Per-language toolchains
 
-LSP servers install themselves on first start, from the list in `lua/lsp/servers.lua`:
-ts_ls, pyright, lua_ls, clangd, rust_analyzer, html, cssls, postgres_lsp.
+Mason installs most tools as self-contained binaries, but some come from npm,
+PyPI or NuGet and need that runtime present. You only need a row once you open
+that kind of file.
 
-Everything else is manual. Formatters, debug adapters and the C# server:
+| Language   | Needs           | Why                                              |
+| ---------- | --------------- | ------------------------------------------------ |
+| lua        | —               | lua-language-server and stylua are binaries      |
+| typescript | node            | typescript-language-server, prettier             |
+| html / css | node            | html-lsp, css-lsp, prettier                      |
+| json       | node            | prettier                                         |
+| python     | node and python | pyright is npm; black and debugpy are PyPI       |
+| c / cpp    | python          | clang-format is PyPI; clangd and codelldb aren't |
+| rust       | rustup          | for `rustfmt` — rust-analyzer comes from Mason   |
+| c#         | dotnet          | csharpier is NuGet, and Roslyn needs the runtime |
+| sh         | —               | shfmt is a binary                                |
+| sql        | —               | postgres-language-server is a binary             |
 
+Windows: `winget install OpenJS.NodeJS.LTS`, `Python.Python.3.13`,
+`Microsoft.DotNet.SDK.9`, `Rustlang.Rustup`.
+
+Arch: `sudo pacman -S nodejs npm python python-pip dotnet-sdk rustup`.
+
+Note that `pyright` is an npm package, so Python work needs node too. Roslyn is
+skipped entirely when `dotnet` isn't on PATH, so a machine without the .NET SDK
+never downloads it.
+
+## Languages
+
+Everything language-specific lives in `lua/lang/`, one file per language. Each
+file declares its treesitter parsers, LSP servers and settings, formatters,
+debug adapter and Mason packages. `lua/lang/init.lua` merges them and the
+plugins read from it — `lsp_config.lua` takes the servers, `conform.lua` the
+formatters, `dap.lua` the adapters, and the autocmd in `lua/autocmd.lua`
+installs the Mason packages on first use.
+
+To add a language, drop in a new file. To remove one, delete its file — the
+server, formatter, adapter and installs all go with it. Nothing else to edit.
+
+```lua
+-- lua/lang/go.lua
+return {
+  filetypes = { "go" },
+  parsers = { "go" },
+  servers = { gopls = {} },
+  formatters = { go = { "gofmt" } },
+  mason = { "gopls" },
+}
 ```
-:MasonInstall stylua prettier black ruff clang-format shfmt csharpier debugpy codelldb netcoredbg roslyn tree-sitter-cli
-```
+
+Refer to Mason binaries by bare name — `command = "codelldb"`, not a path. Mason
+puts its bin directory on PATH and the loader expands the name per OS.
+
+C# is the one exception: its server is the separate `roslyn.nvim` plugin, so
+`lua/lang/csharp.lua` carries the formatter, adapter and packages while
+`lua/plugins/roslyn.lua` carries the server.
 
 ## First boot
 
 1. Clone this repo into the config path above.
 2. Start `nvim` — lazy.nvim bootstraps itself and installs plugins.
 3. `:Lazy restore` to pin everything to the committed `lazy-lock.json`.
-4. Run the `:MasonInstall` line above.
+4. On Windows only: `:MasonInstall tree-sitter-cli`. Arch gets it from pacman.
 5. `:checkhealth` and fix anything red.
+
+After that, just open a file. The first time you open a language, Mason installs
+its tools and reports what it's fetching; the server attaches when that finishes.
+`:Mason` shows everything installed, and `:LspInstall` with no arguments lists
+the servers available for the current file if you want a different one.
 
 ## Troubleshooting
 

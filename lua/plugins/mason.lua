@@ -10,9 +10,10 @@ return {
   },
   {
     "mason-org/mason-lspconfig.nvim",
+    -- No ensure_installed: packages are installed per language on first use,
+    -- see the lang-install autocmd in lua/autocmd.lua.
     opts = {
       automatic_enable = false,
-      ensure_installed = vim.tbl_keys(require("lsp.servers")),
     },
     dependencies = {
       "mason-org/mason.nvim",

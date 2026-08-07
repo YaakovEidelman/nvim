@@ -11,16 +11,16 @@
 --   adapters         nvim-dap adapter name -> config
 --   mason            mason package names needed for this language
 --
--- Adapters are plain data. If one needs a binary out of mason, give it a `bin`
--- table and write `${bin}` wherever the path belongs -- same idea as dap's own
--- `${port}`. The path is resolved per OS when the adapter is read, and the
--- adapter is skipped entirely if the package isn't installed:
+-- Adapters are plain data. Mason puts its own bin directory at the front of
+-- PATH, so refer to a mason binary by bare name -- no paths, no per-OS
+-- branching. `adapters()` expands the name to a full path via `exepath`,
+-- because libuv spawns without PATH lookup and on Windows the mason shim is a
+-- `.cmd` that will not be found by bare name:
 --
 --   adapters = {
 --     codelldb = {
---       bin = { package = "codelldb", win = "adapter/codelldb.exe", unix = "adapter/codelldb" },
 --       type = "server",
---       executable = { command = "${bin}" },
+--       executable = { command = "codelldb" },
 --     },
 --     lldb = "codelldb", -- a string value is an alias for another adapter
 --   }
@@ -98,37 +98,28 @@ function M.formatter_config()
   return out
 end
 
-local function substitute(value, bin)
-  if type(value) == "string" then
-    return (value:gsub("%$%{bin%}", bin))
+local function expand_command(tbl)
+  if type(tbl) ~= "table" or type(tbl.command) ~= "string" then
+    return tbl
   end
 
-  if type(value) ~= "table" then
-    return value
+  local full = vim.fn.exepath(tbl.command)
+  if full == "" then
+    return tbl
   end
 
-  local out = {}
-  for key, item in pairs(value) do
-    out[key] = substitute(item, bin)
-  end
+  local out = vim.tbl_extend("force", {}, tbl)
+  out.command = full
   return out
 end
 
 local function resolve_adapter(def)
-  if not def.bin then
-    return substitute(def, "")
-  end
-
-  local path = require("utils.mason").resolve_bin(def.bin.package, def.bin.win, def.bin.unix)
-  if not path then
-    return nil
-  end
-
-  local out = {}
-  for key, value in pairs(def) do
-    if key ~= "bin" then
-      out[key] = substitute(value, path)
+  local out = expand_command(def)
+  if type(out.executable) == "table" then
+    if out == def then
+      out = vim.tbl_extend("force", {}, def)
     end
+    out.executable = expand_command(out.executable)
   end
   return out
 end

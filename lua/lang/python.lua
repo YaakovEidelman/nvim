@@ -21,14 +21,8 @@ return {
   },
   adapters = {
     python = {
-      bin = {
-        package = "debugpy",
-        win = "venv/Scripts/python.exe",
-        unix = "venv/bin/python",
-      },
       type = "executable",
-      command = "${bin}",
-      args = { "-m", "debugpy.adapter" },
+      command = "debugpy-adapter",
       enrich_config = function(config, on_config)
         if not config.pythonPath then
           local venv_python

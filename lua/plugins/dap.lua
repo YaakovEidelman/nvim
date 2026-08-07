@@ -72,59 +72,10 @@ return {
     },
     config = function()
       local dap = require("dap")
-      local os_utils = require("utils.os")
-      local mason = require("utils.mason")
 
-      local debugpy_python =
-        mason.resolve_bin("debugpy", "venv/Scripts/python.exe", "venv/bin/python")
-      local netcoredbg_bin =
-        mason.resolve_bin("netcoredbg", "netcoredbg/netcoredbg.exe", "netcoredbg")
-      local codelldb_bin = mason.resolve_bin(
-        "codelldb",
-        "extension/adapter/codelldb.exe",
-        "extension/adapter/codelldb"
-      )
-
-      dap.adapters.python = {
-        type = "executable",
-        command = debugpy_python,
-        args = { "-m", "debugpy.adapter" },
-        enrich_config = function(config, on_config)
-          if not config.pythonPath then
-            local venv_python
-            if os_utils.is_windows then
-              venv_python = vim.fn.getcwd() .. "/.venv/Scripts/python.exe"
-            else
-              venv_python = vim.fn.getcwd() .. "/.venv/bin/python"
-            end
-            if vim.fn.executable(venv_python) == 1 then
-              config = vim.tbl_extend("force", config, { pythonPath = venv_python })
-            end
-          end
-          on_config(config)
-        end,
-      }
-      dap.adapters.debugpy = dap.adapters.python
-
-      local csharp_common = {
-        type = "executable",
-        command = netcoredbg_bin,
-        args = { "--interpreter=vscode" },
-        options = {
-          detached = false,
-        },
-      }
-      dap.adapters.coreclr = csharp_common
-      dap.adapters.netcoredbg = csharp_common
-
-      dap.adapters.codelldb = {
-        type = "server",
-        port = "${port}",
-        executable = {
-          command = codelldb_bin,
-          args = { "--port", "${port}" },
-        },
-      }
+      for name, adapter in pairs(require("lang").adapters()) do
+        dap.adapters[name] = adapter
+      end
 
       -- This is just for reference when creating launch.json files
       -- dap.configurations.c = {

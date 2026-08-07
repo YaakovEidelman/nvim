@@ -15,13 +15,8 @@ return {
   },
   adapters = {
     coreclr = {
-      bin = {
-        package = "netcoredbg",
-        win = "netcoredbg/netcoredbg.exe",
-        unix = "netcoredbg",
-      },
       type = "executable",
-      command = "${bin}",
+      command = "netcoredbg",
       args = { "--interpreter=vscode" },
       options = {
         detached = false,
